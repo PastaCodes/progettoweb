@@ -2,12 +2,12 @@
 class Product {
     public string $name;
     public float $price;
-    public string $imageUrl;
+    public ?string $image;
 
-    function __construct(string $name, float $price, string $imageUrl) {
+    function __construct(string $name, float $price, ?string $image = null) {
         $this->name = $name;
         $this->price = $price;
-        $this->imageUrl = $imageUrl;
+        $this->image = $image;
     }
 }
 ?>
