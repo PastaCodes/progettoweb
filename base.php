@@ -14,11 +14,11 @@
         <?php else: ?>
         <meta name="robots" content="none" />
         <?php endif ?>
-        <?php if (SETTINGS['hosted-locally']): ?>
-        <base href="<?= (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] ?>/IsiFitGems/" target="_self" />
-        <?php else: ?>
-        <base href="https://isifitgems.it/" target="_self" />
-        <?php endif ?>
+        <base href="<?=
+            (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') .
+            $_SERVER['HTTP_HOST'] .
+            (SETTINGS['hosted-locally'] ? '/IsiFitGems/' : '/')
+        ?>" target="_self" />
         <link rel="stylesheet" type="text/css" href="pico.classless.min.css" />
         <!-- TODO decide whether to do this
         <link rel="sitemap" type="application/xml" title="Sitemap" href="sitemap.xml" />
