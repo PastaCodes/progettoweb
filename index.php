@@ -1,5 +1,5 @@
 <?php
 require "setup.php";
-$page = new Page("Hello, World!", "helloWorld.php", true);
+$page = new Page("Products", "products.php", true);
 require "base.php";
 ?>

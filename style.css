@@ -1,0 +1,43 @@
+main > section {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: var(--pico-block-spacing-vertical);
+    column-gap: var(--pico-block-spacing-horizontal);
+}
+
+main > section > article {
+    margin-bottom: 0;
+}
+
+article {
+    text-align: center;
+}
+
+article section:nth-child(1) {
+    width: 15rem;
+    height: 15rem;
+    border-radius: var(--pico-border-radius);
+    overflow: hidden;
+    align-content: center;
+}
+
+article section:nth-child(2) {
+    text-align: left;
+}
+
+article section:nth-child(2) p:nth-child(1) {
+    margin-bottom: 0;
+}
+
+article section:nth-child(2) p:nth-child(2) {
+    font-size: 1.6rem;
+}
+
+section svg {
+    width: 6rem;
+    color: var(--pico-muted-color);
+}
+
+article section:nth-child(1) p {
+    color: var(--pico-muted-color);
+}

@@ -20,6 +20,7 @@
             (SETTINGS['hosted-locally'] ? '/IsiFitGems/' : '/')
         ?>" target="_self" />
         <link rel="stylesheet" type="text/css" href="pico.classless.min.css" />
+        <link rel="stylesheet" type="text/css" href="style.css" />
         <!-- TODO decide whether to do this
         <link rel="sitemap" type="application/xml" title="Sitemap" href="sitemap.xml" />
         -->
