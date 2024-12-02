@@ -1,5 +1,5 @@
 <?php
-    require "Product.php";
+    require "classes/Product.php";
     $products = [new Product('Braccialetto di perle', 10.00), new Product('Anello con serpente', 8.00), new Product('Collana con drago', 16.00), new Product('Anello con teschio', 9.00), new Product('Braccialetto di cuoio', 6.00)];
 ?>
         <main>

@@ -19,8 +19,8 @@
             $_SERVER['HTTP_HOST'] .
             (SETTINGS['hosted-locally'] ? '/IsiFitGems/' : '/')
         ?>" target="_self" />
-        <link rel="stylesheet" type="text/css" href="pico.classless.min.css" />
-        <link rel="stylesheet" type="text/css" href="style.css" />
+        <link rel="stylesheet" type="text/css" href="style/pico.classless.min.css" />
+        <link rel="stylesheet" type="text/css" href="style/style.css" />
         <!-- TODO decide whether to do this
         <link rel="sitemap" type="application/xml" title="Sitemap" href="sitemap.xml" />
         -->
