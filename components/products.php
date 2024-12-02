@@ -31,13 +31,11 @@
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                             <use href="assets/ban-solid.svg#root"></use>
                         </svg>
-                        <br />
                         <span>No image available</span>
 <?php endif ?>
                     </section>
                     <section>
                         <span><?= $product->name ?></span>
-                        <br />
                         <small><?= format_price_range($product) ?></small>
                     </section>
                 </article>

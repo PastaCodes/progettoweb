@@ -17,8 +17,11 @@ main > section > article {
     margin-bottom: 0;
 }
 
-article {
-    text-align: center;
+article section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 article section:nth-child(1) {
@@ -26,11 +29,6 @@ article section:nth-child(1) {
     height: var(--thumbnail-size);
     border-radius: var(--pico-border-radius);
     overflow: hidden;
-    align-content: center;
-}
-
-article section:nth-child(2) p {
-    margin-bottom: 0;
 }
 
 section svg {
@@ -39,6 +37,6 @@ section svg {
     margin-bottom: 0.4rem;
 }
 
-article section:nth-child(1) p {
+article section:nth-child(1) span {
     color: var(--pico-muted-color);
 }
