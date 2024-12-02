@@ -26,10 +26,13 @@
                 <article>
                     <section>
 <?php if ($product->image): ?>
-                        <img src="<?= $product->image ?>"/>
+                        <img src="<?= $product->image ?>" />
 <?php else: ?>
-                            <?php require 'assets/ban-solid.svg' ?>
-                            <p>No image available</p>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <use href="assets/ban-solid.svg#root"></use>
+                        </svg>
+                        <br />
+                        <span>No image available</span>
 <?php endif ?>
                     </section>
                     <section>

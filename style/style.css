@@ -36,6 +36,7 @@ article section:nth-child(2) p {
 section svg {
     width: 6rem;
     color: var(--pico-muted-color);
+    margin-bottom: 0.4rem;
 }
 
 article section:nth-child(1) p {
