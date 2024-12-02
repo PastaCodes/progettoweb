@@ -11,14 +11,14 @@
                         <img src="<?= $product->image ?>"/>
                         <?php else: ?>
                             <?php require "assets/ban-solid.svg" ?>
-                            <p>No image available.</p>
+                            <p>No image available</p>
                         <?php endif ?>
                     </section>
                     <section>
-                        <p><?= $product->name ?></p>
-                        <p>&euro; <?= number_format($product->price, 2, decimal_separator: ",", thousands_separator: ".") ?></p>
+                        <span><?= $product->name ?></span>
+                        <br />
+                        <small>&euro; <?= number_format($product->price, 2, decimal_separator: ",", thousands_separator: ".") ?></small>
                     </section>
-                    <button>Aggiungi al carrello</button>
                 </article>
                 <?php endforeach ?>
             </section>
