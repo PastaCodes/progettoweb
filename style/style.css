@@ -1,12 +1,16 @@
+:root {
+   --thumbnail-size: 15rem;
+}
+
 section:last-child {
     margin-bottom: 0;
 }
 
 main > section {
-    display: flex;
-    flex-wrap: wrap;
-    row-gap: var(--pico-block-spacing-vertical);
-    column-gap: var(--pico-block-spacing-horizontal);
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fill, calc(var(--thumbnail-size) + 2 * var(--pico-block-spacing-horizontal)));
+    gap: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
 }
 
 main > section > article {
@@ -18,8 +22,8 @@ article {
 }
 
 article section:nth-child(1) {
-    width: 15rem;
-    height: 15rem;
+    width: var(--thumbnail-size);
+    height: var(--thumbnail-size);
     border-radius: var(--pico-border-radius);
     overflow: hidden;
     align-content: center;
