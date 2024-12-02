@@ -9,11 +9,11 @@
         <meta name="author" content="Luca Palazzini, Marco Buda" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="<?= SETTINGS['theme-color'] ?>" />
-        <?php if ($page->settings['allow-indexing']): ?>
+<?php if ($page->settings['allow-indexing']): ?>
         <meta name="robots" content="index, follow" />
-        <?php else: ?>
+<?php else: ?>
         <meta name="robots" content="none" />
-        <?php endif ?>
+<?php endif ?>
         <base href="<?=
             (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') .
             $_SERVER['HTTP_HOST'] .
@@ -28,6 +28,6 @@
         <title><?= $page->title ?></title>
     </head>
     <body>
-    <?php require $page->body ?>
+<?php require $page->body ?>
     </body>
 </html>

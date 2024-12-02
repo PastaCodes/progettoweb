@@ -4,5 +4,5 @@ const SETTINGS = [
     'hosted-locally' => true,
     'theme-color' => '#FFFFFF' // TODO
 ];
-require "classes/Page.php";
+require 'classes/Page.php';
 ?>
