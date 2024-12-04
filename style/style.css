@@ -47,3 +47,9 @@ article section:nth-child(2) fieldset {
     overflow: hidden;
     overflow-x: scroll;
 }
+
+input[type="radio"] {
+    --radio-color: attr(data-color color);
+    --pico-primary-border: var(--radio-color);
+    background-color: color-mix(in oklab, var(--radio-color) 75%, black);
+}

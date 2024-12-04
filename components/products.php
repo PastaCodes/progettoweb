@@ -20,6 +20,14 @@
         );
     }
 ?>
+        <script>
+        // For silly little browsers that do not support attr styling
+        window.onload = () => {
+            document.querySelectorAll('input[data-color]').forEach(input => {
+                input.style.setProperty('--radio-color', input.getAttribute('data-color'));
+            });
+        }
+        </script>
         <main>
             <section>
 <?php foreach ($products as $product): ?>
@@ -45,7 +53,7 @@
     $checked = true;
 ?>
 <?php foreach ($colors as $color): ?>
-                            <input type="radio" name="<?= $product->code ?>_color"<?= $checked ? ' checked="checked"' : '' ?> />
+                            <input type="radio" data-color="#<?= $color ?>" name="<?= $product->code ?>_color"<?= $checked ? ' checked="checked"' : '' ?> />
 <?php $checked = false; ?>
 <?php endforeach ?>
                         </fieldset>
