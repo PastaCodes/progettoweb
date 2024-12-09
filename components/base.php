@@ -25,6 +25,9 @@
         <link rel="sitemap" type="application/xml" title="Sitemap" href="sitemap.xml" />
         -->
         <link rel="icon" type="image/x-icon" href="icon.ico" />
+<?php foreach ($page->scripts as $script): ?>
+        <script src="<?= $script ?>" type="text/javascript"></script>
+<?php endforeach ?>
         <title><?= $page->title ?></title>
     </head>
     <body>

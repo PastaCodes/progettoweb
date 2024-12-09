@@ -1,17 +1,19 @@
 <?php
 class Product {
-    public string $code;
+    public string $code_name;
     public string $display_name;
-    public float $priceMin;
-    public float $priceMax;
-    public ?string $image;
+    public float $price_min;
+    public float $price_max;
+    public array $variants;
+    public ?string $first_thumbnail;
 
-    function __construct(string $code, string $display_name, float $priceMin, float $priceMax, ?string $image = null) {
-        $this->code = $code;
+    function __construct(string $code_name, string $display_name, float $price_min, float $price_max, array $variants = [], ?string $first_thumbnail = null) {
+        $this->code_name = $code_name;
         $this->display_name = $display_name;
-        $this->priceMin = $priceMin;
-        $this->priceMax = $priceMax;
-        $this->image = $image;
+        $this->price_min = $price_min;
+        $this->price_max = $price_max;
+        $this->variants = $variants;
+        $this->first_thumbnail = $first_thumbnail;
     }
 }
 ?>

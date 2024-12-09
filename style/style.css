@@ -1,5 +1,7 @@
 :root {
-    --thumbnail-size: 15rem;
+    --thumbnail-size: 14.2rem;
+    --spacing-vertical-small: 0.4rem;
+    --radio-spacing: 0.5rem;
 }
 
 section:last-child {
@@ -13,7 +15,9 @@ main > section {
     gap: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
 }
 
-main > section > article {
+article {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 0;
 }
 
@@ -34,22 +38,39 @@ article section:nth-child(1) {
 section svg {
     width: 6rem;
     color: var(--pico-muted-color);
-    margin-bottom: 0.4rem;
+    margin-bottom: var(--spacing-vertical-small);
 }
 
 article section:nth-child(1) span {
     color: var(--pico-muted-color);
 }
 
-article section:nth-child(2) fieldset {
-    min-width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    overflow-x: scroll;
+article section:nth-child(2):not(:last-child) {
+    display: grid;
+    grid-auto-flow: column;
+    gap: var(--radio-spacing);
+    padding: 0.125em;
+    mask-image: linear-gradient(to right, #0000 0%, #000F 25%, #000F 75%, #0000 100%);
+    -webkit-mask-image: linear-gradient(to right, #0000 0%, #000F 25%, #000F 75%, #0000 100%);
+    margin-bottom: var(--spacing-vertical-small);
 }
 
-input[type="radio"] {
+article section:last-child {
+    flex: 1;
+}
+
+[type="radio"] {
     --radio-color: attr(data-color color);
     --pico-primary-border: var(--radio-color);
-    background-color: color-mix(in oklab, var(--radio-color) 75%, black);
+    background-color: color-mix(in oklab, var(--radio-color) 90%, #000);
+    margin: 0;
+    transition: transform 0.3s ease;
+}
+
+[type="radio"]:not(:hover) {
+    --pico-box-shadow: none !important;
+}
+
+[type="radio"]:hover {
+    --pico-box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-form-element-focus-color);
 }
