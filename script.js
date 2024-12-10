@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('load', () => {
     let noThumbnailTemplate = document.getElementById('no-thumbnail');
     document.querySelectorAll('article').forEach(article => {
         let radiosSection = article.querySelector('section:nth-child(2):not(:last-child)');
@@ -22,28 +22,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 radio.addEventListener('mouseout', () => {
                     if (!radio.checked)
-                        displayThumbnail(radiosSection.querySelector(':checked'))
+                        displayThumbnail(radiosSection.querySelector(':checked'));
                 });
+                // For silly little browsers that do not support attr styling
+                radio.style.setProperty('--radio-color', radio.getAttribute('data-color'));
             });
-            if (children.length > 5) {
-                let adjustRadios = (selectedIndex) => {
-                    let clampedIndex = Math.min(Math.max(selectedIndex, 2), children.length - 3)
-                    let offset = (children.length - 1) / 2 - clampedIndex;
-                    children.forEach(radio => {
-                        radio.style.setProperty('transform', `translateX(calc(${offset} * (1.25rem + var(--radio-spacing))))`);
-                    });
-                }
-                adjustRadios(0);
+            if (children.length > 5)
                 children.forEach((radio, index) => {
-                    radio.addEventListener('click', () => adjustRadios(index));
+                    radio.addEventListener('click', () => {
+                        let radioStyle = window.getComputedStyle(radio);
+                        let radiosSectionStyle = window.getComputedStyle(radiosSection);
+                        let offset = (index - 2) * (parseFloat(radioStyle.width) + parseFloat(radiosSectionStyle.gap));
+                        radiosSection.scrollTo({
+                            top: 0,
+                            left: offset,
+                            behavior: 'smooth'
+                        });
+                    });
                 });
-            }
         }
     });
-})
-window.addEventListener('load', () => {
-    document.querySelectorAll('[type="radio"]').forEach(radio => {
-        // For silly little browsers that do not support attr styling
-        radio.style.setProperty('--radio-color', radio.getAttribute('data-color'));
-    })
-})
+});
