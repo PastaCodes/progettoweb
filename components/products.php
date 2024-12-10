@@ -15,11 +15,15 @@ while ($products_row = $products_result->fetch_assoc()) {
             if ($variants == [])
                 $first_thumbnail = $variants_row['thumbnail'];
             $variants[] = new ProductVariant($variants_row['display_name'], $variants_row['color'], $variants_row['thumbnail']);
+            if ($variants_row['thumbnail'])
+                $prefetch[] = $variants_row['thumbnail'];
         }
     } else {
         $info_result = $db->query('select thumbnail from product_info where product = \'' . $products_row['code_name'] . '\'');
-        if ($info_row = $variants_result->fetch_assoc())
+        if ($info_row = $variants_result->fetch_assoc()) {
             $first_thumbnail = $info_row['thumbnail'];
+            $prefetch[] = $info_row['thumbnail'];
+        }
     }
     $products[] = new Product($products_row['code_name'], $products_row['display_name'], $products_row['price_min'], $products_row['price_max'], $variants, $first_thumbnail);
 }
@@ -47,7 +51,7 @@ while ($products_row = $products_result->fetch_assoc()) {
 <?php if (!empty($product->variants)): ?>
                     <section>
 <?php foreach ($product->variants as $index => $variant): ?>
-                            <input type="radio" data-color="#<?= $variant->color ?>"<?php if ($variant->thumbnail): ?> data-thumbnail="<?= $variant->thumbnail ?>"<?php endif ?> name="<?= format_product_code($product) ?>-color" title="<?= $variant->display_name ?>"<?php if ($index == 0): ?> checked="checked"<?php endif ?> />
+                        <input type="radio" data-color="#<?= $variant->color ?>"<?php if ($variant->thumbnail): ?> data-thumbnail="<?= $variant->thumbnail ?>"<?php endif ?> name="<?= format_product_code($product) ?>-color" title="<?= $variant->display_name ?>"<?php if ($index == 0): ?> checked="checked"<?php endif ?> />
 <?php endforeach ?>
                     </section>
 <?php endif ?>

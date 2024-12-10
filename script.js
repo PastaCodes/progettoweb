@@ -16,8 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             let children = Array.from(radiosSection.children);
             children.forEach(radio => {
-                radio.addEventListener('mouseover', () => displayThumbnail(radio));
-                radio.addEventListener('mouseout', () => displayThumbnail(radiosSection.querySelector(':checked')));
+                radio.addEventListener('mouseover', () => {
+                    if (!radio.checked)
+                        displayThumbnail(radio);
+                });
+                radio.addEventListener('mouseout', () => {
+                    if (!radio.checked)
+                        displayThumbnail(radiosSection.querySelector(':checked'))
+                });
             });
             if (children.length > 5) {
                 let adjustRadios = (selectedIndex) => {
