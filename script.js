@@ -5,13 +5,14 @@ window.addEventListener('load', () => {
         if (radiosSection) {
             let thumbnailSection = article.querySelector('section:nth-child(1)');
             let displayThumbnail = (activeRadio) => {
+                let img = thumbnailSection.querySelector('img');
                 let thumbnail = activeRadio.getAttribute('data-thumbnail');
+                if (thumbnail && !img)
+                    thumbnailSection.replaceChildren(img = document.createElement('img'));
                 if (thumbnail) {
-                    let img = document.createElement('img');
                     img.src = thumbnail;
-                    thumbnailSection.replaceChildren();
-                    thumbnailSection.appendChild(img);
-                } else
+                    img.loading = 'eager';
+                } else if (img)
                     thumbnailSection.innerHTML = noThumbnailTemplate.innerHTML;
             }
             let children = Array.from(radiosSection.children);
