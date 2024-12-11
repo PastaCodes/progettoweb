@@ -117,14 +117,13 @@ insert into product_variant (base, code_suffix, ordinal, display_name, color) va
     ('impostor_pin', 'brown', 9, 'Brown', '71491E'),
     ('impostor_pin', 'cyan', 10, 'Cyan', '38FADC'),
     ('impostor_pin', 'lime', 11, 'Lime', '50EF39'),
-    ('barbed_wire_bracelet', 'gunmetal', 0, 'Gunmetal', '2C2C2C'),
-    ('barbed_wire_bracelet', 'black_steel', 1, 'Black Steel', '181818'),
+    ('barbed_wire_bracelet', 'black_steel', 0, 'Black Steel', '181818'),
+    ('barbed_wire_bracelet', 'chrome', 1, 'Chrome', 'A0A0A0'),
     ('chain_bracelet', 'gunmetal', 0, 'Gunmetal', '2C2C2C'),
-    ('chain_bracelet', 'black_steel', 1, 'Black Steel', '181818'),
+    ('chain_bracelet', 'copper', 1, 'Copper', 'C68346'),
+    ('chain_bracelet', 'black_steel', 2, 'Black Steel', '181818'),
     ('chain_necklace', 'gunmetal', 0, 'Gunmetal', '2C2C2C'),
     ('chain_necklace', 'black_steel', 1, 'Black Steel', '181818'),
-    ('dagger_earrings', 'gunmetal', 0, 'Gunmetal', '2C2C2C'),
-    ('dagger_earrings', 'black_steel', 1, 'Black Steel', '181818'),
     ('dragon_pendant', 'gunmetal', 0, 'Gunmetal', '2C2C2C'),
     ('dragon_pendant', 'copper', 1, 'Copper', 'C68346'),
     ('dragon_pendant', 'black_steel', 2, 'Black Steel', '181818'),
@@ -142,10 +141,12 @@ insert into product_variant (base, code_suffix, ordinal, display_name, color) va
     ('snake_ring', 'gunmetal', 0, 'Gunmetal', '2C2C2C'),
     ('snake_ring', 'black_steel', 1, 'Black Steel', '181818'),
     ('gem_earrings', 'ruby', 0, 'Ruby', '800020'),
-    ('gem_earrings', 'obsidian', 1, 'Obsidian', '1C1020');
+    ('gem_earrings', 'obsidian', 1, 'Obsidian', '1C1020'),
+    ('gem_earrings', 'demon_core', 2, 'Demon Core', '808080');
 
 insert into product_info(product, variant, price) values
     ('choker', null, 1.00),
+    ('dagger_earrings', null, 1.00),
     ('flower_bracelet', null, 1.00),
     ('leather_bracelet', null, 1.00),
     ('moai_pin', null, 1000.00),
@@ -187,14 +188,13 @@ insert into product_info(product, variant, price) values
     ('impostor_pin', 'brown', 1.00),
     ('impostor_pin', 'cyan', 1.00),
     ('impostor_pin', 'lime', 1.00),
-    ('barbed_wire_bracelet', 'gunmetal', 1.00),
     ('barbed_wire_bracelet', 'black_steel', 1.00),
+    ('barbed_wire_bracelet', 'chrome', 1.00),
     ('chain_bracelet', 'gunmetal', 1.00),
+    ('chain_bracelet', 'copper', 1.00),
     ('chain_bracelet', 'black_steel', 1.00),
     ('chain_necklace', 'gunmetal', 2.00),
     ('chain_necklace', 'black_steel', 3.00),
-    ('dagger_earrings', 'gunmetal', 1.00),
-    ('dagger_earrings', 'black_steel', 1.00),
     ('dragon_pendant', 'gunmetal', 2.00),
     ('dragon_pendant', 'copper', 1.00),
     ('dragon_pendant', 'black_steel', 2.00),
@@ -212,7 +212,8 @@ insert into product_info(product, variant, price) values
     ('snake_ring', 'gunmetal', 1.00),
     ('snake_ring', 'black_steel', 1.00),
     ('gem_earrings', 'ruby', 1.00),
-    ('gem_earrings', 'obsidian', 1.00);
+    ('gem_earrings', 'obsidian', 1.00),
+    ('gem_earrings', 'demon_core', 0.00);
 
 insert into bundle(code_name, display_name, multiplier) values
     ('dragon_bundle', 'Dragon Bundle', 0.8);
