@@ -144,7 +144,7 @@ insert into product_variant (base, code_suffix, ordinal, display_name, color) va
     ('gem_earrings', 'ruby', 0, 'Ruby', '800020'),
     ('gem_earrings', 'obsidian', 1, 'Obsidian', '1C1020');
 
-insert into product_info(product, variant, price, thumbnail) values
+insert into product_info(product, variant, price) values
     ('choker', null, 1.00),
     ('flower_bracelet', null, 1.00),
     ('leather_bracelet', null, 1.00),
