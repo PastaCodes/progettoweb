@@ -9,6 +9,7 @@ window.addEventListener('load', () => {
                 if (thumbnail) {
                     let img = document.createElement('img');
                     img.src = thumbnail;
+                    img.loading = 'lazy';
                     thumbnailSection.replaceChildren();
                     thumbnailSection.appendChild(img);
                 } else

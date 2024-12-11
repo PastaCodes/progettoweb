@@ -3,29 +3,28 @@ require 'util/db.php';
 require 'classes/Product.php';
 require 'classes/ProductVariant.php';
 require 'util/format.php';
+require 'util/files.php';
 
 $products = [];
 $products_result = $db->query('select code_name, display_name, price_min, price_max from product_base join price_range on product = code_name where standalone = true');
 while ($products_row = $products_result->fetch_assoc()) {
-    $variants_result = $db->query('select display_name, color, thumbnail from product_variant join product_info on product = base and variant = code_suffix where base = \'' . $products_row['code_name'] . '\' order by ordinal asc');
+    $variants_result = $db->query('select code_suffix, display_name, color from product_variant join product_info on product = base and variant = code_suffix where base = \'' . $products_row['code_name'] . '\' order by ordinal asc');
     $variants = [];
     $first_thumbnail = null;
+    $product_code = $products_row['code_name'];
     if ($variants_result->num_rows > 0) {
         while ($variants_row = $variants_result->fetch_assoc()) {
-            if ($variants == [])
-                $first_thumbnail = $variants_row['thumbnail'];
-            $variants[] = new ProductVariant($variants_row['display_name'], $variants_row['color'], $variants_row['thumbnail']);
-            if ($variants_row['thumbnail'])
-                $prefetch[] = $variants_row['thumbnail'];
+            $variant_code = $product_code . '_' . $variants_row['code_suffix'];
+            $thumbnail_file = get_thumbnail_if_exists($variant_code);
+            $variants[] = new ProductVariant($variants_row['display_name'], $variants_row['color'], $thumbnail_file);
+            if (count($variants) == 1)
+                $first_thumbnail = $thumbnail_file;
+            else if ($thumbnail_file)
+                $prefetch[] = $thumbnail_file;
         }
-    } else {
-        $info_result = $db->query('select thumbnail from product_info where product = \'' . $products_row['code_name'] . '\'');
-        if ($info_row = $variants_result->fetch_assoc()) {
-            $first_thumbnail = $info_row['thumbnail'];
-            $prefetch[] = $info_row['thumbnail'];
-        }
-    }
-    $products[] = new Product($products_row['code_name'], $products_row['display_name'], $products_row['price_min'], $products_row['price_max'], $variants, $first_thumbnail);
+    } else
+        $first_thumbnail = get_thumbnail_if_exists($product_code);
+    $products[] = new Product($product_code, $products_row['display_name'], $products_row['price_min'], $products_row['price_max'], $variants, $first_thumbnail);
 }
 ?>
         <template id="no-thumbnail">
@@ -40,7 +39,7 @@ while ($products_row = $products_result->fetch_assoc()) {
                 <article>
                     <section>
 <?php if ($product->first_thumbnail): ?>
-                        <img src="<?= $product->first_thumbnail ?>" />
+                        <img src="<?= $product->first_thumbnail ?>" loading="lazy" />
 <?php else: ?>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                             <use href="assets/ban-solid.svg#root"></use>
