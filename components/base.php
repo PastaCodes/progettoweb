@@ -26,13 +26,11 @@ $body = ob_get_clean();
         ?>" target="_self" />
         <link rel="stylesheet" type="text/css" href="style/pico.classless.min.css" />
         <link rel="stylesheet" type="text/css" href="style/style.css" />
-        <!-- TODO decide whether to do this
-        <link rel="sitemap" type="application/xml" title="Sitemap" href="sitemap.xml" />
-        -->
         <link rel="icon" type="image/x-icon" href="icon.ico" />
-<?php foreach ($page->scripts as $script): ?>
-        <script src="<?= $script ?>" type="text/javascript"></script>
-<?php endforeach ?>
+<?php
+foreach ($scripts as $script)
+    echo $script->to_script_tag();
+?>
 <?php foreach ($prefetch as $resource): ?>
         <link rel="prefetch" href="<?= $resource ?>" />
 <?php endforeach ?>

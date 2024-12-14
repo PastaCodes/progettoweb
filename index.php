@@ -1,5 +1,7 @@
 <?php
 require 'util/setup.php';
-$page = new Page('Products', 'components/products.php', ['script.js'], allow_indexing: true);
+require 'classes/Script.php';
+$page = new Page('Products', 'components/products.php', allow_indexing: true);
+$scripts[] = Script::jsExternal('script.js');
 require 'components/base.php';
 ?>
