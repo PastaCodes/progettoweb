@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add dummy button
     // TODO: improve button code and position stuff 
     const btn = document.createElement("button");
-    document.querySelector("body").appendChild(btn);
+    document.querySelector("main").appendChild(btn);
     // Get document tag
     const docElt = document.documentElement;
     // Function to switch the theme of the page
