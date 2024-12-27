@@ -25,6 +25,9 @@ $body = ob_get_clean();
             (SETTINGS['hosted-locally'] ? '/IsiFitGems/' : '/')
         ?>" target="_self" />
         <link rel="stylesheet" type="text/css" href="style/pico.classless.min.css" />
+<?php foreach ($page->stylesheets as $stylesheet): ?>
+        <link rel="stylesheet" type="text/css" href="<?= $stylesheet ?>"></script>
+<?php endforeach ?>
         <link rel="stylesheet" type="text/css" href="style/style.css" />
         <!-- TODO decide whether to do this
         <link rel="sitemap" type="application/xml" title="Sitemap" href="sitemap.xml" />
