@@ -1,7 +1,8 @@
 <?php
 require 'util/setup.php';
-require 'classes/Script.php';
-$page = new Page('Products', 'components/products.php', allow_indexing: true);
-$scripts[] = Script::jsExternal('script.js');
+$page = new Page('Products', 'components/products.php', ['style/style.css'], ['script.js']);
+$page->allow_indexing = true;
+$page->has_navbar = true;
+$page->has_feet = true;
 require 'components/base.php';
 ?>

@@ -13,7 +13,7 @@ $body = ob_get_clean();
         <meta name="author" content="Luca Palazzini, Marco Buda">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="<?= SETTINGS['theme-color'] ?>">
-<?php if ($page->settings['allow-indexing']): ?>
+<?php if ($page->allow_indexing): ?>
         <meta name="robots" content="index, follow">
 <?php else: ?>
         <meta name="robots" content="none">
@@ -24,8 +24,13 @@ $body = ob_get_clean();
             (SETTINGS['hosted-locally'] ? '/IsiFitGems/' : '/')
         ?>" target="_self">
         <link rel="stylesheet" type="text/css" href="style/pico.classless.min.css">
+        <link rel="stylesheet" type="text/css" href="style/theme_switcher.css" />
+<?php foreach ($page->stylesheets as $stylesheet): ?>
+        <link rel="stylesheet" type="text/css" href="<?= $stylesheet ?>" />
+<?php endforeach ?>
         <link rel="stylesheet" type="text/css" href="style/style.css">
         <link rel="icon" type="image/x-icon" href="icon.ico">
+        <script src="scripts/theme_switcher.js" type="text/javascript"></script>
 <?php
 foreach ($scripts as $script)
     echo $script->to_script_tag();
@@ -36,6 +41,15 @@ foreach ($scripts as $script)
         <title><?= $page->title ?></title>
     </head>
     <body>
-<?= $body ?>
+<?php 
+if ($page->has_navbar)
+    require "components/navbar.php";
+?>
+    <button id="theme_switcher"></button>
+<?php
+echo($body);
+if ($page->has_feet)
+    require "components/footer.php";
+?>
     </body>
 </html>
