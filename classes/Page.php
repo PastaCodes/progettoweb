@@ -8,13 +8,13 @@ class Page {
     public bool $has_navbar;
     public bool $has_feet;
 
-    function __construct(string $title, string $body, array $scripts = [], bool $allow_indexing = false, bool $has_navbar = false, bool $has_feet = false) {
+    function __construct(string $title, string $body, array $scripts = []) {
         $this->title = $title;
         $this->body = $body;
         $this->scripts = $scripts;
-        $this->allow_indexing = $allow_indexing;
-        $this->has_navbar = $has_navbar;
-        $this->has_feet = $has_feet;
+        $this->allow_indexing = false;
+        $this->has_navbar = false;
+        $this->has_feet = false;
     }
 }
 ?>
