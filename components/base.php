@@ -23,33 +23,35 @@ $body = ob_get_clean();
             $_SERVER['HTTP_HOST'] .
             (SETTINGS['hosted-locally'] ? '/IsiFitGems/' : '/')
         ?>" target="_self">
-        <link rel="stylesheet" type="text/css" href="style/pico.classless.min.css">
-        <link rel="stylesheet" type="text/css" href="style/theme_switcher.css" />
 <?php foreach ($page->stylesheets as $stylesheet): ?>
-        <link rel="stylesheet" type="text/css" href="<?= $stylesheet ?>" />
+        <link rel="stylesheet" type="text/css" href="<?= $stylesheet ?>">
 <?php endforeach ?>
-        <link rel="stylesheet" type="text/css" href="style/style.css">
         <link rel="icon" type="image/x-icon" href="icon.ico">
-        <script src="scripts/theme_switcher.js" type="text/javascript"></script>
-<?php
-foreach ($scripts as $script)
-    echo $script->to_script_tag();
-?>
-<?php foreach ($prefetch as $resource): ?>
+<?php foreach ($page->scripts as $script): ?>
+        <?= $script->to_script_tag() ?>
+<?php endforeach ?>
+<?php foreach ($page->prefetch as $resource): ?>
         <link rel="prefetch" href="<?= $resource ?>">
 <?php endforeach ?>
         <title><?= $page->title ?></title>
     </head>
     <body>
-<?php 
-if ($page->has_navbar)
-    require "components/navbar.php";
-?>
-    <button id="theme_switcher"></button>
-<?php
-echo($body);
-if ($page->has_feet)
-    require "components/footer.php";
-?>
+<?php if ($page->has_navbar): ?>
+        <header>
+            <nav><ul>
+                <li><a href="">Homepage</a></li>
+                <li><a href="">Products</a></li>
+                <li><a href="">Carrello</a></li>
+            </ul></nav>
+        </header>
+<?php endif ?>
+        <button id="theme_switcher" title="Switch to dark theme">☀️</button>
+<?= $body ?>
+<?php if ($page->has_feet): ?>
+        <footer>
+            <p>Footer bellissimo</p>
+            <a href="">Assistenza</a>
+        </footer>
+<?php endif ?>
     </body>
 </html>

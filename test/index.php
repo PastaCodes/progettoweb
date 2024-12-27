@@ -1,5 +1,6 @@
 <?php
 require '../util/setup.php';
-$page = new Page('Confirm your order', 'components/test_page.php', allow_indexing: false);
+$page->title = 'Confirm your order';
+$page->body = 'components/test_page.php';
 require '../components/base.php';
 ?>

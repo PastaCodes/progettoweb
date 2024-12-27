@@ -1,6 +1,5 @@
 window.addEventListener('load', () => {
-    const emailContents = JSON.parse(document.getElementById('email-contents').innerText);
-    const emailBlob = new Blob([emailContents], { type: 'text/html' });
+    const emailBlob = new Blob([atob(emailContents)], { type: 'text/html' });
     const emailUrl = URL.createObjectURL(emailBlob);
     while (true) {
         const userConsent = window.confirm('[DEV-MODE-ONLY]\nRight now the site would have sent you an email.\nWould you like to open the simulated email?');
