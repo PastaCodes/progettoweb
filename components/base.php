@@ -42,6 +42,9 @@ $body = ob_get_clean();
 <?php 
 if ($page->has_navbar)
     require "components/navbar.php";
+?>
+    <button id="theme_switcher"></button>
+<?php
 echo($body);
 if ($page->has_feet)
     require "components/footer.php";

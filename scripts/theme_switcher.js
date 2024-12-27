@@ -1,10 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Add dummy button
-    // TODO: improve button code and position stuff 
-    const btn = document.createElement("button");
-    document.querySelector("main").appendChild(btn);
     // Get document tag
     const docElt = document.documentElement;
+    const btn = document.querySelector('#theme_switcher');
     // Function to switch the theme of the page
     const switchTheme = (themeStr) => {
         // Switch button text
