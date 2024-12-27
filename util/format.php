@@ -14,11 +14,4 @@ function format_price_range(Product $product) : string {
 function format_product_code(Product $product) : string {
     return str_replace('_', '-', $product->code_name);
 }
-
-function minify_css(string $css) : string {
-    $css = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $css);
-    $css = preg_replace('/\s*([{}|:;,])\s+/', '$1', $css);
-    $css = str_replace(array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), '', $css);
-    return $css;
-}
 ?>

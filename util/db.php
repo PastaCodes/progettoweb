@@ -4,7 +4,8 @@ if (SETTINGS['hosted-locally']) {
     $username = 'root';
     $password = '';
     $dbname = 'isifitgems';
-} else
-    die('Only local hosting is currently supported.');
+} else {
+    // Not implemented
+}
 $db = new mysqli($servername, $username, $password, $dbname);
 ?>

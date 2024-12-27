@@ -7,5 +7,5 @@ const SETTINGS = [
 define('DOCUMENT_ROOT', $_SERVER['DOCUMENT_ROOT'] . (SETTINGS['hosted-locally'] ? '/IsiFitGems/' : '/'));
 $scripts = [];
 $prefetch = [];
-require 'classes/Page.php';
+require __DIR__ . '/../classes/Page.php';
 ?>
