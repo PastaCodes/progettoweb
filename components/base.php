@@ -25,14 +25,16 @@ $body = ob_get_clean();
             (SETTINGS['hosted-locally'] ? '/IsiFitGems/' : '/')
         ?>" target="_self" />
         <link rel="stylesheet" type="text/css" href="style/pico.classless.min.css" />
+        <link rel="stylesheet" type="text/css" href="style/theme_switcher.css" />
 <?php foreach ($page->stylesheets as $stylesheet): ?>
-        <link rel="stylesheet" type="text/css" href="<?= $stylesheet ?>"></script>
+        <link rel="stylesheet" type="text/css" href="<?= $stylesheet ?>" />
 <?php endforeach ?>
         <link rel="stylesheet" type="text/css" href="style/style.css" />
         <!-- TODO decide whether to do this
         <link rel="sitemap" type="application/xml" title="Sitemap" href="sitemap.xml" />
         -->
         <link rel="icon" type="image/x-icon" href="icon.ico" />
+        <script src="scripts/theme_switcher.js" type="text/javascript"></script>
 <?php foreach ($page->scripts as $script): ?>
         <script src="<?= $script ?>" type="text/javascript"></script>
 <?php endforeach ?>
