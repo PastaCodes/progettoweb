@@ -27,7 +27,6 @@ while ($products_row = $products_result->fetch_assoc()) {
     $products[] = new Product($product_code, $products_row['display_name'], $products_row['price_min'], $products_row['price_max'], $variants, $first_thumbnail);
 }
 ?>
-        <?php require 'components/navbar.php'; ?>
         <template id="no-thumbnail">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                 <use href="assets/ban-solid.svg#root"></use>
@@ -63,4 +62,3 @@ while ($products_row = $products_result->fetch_assoc()) {
 <?php endforeach ?>
             </section>
         </main>
-        <?php require 'components/footer.php'; ?>

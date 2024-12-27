@@ -14,7 +14,7 @@ $body = ob_get_clean();
         <meta name="author" content="Luca Palazzini, Marco Buda" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="<?= SETTINGS['theme-color'] ?>" />
-<?php if ($page->settings['allow-indexing']): ?>
+<?php if ($page->allow_indexing): ?>
         <meta name="robots" content="index, follow" />
 <?php else: ?>
         <meta name="robots" content="none" />
@@ -39,6 +39,12 @@ $body = ob_get_clean();
         <title><?= $page->title ?></title>
     </head>
     <body>
-<?= $body ?>
+<?php 
+if ($page->has_navbar)
+    require "components/navbar.php";
+echo($body);
+if ($page->has_feet)
+    require "components/footer.php";
+?>
     </body>
 </html>
