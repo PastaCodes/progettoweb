@@ -40,8 +40,11 @@ window.addEventListener('load', () => {
                 radiosSection.setPointerCapture(ev.pointerId);
             });
             radiosSection.addEventListener('pointerup', ev => {
-                if (target && target.type === 'radio')
-                    target.click();
+                if (target && target.type === 'radio') {
+                    let clickEvent = new PointerEvent('click');
+                    clickEvent.isProgrammatic = true;
+                    target.dispatchEvent(clickEvent);
+                }
                 target = null;
                 radiosSection.releasePointerCapture(ev.pointerId);
             });
@@ -54,15 +57,20 @@ window.addEventListener('load', () => {
                 }
             });
             children.forEach((radio, index) => {
-                radio.addEventListener('click', () => {
-                    const radioStyle = window.getComputedStyle(radio);
-                    const radiosSectionStyle = window.getComputedStyle(radiosSection);
-                    const offset = (index - 2) * (parseFloat(radioStyle.width) + parseFloat(radiosSectionStyle.gap));
-                    radiosSection.scrollTo({
-                        top: 0,
-                        left: offset,
-                        behavior: 'smooth'
-                    });
+                radio.addEventListener('click', ev => {
+                    if (ev.isProgrammatic) {
+                        const radioStyle = window.getComputedStyle(radio);
+                        const radiosSectionStyle = window.getComputedStyle(radiosSection);
+                        const offset = (index - 2) * (parseFloat(radioStyle.width) + parseFloat(radiosSectionStyle.gap));
+                        radiosSection.scrollTo({
+                            top: 0,
+                            left: offset,
+                            behavior: 'smooth'
+                        });
+                    } else {
+                        ev.preventDefault();
+                        ev.stopPropagation();
+                    }
                 });
             });
         }
