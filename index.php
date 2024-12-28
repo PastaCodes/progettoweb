@@ -1,8 +1,11 @@
 <?php
 require 'util/setup.php';
-$page = new Page('Products', 'components/products.php', ['style/style.css', 'style/theme_switcher.css'], ['script.js', 'scripts/theme_switcher.js']);
+$page->title = 'Products';
+$page->body = 'components/products.php';
 $page->allow_indexing = true;
 $page->has_navbar = true;
 $page->has_feet = true;
+$page->stylesheets[] = 'style.css';
+$page->scripts[] = Script::external('script.js');
 require 'components/base.php';
 ?>

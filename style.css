@@ -73,6 +73,8 @@ article > section:last-child {
 [type="radio"] {
     --radio-color: attr(data-color color);
     --pico-primary-border: var(--radio-color);
+    outline: 0.05rem solid var(--pico-muted-color);
+    outline-offset: -0.05rem;
     flex: 0 0 auto;
     background-color: color-mix(in oklab, var(--radio-color) 90%, #000);
     margin: 0;
@@ -92,4 +94,8 @@ article > section:last-child {
 
 [type="radio"]:hover {
     --pico-box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-form-element-focus-color);
+}
+
+nav ul li::before {
+    content: none;
 }
