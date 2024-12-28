@@ -6,7 +6,7 @@ require __DIR__ . '/../util/format.php';
 require __DIR__ . '/../util/files.php';
 
 $product = null;
-$product_result = $db->query('select code_name, display_name, price_min, price_max from product_base join price_range on product = code_name where standalone = true and code_name = \'chain_bracelet\'');
+$product_result = $db->query('select code_name, display_name, short_description, price_min, price_max from product_base join price_range on product = code_name where standalone = true and code_name = \'chain_bracelet\'');
 while ($product_row = $product_result->fetch_assoc()) {
     $variants_result = $db->query('select code_suffix, display_name, color from product_variant join product_info on product = base and variant = code_suffix where base = \'' . $product_row['code_name'] . '\' order by ordinal asc');
     $variants = [];
@@ -24,9 +24,15 @@ while ($product_row = $product_result->fetch_assoc()) {
         }
     } else
         $first_thumbnail = get_thumbnail_if_exists($product_code);
-    $product = new Product($product_code, $product_row['display_name'], $product_row['price_min'], $product_row['price_max'], $variants, $first_thumbnail);
+    $product = new Product($product_code, $product_row['display_name'], $product_row['price_min'], $product_row['price_max'], $variants, $first_thumbnail, $product_row['short_description']);
 }
 ?>
+        <template id="no-thumbnail">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <use href="assets/ban-solid.svg#root"></use>
+            </svg>
+            <span>No image available</span>
+        </template>
         <main>
         <?php if ($product === null): ?>
             <section>
@@ -34,11 +40,18 @@ while ($product_row = $product_result->fetch_assoc()) {
             </section>
         <?php else: ?>
             <section>
-                <img src="immagine.png"></img>
+<?php if ($product->first_thumbnail): ?>
+                        <img src="<?= $product->first_thumbnail ?>" loading="lazy">
+<?php else: ?>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <use href="assets/ban-solid.svg#root"></use>
+                        </svg>
+                        <span>No image available</span>
+<?php endif ?>
             </section>
             <section>
-                <h1>Titolo</h1>
-                <p>Decrizione</p>
+                <h1><?= $product->display_name ?></h1>
+                <p><?= $product->short_description ?></p>
             </section>
         <?php endif ?>
         </main>
