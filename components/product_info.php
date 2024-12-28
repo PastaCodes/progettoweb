@@ -6,12 +6,12 @@ require __DIR__ . '/../util/format.php';
 require __DIR__ . '/../util/files.php';
 
 $product = null;
-$product_result = $db->query('select code_name, display_name, price_min, price_max from product_base join price_range on product = code_name where standalone = true and code_name = \"chain_bracelet\"');
-while ($products_row = $product_result->fetch_assoc()) {
-    $variants_result = $db->query('select code_suffix, display_name, color from product_variant join product_info on product = base and variant = code_suffix where base = \'' . $products_row['code_name'] . '\' order by ordinal asc');
+$product_result = $db->query('select code_name, display_name, price_min, price_max from product_base join price_range on product = code_name where standalone = true and code_name = \'chain_bracelet\'');
+while ($product_row = $product_result->fetch_assoc()) {
+    $variants_result = $db->query('select code_suffix, display_name, color from product_variant join product_info on product = base and variant = code_suffix where base = \'' . $product_row['code_name'] . '\' order by ordinal asc');
     $variants = [];
     $first_thumbnail = null;
-    $product_code = $products_row['code_name'];
+    $product_code = $product_row['code_name'];
     if ($variants_result->num_rows > 0) {
         while ($variants_row = $variants_result->fetch_assoc()) {
             $variant_code = $product_code . '_' . $variants_row['code_suffix'];
@@ -24,7 +24,7 @@ while ($products_row = $product_result->fetch_assoc()) {
         }
     } else
         $first_thumbnail = get_thumbnail_if_exists($product_code);
-    $product = new Product($product_code, $products_row['display_name'], $products_row['price_min'], $products_row['price_max'], $variants, $first_thumbnail);
+    $product = new Product($product_code, $product_row['display_name'], $product_row['price_min'], $product_row['price_max'], $variants, $first_thumbnail);
 }
 ?>
         <main>
