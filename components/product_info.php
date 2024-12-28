@@ -5,9 +5,16 @@ require __DIR__ . '/../classes/ProductVariant.php';
 require __DIR__ . '/../util/format.php';
 require __DIR__ . '/../util/files.php';
 
-$product = null;
-$product_result = $db->query('select code_name, display_name, short_description, price_min, price_max from product_base join price_range on product = code_name where standalone = true and code_name = \'chain_bracelet\'');
-while ($product_row = $product_result->fetch_assoc()) {
+function getProduct(string $code_name) : ?Product {
+    global $db;
+    $sql_statement = $db->prepare('select code_name, display_name, short_description, price_min, price_max from product_base join price_range on product = code_name where standalone = true and code_name = ?');
+    $sql_statement->bind_param('s', $code_name);
+    $sql_statement->execute();
+    $product_result = $sql_statement->get_result();
+    if ($product_result->num_rows <= 0) {
+        return null;
+    }
+    $product_row = $product_result->fetch_assoc();
     $variants_result = $db->query('select code_suffix, display_name, color from product_variant join product_info on product = base and variant = code_suffix where base = \'' . $product_row['code_name'] . '\' order by ordinal asc');
     $variants = [];
     $first_thumbnail = null;
@@ -24,8 +31,15 @@ while ($product_row = $product_result->fetch_assoc()) {
         }
     } else
         $first_thumbnail = get_thumbnail_if_exists($product_code);
-    $product = new Product($product_code, $product_row['display_name'], $product_row['price_min'], $product_row['price_max'], $variants, $first_thumbnail, $product_row['short_description']);
+    return new Product($product_code, $product_row['display_name'], $product_row['price_min'], $product_row['price_max'], $variants, $first_thumbnail, $product_row['short_description']);
 }
+
+$product = null;
+if (isset($_GET['code_name'])) {
+    $code_name = $_GET['code_name'];
+    $product = getProduct($code_name);
+}
+
 ?>
         <template id="no-thumbnail">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
