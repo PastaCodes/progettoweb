@@ -52,7 +52,8 @@ article > section:nth-child(2):not(:last-child) {
     flex-direction: row;
     gap: var(--radio-spacing);
     overflow-x: auto;
-    z-index: 0;
+    touch-action: none; /* Handled manually with js */
+    user-select: none;
     padding: 0.125em calc(50% - 2.5 * 1.25rem - 2 * var(--radio-spacing));
     mask-image: linear-gradient(to right, #0000 0%, #000F 25%, #000F 75%, #0000 100%);
     -webkit-mask-image: linear-gradient(to right, #0000 0%, #000F 25%, #000F 75%, #0000 100%);
