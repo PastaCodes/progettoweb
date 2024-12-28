@@ -1,5 +1,4 @@
 <?php
-require __DIR__ . '/../util/files.php';
 require __DIR__ . '/../util/format.php';
 ?>
 <!DOCTYPE html>

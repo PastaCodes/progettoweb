@@ -3,7 +3,6 @@ require __DIR__ . '/../util/db.php';
 require __DIR__ . '/../classes/Product.php';
 require __DIR__ . '/../classes/ProductVariant.php';
 require __DIR__ . '/../util/format.php';
-require __DIR__ . '/../util/files.php';
 
 $products = [];
 $products_result = $db->query('select code_name, display_name, price_min, price_max from product_base join price_range on product = code_name where standalone = true');

@@ -3,7 +3,6 @@ require __DIR__ . '/../util/db.php';
 require __DIR__ . '/../classes/Product.php';
 require __DIR__ . '/../classes/ProductVariant.php';
 require __DIR__ . '/../util/format.php';
-require __DIR__ . '/../util/files.php';
 
 function getProduct(string $code_name) : ?Product {
     global $db;
