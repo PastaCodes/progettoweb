@@ -30,30 +30,34 @@ window.addEventListener('load', () => {
             radio.style.setProperty('--radio-color', radio.getAttribute('data-color'));
         });
         if (children.length > 5) {
-            let target = null;
-            let initialX = null;
-            let lastX = null;
             radiosSection.addEventListener('pointerdown', ev => {
-                target = ev.target;
-                initialX = ev.clientX;
-                lastX = ev.clientX;
-                radiosSection.setPointerCapture(ev.pointerId);
-            });
-            radiosSection.addEventListener('pointerup', ev => {
-                if (target && target.type === 'radio') {
-                    let clickEvent = new PointerEvent('click');
-                    clickEvent.isProgrammatic = true;
-                    target.dispatchEvent(clickEvent);
-                }
-                target = null;
-                radiosSection.releasePointerCapture(ev.pointerId);
-            });
-            radiosSection.addEventListener('pointermove', ev => {
-                if (radiosSection.hasPointerCapture(ev.pointerId)) {
-                    radiosSection.scrollBy(lastX - ev.clientX, 0);
-                    lastX = ev.clientX;
-                    if (Math.abs(lastX - initialX) > 10)
-                        target = null;
+                if (!radiosSection.moveHandler) {
+                    radiosSection.moveHandler = ev => {
+                        if (ev.pointerId === radiosSection.moveHandler.id) {
+                            radiosSection.scrollBy(radiosSection.moveHandler.lastX - ev.clientX, 0);
+                            radiosSection.moveHandler.lastX = ev.clientX;
+                            if (Math.abs(radiosSection.moveHandler.lastX - radiosSection.moveHandler.initialX) > 10)
+                                radiosSection.moveHandler.target = null;
+                        }
+                    };
+                    radiosSection.moveHandler.id = ev.pointerId;
+                    radiosSection.moveHandler.initialX = ev.clientX;
+                    radiosSection.moveHandler.lastX = ev.clientX;
+                    radiosSection.moveHandler.target = ev.target;
+                    window.addEventListener('pointermove', radiosSection.moveHandler);
+                    let upHandler = ev => {
+                        if (radiosSection.moveHandler && radiosSection.moveHandler.id === ev.pointerId) {
+                            if (radiosSection.moveHandler.target && radiosSection.moveHandler.target.type === 'radio') {
+                                let clickEvent = new PointerEvent('click');
+                                clickEvent.isProgrammatic = true;
+                                radiosSection.moveHandler.target.dispatchEvent(clickEvent);
+                            }
+                            window.removeEventListener('pointermove', radiosSection.moveHandler);
+                            radiosSection.moveHandler = null;
+                            window.removeEventListener('pointerup', upHandler);
+                        }
+                    }
+                    window.addEventListener('pointerup', upHandler);
                 }
             });
             children.forEach((radio, index) => {
