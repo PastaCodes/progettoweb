@@ -31,10 +31,12 @@ window.addEventListener('load', () => {
         });
         if (children.length > 5) {
             let target = null;
-            let initialScroll = null;
+            let initialX = null;
+            let lastX = null;
             radiosSection.addEventListener('pointerdown', ev => {
                 target = ev.target;
-                initialScroll = radiosSection.scrollLeft;
+                initialX = ev.clientX;
+                lastX = ev.clientX;
                 radiosSection.setPointerCapture(ev.pointerId);
             });
             radiosSection.addEventListener('pointerup', ev => {
@@ -45,8 +47,9 @@ window.addEventListener('load', () => {
             });
             radiosSection.addEventListener('pointermove', ev => {
                 if (radiosSection.hasPointerCapture(ev.pointerId)) {
-                    radiosSection.scrollLeft -= ev.movementX;
-                    if (Math.abs(radiosSection.scrollLeft - initialScroll) > 10)
+                    radiosSection.scrollBy(lastX - ev.clientX, 0);
+                    lastX = ev.clientX;
+                    if (Math.abs(lastX - initialX) > 10)
                         target = null;
                 }
             });
