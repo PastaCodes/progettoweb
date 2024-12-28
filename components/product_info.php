@@ -1,13 +1,13 @@
 <?php
-require __DIR__ . '/../' . 'util/db.php';
-require __DIR__ . '/../' . 'classes/Product.php';
-require __DIR__ . '/../' . 'classes/ProductVariant.php';
-require __DIR__ . '/../' . 'util/format.php';
-require __DIR__ . '/../' . 'util/files.php';
+require __DIR__ . '/../util/db.php';
+require __DIR__ . '/../classes/Product.php';
+require __DIR__ . '/../classes/ProductVariant.php';
+require __DIR__ . '/../util/format.php';
+require __DIR__ . '/../util/files.php';
 
 $product = null;
-$product_result = $db->query('select code_name, display_name, price_min, price_max from product_base join price_range on product = code_name where standalone = true and code_name = chain_bracelet');
-while ($products_row = $products_result->fetch_assoc()) {
+$product_result = $db->query('select code_name, display_name, price_min, price_max from product_base join price_range on product = code_name where standalone = true and code_name = \"chain_bracelet\"');
+while ($products_row = $product_result->fetch_assoc()) {
     $variants_result = $db->query('select code_suffix, display_name, color from product_variant join product_info on product = base and variant = code_suffix where base = \'' . $products_row['code_name'] . '\' order by ordinal asc');
     $variants = [];
     $first_thumbnail = null;
@@ -28,7 +28,7 @@ while ($products_row = $products_result->fetch_assoc()) {
 }
 ?>
         <main>
-        <?php if ($product): ?>
+        <?php if ($product === null): ?>
             <section>
                 <h1>Product not found</h1>
             </section>
