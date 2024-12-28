@@ -29,7 +29,27 @@ window.addEventListener('load', () => {
             // For silly little browsers that do not support attr styling
             radio.style.setProperty('--radio-color', radio.getAttribute('data-color'));
         });
-        if (children.length > 5)
+        if (children.length > 5) {
+            let target = null;
+            let initialScroll = null;
+            radiosSection.addEventListener('pointerdown', ev => {
+                target = ev.target;
+                initialScroll = radiosSection.scrollLeft;
+                radiosSection.setPointerCapture(ev.pointerId);
+            });
+            radiosSection.addEventListener('pointerup', ev => {
+                if (target && target.type === 'radio')
+                    target.click();
+                target = null;
+                radiosSection.releasePointerCapture(ev.pointerId);
+            });
+            radiosSection.addEventListener('pointermove', ev => {
+                if (radiosSection.hasPointerCapture(ev.pointerId)) {
+                    radiosSection.scrollLeft -= ev.movementX;
+                    if (Math.abs(radiosSection.scrollLeft - initialScroll) > 10)
+                        target = null;
+                }
+            });
             children.forEach((radio, index) => {
                 radio.addEventListener('click', () => {
                     const radioStyle = window.getComputedStyle(radio);
@@ -42,5 +62,6 @@ window.addEventListener('load', () => {
                     });
                 });
             });
+        }
     });
 });
