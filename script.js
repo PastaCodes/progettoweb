@@ -60,24 +60,32 @@ window.addEventListener('load', () => {
                     window.addEventListener('pointerup', upHandler);
                 }
             });
+            const updateScroll = () => {
+                const radio = children[radiosSection.selectedIndex];
+                const radioStyle = window.getComputedStyle(radio);
+                const radiosSectionStyle = window.getComputedStyle(radiosSection);
+                const clampedIndex = Math.min(Math.max(radiosSection.selectedIndex, 2), children.length - 3);
+                const offset = (clampedIndex - 2) * (parseFloat(radioStyle.width) + parseFloat(radiosSectionStyle.gap));
+                radiosSection.scrollTo({
+                    top: 0,
+                    left: offset,
+                    behavior: 'smooth'
+                });
+            };
+            radiosSection.selectedIndex = 0;
+            updateScroll();
             children.forEach((radio, index) => {
                 radio.addEventListener('click', ev => {
                     if (ev.isProgrammatic) {
-                        const radioStyle = window.getComputedStyle(radio);
-                        const radiosSectionStyle = window.getComputedStyle(radiosSection);
-                        const clampedIndex = Math.min(Math.max(index, 2), children.length - 3);
-                        const offset = (clampedIndex - 2) * (parseFloat(radioStyle.width) + parseFloat(radiosSectionStyle.gap));
-                        radiosSection.scrollTo({
-                            top: 0,
-                            left: offset,
-                            behavior: 'smooth'
-                        });
+                        radiosSection.selectedIndex = index;
+                        updateScroll();
                     } else {
                         ev.preventDefault();
                         ev.stopPropagation();
                     }
                 });
             });
+            window.addEventListener('resize', () => updateScroll());
         }
     });
 });
