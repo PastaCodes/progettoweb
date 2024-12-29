@@ -65,7 +65,8 @@ window.addEventListener('load', () => {
                     if (ev.isProgrammatic) {
                         const radioStyle = window.getComputedStyle(radio);
                         const radiosSectionStyle = window.getComputedStyle(radiosSection);
-                        const offset = (index - 2) * (parseFloat(radioStyle.width) + parseFloat(radiosSectionStyle.gap));
+                        const clampedIndex = Math.min(Math.max(index, 2), children.length - 3);
+                        const offset = (clampedIndex - 2) * (parseFloat(radioStyle.width) + parseFloat(radiosSectionStyle.gap));
                         radiosSection.scrollTo({
                             top: 0,
                             left: offset,
