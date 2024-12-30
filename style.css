@@ -19,6 +19,7 @@ article {
     display: flex;
     flex-direction: column;
     margin-bottom: 0;
+    cursor: pointer;
 }
 
 article > section {
