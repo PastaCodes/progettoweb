@@ -4,13 +4,20 @@ require __DIR__ . '/../classes/Product.php';
 require __DIR__ . '/../classes/ProductVariant.php';
 require __DIR__ . '/../util/format.php';
 
-$products = [];
-$products_result = $db->query('select code_name, display_name, price_min, price_max from product_base join price_range on product = code_name where standalone = true');
-while ($products_row = $products_result->fetch_assoc()) {
-    $variants_result = $db->query('select code_suffix, display_name, color from product_variant join product_info on product = base and variant = code_suffix where base = \'' . $products_row['code_name'] . '\' order by ordinal asc');
+function getProduct(string $code_name) : ?Product {
+    global $db;
+    $sql_statement = $db->prepare('select code_name, display_name, short_description, price_min, price_max from product_base join price_range on product = code_name where standalone = true and code_name = ?');
+    $sql_statement->bind_param('s', $code_name);
+    $sql_statement->execute();
+    $product_result = $sql_statement->get_result();
+    if ($product_result->num_rows <= 0) {
+        return null;
+    }
+    $product_row = $product_result->fetch_assoc();
+    $variants_result = $db->query('select code_suffix, display_name, color from product_variant join product_info on product = base and variant = code_suffix where base = \'' . $product_row['code_name'] . '\' order by ordinal asc');
     $variants = [];
     $first_thumbnail = null;
-    $product_code = $products_row['code_name'];
+    $product_code = $product_row['code_name'];
     if ($variants_result->num_rows > 0) {
         while ($variants_row = $variants_result->fetch_assoc()) {
             $variant_code = $product_code . '_' . $variants_row['code_suffix'];
@@ -23,8 +30,15 @@ while ($products_row = $products_result->fetch_assoc()) {
         }
     } else
         $first_thumbnail = get_thumbnail_if_exists($product_code);
-    $products[] = new Product($product_code, $products_row['display_name'], $products_row['price_min'], $products_row['price_max'], $variants, $first_thumbnail);
+    return new Product($product_code, $product_row['display_name'], $product_row['price_min'], $product_row['price_max'], $variants, $first_thumbnail, $product_row['short_description']);
 }
+
+$product = null;
+if (isset($_GET['code_name'])) {
+    $code_name = $_GET['code_name'];
+    $product = getProduct($code_name);
+}
+
 ?>
         <template id="no-thumbnail">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -33,10 +47,12 @@ while ($products_row = $products_result->fetch_assoc()) {
             <span>No image available</span>
         </template>
         <main>
+        <?php if ($product === null): ?>
             <section>
-<?php foreach ($products as $product): ?>
-                <article>
-                    <section>
+                <h1>Product not found</h1>
+            </section>
+        <?php else: ?>
+            <section>
 <?php if ($product->first_thumbnail): ?>
                         <img src="<?= $product->first_thumbnail ?>" loading="lazy">
 <?php else: ?>
@@ -45,19 +61,10 @@ while ($products_row = $products_result->fetch_assoc()) {
                         </svg>
                         <span>No image available</span>
 <?php endif ?>
-                    </section>
-<?php if (!empty($product->variants)): ?>
-                    <section>
-<?php foreach ($product->variants as $index => $variant): ?>
-                        <input type="radio" data-color="#<?= $variant->color ?>"<?php if ($variant->thumbnail): ?> data-thumbnail="<?= $variant->thumbnail ?>"<?php endif ?> name="<?= format_product_code($product) ?>-color" title="<?= $variant->display_name ?>"<?php if ($index == 0): ?> checked="checked"<?php endif ?>>
-<?php endforeach ?>
-                    </section>
-<?php endif ?>
-                    <section>
-                        <span><?= $product->display_name ?></span>
-                        <small><?= format_price_range($product) ?></small>
-                    </section>
-                </article>
-<?php endforeach ?>
             </section>
+            <section>
+                <h1><?= $product->display_name ?></h1>
+                <p><?= $product->short_description ?></p>
+            </section>
+        <?php endif ?>
         </main>

@@ -11,4 +11,7 @@ $page->stylesheets = ['style/pico.classless.min.css', 'style/theme_switcher.css'
 require __DIR__ . '/../classes/Script.php';
 $page->scripts = [Script::external('scripts/theme_switcher.js')];
 $page->prefetch = [];
+require __DIR__ . '/files.php';
+add_file_if_exists(get_directory() . 'style.css', $page->stylesheets);
+add_file_if_exists(get_directory() . 'script.js', $page->scripts, 'Script::external');
 ?>

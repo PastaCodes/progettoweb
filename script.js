@@ -29,18 +29,63 @@ window.addEventListener('load', () => {
             // For silly little browsers that do not support attr styling
             radio.style.setProperty('--radio-color', radio.getAttribute('data-color'));
         });
-        if (children.length > 5)
+        if (children.length > 5) {
+            radiosSection.addEventListener('pointerdown', ev => {
+                if (!radiosSection.moveHandler) {
+                    radiosSection.moveHandler = ev => {
+                        if (ev.pointerId === radiosSection.moveHandler.id) {
+                            radiosSection.scrollBy(radiosSection.moveHandler.lastX - ev.clientX, 0);
+                            radiosSection.moveHandler.lastX = ev.clientX;
+                            if (Math.abs(radiosSection.moveHandler.lastX - radiosSection.moveHandler.initialX) > 10)
+                                radiosSection.moveHandler.target = null;
+                        }
+                    };
+                    radiosSection.moveHandler.id = ev.pointerId;
+                    radiosSection.moveHandler.initialX = ev.clientX;
+                    radiosSection.moveHandler.lastX = ev.clientX;
+                    radiosSection.moveHandler.target = ev.target;
+                    window.addEventListener('pointermove', radiosSection.moveHandler);
+                    let upHandler = ev => {
+                        if (radiosSection.moveHandler && radiosSection.moveHandler.id === ev.pointerId) {
+                            if (radiosSection.moveHandler.target && radiosSection.moveHandler.target.type === 'radio') {
+                                let clickEvent = new PointerEvent('click');
+                                clickEvent.isProgrammatic = true;
+                                radiosSection.moveHandler.target.dispatchEvent(clickEvent);
+                            }
+                            window.removeEventListener('pointermove', radiosSection.moveHandler);
+                            radiosSection.moveHandler = null;
+                            window.removeEventListener('pointerup', upHandler);
+                        }
+                    }
+                    window.addEventListener('pointerup', upHandler);
+                }
+            });
+            const updateScroll = () => {
+                const radio = children[radiosSection.selectedIndex];
+                const radioStyle = window.getComputedStyle(radio);
+                const radiosSectionStyle = window.getComputedStyle(radiosSection);
+                const clampedIndex = Math.min(Math.max(radiosSection.selectedIndex, 2), children.length - 3);
+                const offset = (clampedIndex - 2) * (parseFloat(radioStyle.width) + parseFloat(radiosSectionStyle.gap));
+                radiosSection.scrollTo({
+                    top: 0,
+                    left: offset,
+                    behavior: 'smooth'
+                });
+            };
+            radiosSection.selectedIndex = 0;
+            updateScroll();
             children.forEach((radio, index) => {
-                radio.addEventListener('click', () => {
-                    const radioStyle = window.getComputedStyle(radio);
-                    const radiosSectionStyle = window.getComputedStyle(radiosSection);
-                    const offset = (index - 2) * (parseFloat(radioStyle.width) + parseFloat(radiosSectionStyle.gap));
-                    radiosSection.scrollTo({
-                        top: 0,
-                        left: offset,
-                        behavior: 'smooth'
-                    });
+                radio.addEventListener('click', ev => {
+                    if (ev.isProgrammatic) {
+                        radiosSection.selectedIndex = index;
+                        updateScroll();
+                    } else {
+                        ev.preventDefault();
+                        ev.stopPropagation();
+                    }
                 });
             });
+            window.addEventListener('resize', () => updateScroll());
+        }
     });
 });
