@@ -4,6 +4,15 @@ window.addEventListener('load', () => {
     const noThumbnailTemplate = document.getElementById('no-thumbnail');
     document.querySelectorAll('article').forEach(article => {
         const radiosSection = article.querySelector('section:nth-child(2):not(:last-child)');
+        article.deadzonePointers = new Set();
+        article.addEventListener('click', ev => {
+            // If this pointer was dragged on the radiosSection do not register the click
+            if (ev.target === radiosSection && radiosSection.dragged === ev.pointerId)
+                return;
+            if (article.deadzonePointers.has(ev.pointerId))
+                return;
+            console.log('CLICK'); // TODO redirect to product page
+        });
         if (!radiosSection)
             return; // Skip to next article
         const thumbnailSection = article.querySelector('section:nth-child(1)');
@@ -110,7 +119,6 @@ window.addEventListener('load', () => {
             // This is likely because of the font size breakpoints set by pico
             window.addEventListener('resize', updateScroll);
         }
-        article.deadzonePointers = new Set();
         article.addEventListener('pointermove', ev => {
             const deadzone = 6 / window.devicePixelRatio;
             let firstRect = article.radios[0].getBoundingClientRect();
@@ -136,14 +144,6 @@ window.addEventListener('load', () => {
                 article.style.cursor = 'pointer';
                 article.deadzonePointers.delete(ev.pointerId);
             }
-        });
-        article.addEventListener('click', ev => {
-            // If this pointer was dragged on the radiosSection do not register the click
-            if (ev.target === radiosSection && radiosSection.dragged === ev.pointerId)
-                return;
-            if (article.deadzonePointers.has(ev.pointerId))
-                return;
-            console.log('CLICK'); // TODO
         });
     });
 });

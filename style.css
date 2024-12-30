@@ -20,6 +20,7 @@ article {
     flex-direction: column;
     margin-bottom: 0;
     cursor: pointer;
+    user-select: none;
 }
 
 article > section {
@@ -54,7 +55,6 @@ article > section:nth-child(2):not(:last-child) {
     gap: var(--radio-spacing);
     overflow-x: auto;
     touch-action: none; /* Handled manually with js */
-    user-select: none;
     padding: 0.125em calc(50% - 2.5 * 1.25rem - 2 * var(--radio-spacing));
     mask-image: linear-gradient(to right, #0000 0%, #000F 25%, #000F 75%, #0000 100%);
     -webkit-mask-image: linear-gradient(to right, #0000 0%, #000F 25%, #000F 75%, #0000 100%);
