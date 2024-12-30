@@ -17,6 +17,7 @@ require __DIR__ . "/../classes/DatabaseObject.php";
  * @return string The query string to run on the database.
  */
 function buildQuery(array &$objectInfos): ?string {
+    global $db;
     // No tables provided
     if (empty($objectInfos)) {
         return null;

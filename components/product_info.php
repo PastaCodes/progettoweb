@@ -5,30 +5,35 @@ require __DIR__ . '/../classes/ProductVariant.php';
 require __DIR__ . '/../util/format.php';
 
 function getProduct(string $code_name) : ?Product {
-    global $db;
-    $sql_statement = $db->prepare('select code_name, display_name, short_description, price_min, price_max from product_base join price_range on product = code_name where standalone = true and code_name = ?');
-    $sql_statement->bind_param('s', $code_name);
-    $sql_statement->execute();
-    $product_result = $sql_statement->get_result();
-    if ($product_result->num_rows <= 0) {
+    // Get the current DB item
+    $queryProductSearch = new DatabaseObject("product_base");
+    $queryProductSearch->properties["standalone"] = "1";
+    $queryProductSearch->properties["code_name"] = $code_name;
+    $queryProductSearch->join_conditions["price_range"] = ["code_name" => "product"];
+    $product_row = dbFindOne([$queryProductSearch]);
+    if (!$product_row) {
         return null;
     }
-    $product_row = $product_result->fetch_assoc();
-    $variants_result = $db->query('select code_suffix, display_name, color from product_variant join product_info on product = base and variant = code_suffix where base = \'' . $product_row['code_name'] . '\' order by ordinal asc');
+    // Get the variants of said item
+    $queryVariantSearch = new DatabaseObject("product_variant");
+    // FIXME: to add to db stuff $queryVariantSearch->join_conditions["product_info"] = ["product" => "base", "variant" => "code_suffix"];
+    $queryVariantSearch->join_conditions["product_info"] = ["base" => "product"];
+    $queryVariantSearch->properties["base"] = $code_name;
+    $variants_result = dbFind([$queryVariantSearch]);
+    // Load the variants
     $variants = [];
     $first_thumbnail = null;
     $product_code = $product_row['code_name'];
-    if ($variants_result->num_rows > 0) {
-        while ($variants_row = $variants_result->fetch_assoc()) {
-            $variant_code = $product_code . '_' . $variants_row['code_suffix'];
-            $thumbnail_file = get_thumbnail_if_exists($variant_code);
-            $variants[] = new ProductVariant($variants_row['display_name'], $variants_row['color'], $thumbnail_file);
-            if (count($variants) == 1)
-                $first_thumbnail = $thumbnail_file;
-            else if ($thumbnail_file)
-                $prefetch[] = $thumbnail_file;
-        }
-    } else
+    foreach ($variants_result as $variants_row) {
+        $variant_code = $product_code . '_' . $variants_row['code_suffix'];
+        $thumbnail_file = get_thumbnail_if_exists($variant_code);
+        $variants[] = new ProductVariant($variants_row['display_name'], $variants_row['color'], $thumbnail_file);
+        if (count($variants) == 1)
+            $first_thumbnail = $thumbnail_file;
+        else if ($thumbnail_file)
+            $prefetch[] = $thumbnail_file;
+    }
+    if (!$first_thumbnail)
         $first_thumbnail = get_thumbnail_if_exists($product_code);
     return new Product($product_code, $product_row['display_name'], $product_row['price_min'], $product_row['price_max'], $variants, $first_thumbnail, $product_row['short_description']);
 }
