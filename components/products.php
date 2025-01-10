@@ -50,7 +50,7 @@ while ($products_row = $products_result->fetch_assoc()) {
 <?php if (!empty($product->variants)): ?>
                         <section>
 <?php foreach ($product->variants as $index => $variant): ?>
-                            <input type="radio" data-variant-suffix="<?= $variant->code_suffix ?>" data-color="#<?= $variant->color ?>"<?php if ($variant->thumbnail): ?> data-thumbnail="<?= $variant->thumbnail ?>"<?php endif ?> name="<?= format_product_code($product) ?>-color" title="<?= $variant->display_name ?>"<?php if ($index == 0): ?> checked="checked"<?php endif ?>>
+                            <input type="radio" data-variant-suffix="<?= $variant->code_suffix ?>" data-color="#<?= $variant->color ?>"<?php if ($variant->thumbnail): ?> data-thumbnail="<?= $variant->thumbnail ?>"<?php endif ?> name="<?= format_product_code($product) ?>-variant" title="<?= $variant->display_name ?>"<?php if ($index == 0): ?> checked="checked"<?php endif ?>>
 <?php endforeach ?>
                         </section>
 <?php endif ?>
