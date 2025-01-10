@@ -4,7 +4,7 @@ require_once __DIR__ . '/../classes/Product.php';
 require_once __DIR__ . '/../classes/ProductVariant.php';
 require_once __DIR__ . '/../util/format.php';
 
-function getProduct(string $code_name) : ?Product {
+function getProduct(string $code_name, ?string $selected_suffix) : ?Product {
     global $db;
     $sql_statement = $db->prepare('select code_name, display_name, short_description, price_min, price_max from product_base join price_range on product = code_name where standalone = true and code_name = ?');
     $sql_statement->bind_param('s', $code_name);
@@ -20,10 +20,14 @@ function getProduct(string $code_name) : ?Product {
     $product_code = $product_row['code_name'];
     if ($variants_result->num_rows > 0) {
         while ($variants_row = $variants_result->fetch_assoc()) {
-            $variant_code = $product_code . '_' . $variants_row['code_suffix'];
+            $variant_suffix = $variants_row['code_suffix'];
+            $variant_code = $product_code . '_' . $variant_suffix;
             $thumbnail_file = get_thumbnail_if_exists($variant_code);
-            $variants[] = new ProductVariant($variants_row['display_name'], $variants_row['color'], $thumbnail_file);
-            if (count($variants) == 1)
+            $variants[] = new ProductVariant($variants_row['code_suffix'], $variants_row['display_name'], $variants_row['color'], $thumbnail_file);
+            if (
+                ($selected_suffix === null && count($variants) == 1) ||
+                $variant_suffix === $selected_suffix
+            )
                 $first_thumbnail = $thumbnail_file;
             else if ($thumbnail_file)
                 $prefetch[] = $thumbnail_file;
@@ -36,7 +40,8 @@ function getProduct(string $code_name) : ?Product {
 $product = null;
 if (isset($_GET['id'])) {
     $code_name = $_GET['id'];
-    $product = getProduct($code_name);
+    $variant_suffix = $_GET['variant'] ?? null;
+    $product = getProduct($code_name, $variant_suffix);
 }
 
 ?>

@@ -15,7 +15,7 @@ while ($products_row = $products_result->fetch_assoc()) {
         while ($variants_row = $variants_result->fetch_assoc()) {
             $variant_code = $product_code . '_' . $variants_row['code_suffix'];
             $thumbnail_file = get_thumbnail_if_exists($variant_code);
-            $variants[] = new ProductVariant($variants_row['display_name'], $variants_row['color'], $thumbnail_file);
+            $variants[] = new ProductVariant($variants_row['code_suffix'], $variants_row['display_name'], $variants_row['color'], $thumbnail_file);
             if (count($variants) == 1)
                 $first_thumbnail = $thumbnail_file;
             else if ($thumbnail_file)
@@ -36,7 +36,7 @@ while ($products_row = $products_result->fetch_assoc()) {
             <section>
 <?php foreach ($products as $product): ?>
                 <a href="product?id=<?= $product->code_name ?>">
-                    <article>
+                    <article data-product="<?= $product->code_name ?>">
                         <section>
 <?php if ($product->first_thumbnail): ?>
                             <img src="<?= $product->first_thumbnail ?>" loading="lazy">
@@ -50,7 +50,7 @@ while ($products_row = $products_result->fetch_assoc()) {
 <?php if (!empty($product->variants)): ?>
                         <section>
 <?php foreach ($product->variants as $index => $variant): ?>
-                            <input type="radio" data-color="#<?= $variant->color ?>"<?php if ($variant->thumbnail): ?> data-thumbnail="<?= $variant->thumbnail ?>"<?php endif ?> name="<?= format_product_code($product) ?>-color" title="<?= $variant->display_name ?>"<?php if ($index == 0): ?> checked="checked"<?php endif ?>>
+                            <input type="radio" data-variant-suffix="<?= $variant->code_suffix ?>" data-color="#<?= $variant->color ?>"<?php if ($variant->thumbnail): ?> data-thumbnail="<?= $variant->thumbnail ?>"<?php endif ?> name="<?= format_product_code($product) ?>-color" title="<?= $variant->display_name ?>"<?php if ($index == 0): ?> checked="checked"<?php endif ?>>
 <?php endforeach ?>
                         </section>
 <?php endif ?>

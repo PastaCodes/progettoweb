@@ -39,6 +39,13 @@ window.addEventListener('load', () => {
         // When hovering over a radio button, the associated thumbnail is displayed
         // Otherwise the one associated with the checked button is displayed
         article.radios.forEach(radio => {
+            radio.addEventListener('click', ev => {
+                if (article.radios.length <= 5 || ev.isProgrammatic) {
+                    let product = article.getAttribute('data-product');
+                    let variant = radio.getAttribute('data-variant-suffix');
+                    a.setAttribute('href', 'product?id=' + product + '&variant=' + variant);
+                }
+            });
             radio.addEventListener('mouseover', () => {
                 if (!radio.checked)
                     displayThumbnail(radio);
