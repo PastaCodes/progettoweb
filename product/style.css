@@ -1,3 +1,60 @@
+:root {
+    --thumbnail-size: 30rem;
+    --spacing-vertical-small: 0.4rem;
+    --radio-spacing: 0.5rem;
+}
+
+main > section:first-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: var(--thumbnail-size);
+    height: var(--thumbnail-size);
+    border-radius: var(--pico-border-radius);
+    overflow: hidden;
+}
+
+main > section > img {
+    width: inherit;
+}
+
+section > svg {
+    width: 6rem;
+    color: var(--pico-muted-color);
+    margin-bottom: var(--spacing-vertical-small);
+}
+
+main > section:first-child span {
+    color: var(--pico-muted-color);
+}
+
+main > section:nth-child(2):not(:last-child) {
+    display: flex;
+    flex-direction: row;
+    gap: var(--radio-spacing);
+    padding: 0.125em;
+    margin-bottom: var(--spacing-vertical-small);
+}
+
+[type="radio"] {
+    --radio-color: attr(data-color color);
+    --pico-primary-border: var(--radio-color);
+    outline: 0.05rem solid var(--pico-muted-color);
+    outline-offset: -0.05rem;
+    flex: 0 0 auto;
+    background-color: color-mix(in oklab, var(--radio-color) 90%, #000);
+    margin: 0;
+}
+
+[type="radio"]:not(:hover) {
+    --pico-box-shadow: none !important;
+}
+
+[type="radio"]:hover {
+    --pico-box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-form-element-focus-color);
+}
+
 nav ul li::before {
     content: none;
 }
