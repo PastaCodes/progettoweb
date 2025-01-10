@@ -2,16 +2,19 @@
 window.addEventListener('load', () => {
     // Retrieve the elements to be used when no thumbnail is available
     const noThumbnailTemplate = document.getElementById('no-thumbnail');
-    document.querySelectorAll('article').forEach(article => {
+    document.querySelectorAll('main > section > a').forEach(a => {
+        const article = a.querySelector('article');
         const radiosSection = article.querySelector('section:nth-child(2):not(:last-child)');
         article.deadzonePointers = new Set();
         article.addEventListener('click', ev => {
             // If this pointer was dragged on the radiosSection do not register the click
-            if (ev.target === radiosSection && radiosSection.dragged === ev.pointerId)
-                return;
-            if (article.deadzonePointers.has(ev.pointerId))
-                return;
-            console.log('CLICK'); // TODO redirect to product page
+            if (
+                (ev.target === radiosSection && radiosSection.dragged === ev.pointerId) ||
+                article.deadzonePointers.has(ev.pointerId)
+            ) {
+                ev.preventDefault();
+                ev.stopPropagation();
+            }
         });
         if (!radiosSection)
             return; // Skip to next article
@@ -55,11 +58,10 @@ window.addEventListener('load', () => {
                     radiosSection.dragged = null;
                     radiosSection.moveHandler = ev => {
                         if (ev.pointerId === radiosSection.moveHandler.id) {
-                            radiosSection.scrollBy(radiosSection.moveHandler.lastX - ev.clientX, 0);
-                            radiosSection.moveHandler.lastX = ev.clientX;
+                            radiosSection.scrollTo(radiosSection.moveHandler.initialScroll - ev.clientX + radiosSection.moveHandler.initialX, 0);
                             // Any movement of more than 10 px is considered intentional,
                             // which means no click action should occur
-                            if (Math.abs(radiosSection.moveHandler.lastX - radiosSection.moveHandler.initialX) > 10) {
+                            if (Math.abs(ev.clientX - radiosSection.moveHandler.initialX) > 10) {
                                 radiosSection.moveHandler.target = null;
                                 radiosSection.dragged = ev.pointerId;
                             }
@@ -67,7 +69,7 @@ window.addEventListener('load', () => {
                     };
                     radiosSection.moveHandler.id = ev.pointerId;
                     radiosSection.moveHandler.initialX = ev.clientX;
-                    radiosSection.moveHandler.lastX = ev.clientX;
+                    radiosSection.moveHandler.initialScroll = radiosSection.scrollLeft;
                     radiosSection.moveHandler.target = ev.target;
                     window.addEventListener('pointermove', radiosSection.moveHandler);
                     let upHandler = ev => {
@@ -138,11 +140,13 @@ window.addEventListener('load', () => {
                 });
             }
             if (inDeadzone) {
-                article.style.cursor = 'default';
+                a.style.cursor = 'default';
                 article.deadzonePointers.add(ev.pointerId);
+                article.setAttribute('data-hover-disabled', 'disabled');
             } else {
-                article.style.cursor = 'pointer';
+                a.style.cursor = 'pointer';
                 article.deadzonePointers.delete(ev.pointerId);
+                article.removeAttribute('data-hover-disabled');
             }
         });
     });

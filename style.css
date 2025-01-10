@@ -15,12 +15,20 @@ main > section {
     gap: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
 }
 
+main > section > a {
+    display: contents;
+    color: inherit;
+}
+
 article {
     display: flex;
     flex-direction: column;
     margin-bottom: 0;
-    cursor: pointer;
-    user-select: none;
+    transition: box-shadow var(--pico-transition);
+}
+
+article:hover:not([data-hover-disabled]) {
+    box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-primary-focus);
 }
 
 article > section {

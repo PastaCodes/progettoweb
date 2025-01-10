@@ -35,29 +35,31 @@ while ($products_row = $products_result->fetch_assoc()) {
         <main>
             <section>
 <?php foreach ($products as $product): ?>
-                <article>
-                    <section>
+                <a href="product_info?code_name=<?= $product->code_name ?>">
+                    <article>
+                        <section>
 <?php if ($product->first_thumbnail): ?>
-                        <img src="<?= $product->first_thumbnail ?>" loading="lazy">
+                            <img src="<?= $product->first_thumbnail ?>" loading="lazy">
 <?php else: ?>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                            <use href="assets/ban-solid.svg#root"></use>
-                        </svg>
-                        <span>No image available</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <use href="assets/ban-solid.svg#root"></use>
+                            </svg>
+                            <span>No image available</span>
 <?php endif ?>
-                    </section>
+                        </section>
 <?php if (!empty($product->variants)): ?>
-                    <section>
+                        <section>
 <?php foreach ($product->variants as $index => $variant): ?>
-                        <input type="radio" data-color="#<?= $variant->color ?>"<?php if ($variant->thumbnail): ?> data-thumbnail="<?= $variant->thumbnail ?>"<?php endif ?> name="<?= format_product_code($product) ?>-color" title="<?= $variant->display_name ?>"<?php if ($index == 0): ?> checked="checked"<?php endif ?>>
+                            <input type="radio" data-color="#<?= $variant->color ?>"<?php if ($variant->thumbnail): ?> data-thumbnail="<?= $variant->thumbnail ?>"<?php endif ?> name="<?= format_product_code($product) ?>-color" title="<?= $variant->display_name ?>"<?php if ($index == 0): ?> checked="checked"<?php endif ?>>
 <?php endforeach ?>
-                    </section>
+                        </section>
 <?php endif ?>
-                    <section>
-                        <span><?= $product->display_name ?></span>
-                        <small><?= format_price_range($product) ?></small>
-                    </section>
-                </article>
+                        <section>
+                            <span><?= $product->display_name ?></span>
+                            <small><?= format_price_range($product) ?></small>
+                        </section>
+                    </article>
+                </a>
 <?php endforeach ?>
             </section>
         </main>
