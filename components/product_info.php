@@ -24,7 +24,6 @@ function getProduct(string $code_name, ?string $selected_suffix) : ?Product {
     $variants = [];
     $first_thumbnail = null;
     $product_code = $product_row['code_name'];
-<<<<<<< HEAD
     foreach ($variants_result as $variants_row) {
         $variant_suffix = $variants_row['code_suffix'];
         $variant_code = $product_code . '_' . $variant_suffix;
