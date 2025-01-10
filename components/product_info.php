@@ -81,7 +81,7 @@ if (isset($_GET['id'])) {
             </section>
             <section>
                 <!-- FIXME: Make radio button change variant here, also probably show how many we have in the cart so far, or some confirmation or something  -->
-                <button onclick='modifyCart("<?= $product->code_name ?>", "<?= $variant->code_suffix ?>")'>Add to cart</button>
+                <button onclick='modifyCart("<?= $product->code_name ?>", "<?= $variant->code_suffix ?? null ?>")'>Add to cart</button>
             </section>
 <?php endif ?>
         </main>

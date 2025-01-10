@@ -2,7 +2,7 @@
 window.addEventListener('load', () => {
     // Retrieve the elements to be used when no thumbnail is available
     const noThumbnailTemplate = document.getElementById('no-thumbnail');
-    const radiosSection = document.querySelector('main > section:nth-child(2):not(:last-child)');
+    const radiosSection = document.querySelector('main > section:nth-child(2):not(:nth-last-child(2))');
     if (radiosSection) {
         const thumbnailSection = document.querySelector('main > section:nth-child(1)');
         const displayThumbnail = (activeRadio) => {
