@@ -34,8 +34,8 @@ function getProduct(string $code_name) : ?Product {
 }
 
 $product = null;
-if (isset($_GET['code_name'])) {
-    $code_name = $_GET['code_name'];
+if (isset($_GET['id'])) {
+    $code_name = $_GET['id'];
     $product = getProduct($code_name);
 }
 

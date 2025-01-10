@@ -10,7 +10,7 @@ window.addEventListener('load', () => {
             // If this pointer was dragged on the radiosSection do not register the click
             if (
                 (ev.target === radiosSection && radiosSection.dragged === ev.pointerId) ||
-                article.deadzonePointers.has(ev.pointerId)
+                (ev.target.type !== 'radio' && article.deadzonePointers.has(ev.pointerId))
             ) {
                 ev.preventDefault();
                 ev.stopPropagation();

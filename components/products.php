@@ -35,7 +35,7 @@ while ($products_row = $products_result->fetch_assoc()) {
         <main>
             <section>
 <?php foreach ($products as $product): ?>
-                <a href="product_info?code_name=<?= $product->code_name ?>">
+                <a href="product?id=<?= $product->code_name ?>">
                     <article>
                         <section>
 <?php if ($product->first_thumbnail): ?>
