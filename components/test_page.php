@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../util/email.php';
+require_once __DIR__ . '/../util/email.php';
 send_email('mario.rossi@gmail.com', '[IsiFitGems] Confirm your order', 'components/test_email.php');
 ?>
         <main>

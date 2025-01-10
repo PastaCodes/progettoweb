@@ -1,10 +1,10 @@
 <?php
-require __DIR__ . '/../util/db.php';
-require __DIR__ . '/../classes/Product.php';
-require __DIR__ . '/../classes/ProductVariant.php';
-require __DIR__ . '/../util/format.php';
+require_once __DIR__ . '/../util/db.php';
+require_once __DIR__ . '/../classes/Product.php';
+require_once __DIR__ . '/../classes/ProductVariant.php';
+require_once __DIR__ . '/../util/format.php';
 
-function getProduct(string $code_name) : ?Product {
+function getProduct(string $code_name, ?string $selected_suffix) : ?Product {
     // Get the current DB item
     $queryProductSearch = new DatabaseObject("product_base");
     $queryProductSearch->properties["standalone"] = "1";
@@ -24,11 +24,16 @@ function getProduct(string $code_name) : ?Product {
     $variants = [];
     $first_thumbnail = null;
     $product_code = $product_row['code_name'];
+<<<<<<< HEAD
     foreach ($variants_result as $variants_row) {
-        $variant_code = $product_code . '_' . $variants_row['code_suffix'];
+        $variant_suffix = $variants_row['code_suffix'];
+        $variant_code = $product_code . '_' . $variant_suffix;
         $thumbnail_file = get_thumbnail_if_exists($variant_code);
         $variants[] = new ProductVariant($variants_row['display_name'], $variants_row['color'], $thumbnail_file);
-        if (count($variants) == 1)
+        if (
+            ($selected_suffix === null && count($variants) == 1) ||
+            $variant_suffix === $selected_suffix
+        )
             $first_thumbnail = $thumbnail_file;
         else if ($thumbnail_file)
             $prefetch[] = $thumbnail_file;
@@ -39,9 +44,10 @@ function getProduct(string $code_name) : ?Product {
 }
 
 $product = null;
-if (isset($_GET['code_name'])) {
-    $code_name = $_GET['code_name'];
-    $product = getProduct($code_name);
+if (isset($_GET['id'])) {
+    $code_name = $_GET['id'];
+    $variant_suffix = $_GET['variant'] ?? null;
+    $product = getProduct($code_name, $variant_suffix);
 }
 
 ?>

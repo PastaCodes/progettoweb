@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../util/format.php';
+require_once __DIR__ . '/../util/format.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +15,7 @@ require __DIR__ . '/../util/format.php';
     </head>
     <body>
 <?php
-require __DIR__ . '/../' . $email_body;
+require_once __DIR__ . '/../' . $email_body;
 ?>
     </body>
 </html>
