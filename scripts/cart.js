@@ -2,28 +2,43 @@ import { createCookie, getCookie, deleteCookie } from "./cookie.js";
 
 const CART_COOKIE_NAME = 'shopping_cart';
 
+// variant_id = null if product has no variant
 function modifyCart(product_id, variant_id, quantity = 1) {
+    // Get the cart info from the cookie
     let cart = JSON.parse(getCookie(CART_COOKIE_NAME) || '{}');
-    // Initialize the product if it does not exist in the cart
+    // Ensure product exists in cart
     if (!cart[product_id]) {
-        cart[product_id] = {};
+        cart[product_id] = variant_id ? {} : 0;
     }
-    // Initialize the product variant if it does not exist in the cart
-    if (!cart[product_id][variant_id]) {
-        cart[product_id][variant_id] = 0;
-    }
-    cart[product_id][variant_id] += quantity;
-    // Erase the product from the cart if the quantity reaches 0
-    if (cart[product_id][variant_id] <= 0) {
-        delete cart[product_id];
-    }
-    if (cart.keys()) {
-        // Clear the cart if there is nothing in it (erase the cookie)
-        clearCart();
+    // Handling product variants
+    if (variant_id) {
+        // Ensure variant exists in product
+        if (!cart[product_id][variant_id]) {
+            cart[product_id][variant_id] = 0;
+        }
+        // Modify the quantity for the variant
+        cart[product_id][variant_id] += quantity;
+        // Remove variant if variant no longer in cart 
+        if (cart[product_id][variant_id] <= 0) {
+            delete cart[product_id][variant_id];
+            // Remove product if no variants left
+            if (Object.keys(cart[product_id]).length === 0) {
+                delete cart[product_id];
+            }
+        }
     } else {
-        // Set the cookie with the new cart to be 30 days long
-        createCookie(CART_COOKIE_NAME, JSON.stringify(cart), 30 * 24 * 60 * 60 * 1000);
+        // Modify the quantity for the product if no variant is provided
+        cart[product_id] += quantity;
+        // Remove product if product no longer in cart
+        if (cart[product_id] <= 0) {
+            delete cart[product_id];
+        }
     }
+    // Clear the cart if empty 
+    if (Object.keys(cart).length <= 0)
+        clearCart();
+    else
+        createCookie(CART_COOKIE_NAME, JSON.stringify(cart), 30 * 24 * 60 * 60 * 1000); // 30 day long cookie
 }
 
 function clearCart() {
