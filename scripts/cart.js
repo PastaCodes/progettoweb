@@ -4,6 +4,9 @@ const CART_COOKIE_NAME = 'shopping_cart';
 
 // variant_id = null if product has no variant
 function modifyCart(product_id, variant_id, quantity = 1) {
+    if (!product_id || !quantity) {
+        return;
+    }
     // Get the cart info from the cookie
     let cart = JSON.parse(getCookie(CART_COOKIE_NAME) || '{}');
     // Ensure product exists in cart
