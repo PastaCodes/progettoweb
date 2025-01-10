@@ -1,6 +1,6 @@
 <?php
 ob_start();
-require __DIR__ . '/../' . $page->body;
+require_once __DIR__ . '/../' . $page->body;
 $body = ob_get_clean();
 ?>
 <!DOCTYPE html>
