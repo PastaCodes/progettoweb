@@ -43,10 +43,11 @@ function getProduct(string $code_name, ?string $selected_suffix) : ?Product {
 }
 
 $product = null;
+$selected_suffix = null;
 if (isset($_GET['id'])) {
     $code_name = $_GET['id'];
-    $variant_suffix = $_GET['variant'] ?? null;
-    $product = getProduct($code_name, $variant_suffix);
+    $selected_suffix = $_GET['variant'] ?? null;
+    $product = getProduct($code_name, $selected_suffix);
 }
 
 ?>
@@ -57,24 +58,35 @@ if (isset($_GET['id'])) {
             <span>No image available</span>
         </template>
         <main>
-        <?php if ($product === null): ?>
+<?php if ($product === null): ?>
             <section>
                 <h1>Product not found</h1>
             </section>
-        <?php else: ?>
+<?php else: ?>
             <section>
 <?php if ($product->first_thumbnail): ?>
-                        <img src="<?= $product->first_thumbnail ?>" loading="lazy">
+                <img src="<?= $product->first_thumbnail ?>" loading="lazy">
 <?php else: ?>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                            <use href="assets/ban-solid.svg#root"></use>
-                        </svg>
-                        <span>No image available</span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <use href="assets/ban-solid.svg#root"></use>
+                </svg>
+                <span>No image available</span>
 <?php endif ?>
             </section>
+<?php if (!empty($product->variants)): ?>
+            <section>
+<?php foreach ($product->variants as $index => $variant): ?>
+                <input type="radio" data-variant-suffix="<?= $variant->code_suffix ?>" data-color="#<?= $variant->color ?>"<?php if ($variant->thumbnail): ?> data-thumbnail="<?= $variant->thumbnail ?>"<?php endif ?> name="variant" title="<?= $variant->display_name ?>"<?php if (($selected_suffix === null && $index == 0) || $variant->code_suffix === $selected_suffix): ?> checked="checked"<?php endif ?>>
+<?php endforeach ?>
+            </section>
+<?php endif ?>
             <section>
                 <h1><?= $product->display_name ?></h1>
                 <p><?= $product->short_description ?></p>
             </section>
-        <?php endif ?>
+            <section>
+                <!-- FIXME: Make radio button change variant here, also probably show how many we have in the cart so far, or some confirmation or something  -->
+                <button onclick='modifyCart("<?= $product->code_name ?>", "<?= $variant->code_suffix ?? null ?>")'>Add to cart</button>
+            </section>
+<?php endif ?>
         </main>
