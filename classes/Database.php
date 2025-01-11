@@ -25,8 +25,8 @@ class Database {
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function findOne(string $table, array $filter = []): ?array {
-        $result = $this->find($table, $filter, ['limit' => 1]);
+    public function findOne(string $table, array $filter = [], array $options = []): ?array {
+        $result = $this->find($table, $filter, array_merge(options, ['limit' => 1]));
         return $result[0] ?? null;
     }
 
