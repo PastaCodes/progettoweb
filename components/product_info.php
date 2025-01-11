@@ -5,21 +5,14 @@ require_once __DIR__ . '/../classes/ProductVariant.php';
 require_once __DIR__ . '/../util/format.php';
 
 function getProduct(string $code_name, ?string $selected_suffix) : ?Product {
-    // Get the current DB item
-    $queryProductSearch = new DatabaseObject("product_base");
-    $queryProductSearch->properties["standalone"] = "1";
-    $queryProductSearch->properties["code_name"] = $code_name;
-    $queryProductSearch->join_conditions["price_range"] = ["code_name" => "product"];
-    $product_row = dbFindOne([$queryProductSearch]);
+    global $database;
+    // Get the current item from the db
+    $product_row = $database->findOne("product_base", ["code_name" => $code_name, "standalone" => 1]);
     if (!$product_row) {
         return null;
     }
-    // Get the variants of said item
-    $queryVariantSearch = new DatabaseObject("product_variant");
-    // FIXME: to add to db stuff $queryVariantSearch->join_conditions["product_info"] = ["product" => "base", "variant" => "code_suffix"];
-    $queryVariantSearch->join_conditions["product_info"] = ["base" => "product"];
-    $queryVariantSearch->properties["base"] = $code_name;
-    $variants_result = dbFind([$queryVariantSearch]);
+    $variants_result = $database->find("product_variant", ["base" => $code_name]);
+    $prices = $database->findOne("price_range", ["product" => $code_name]);
     // Load the variants
     $variants = [];
     $first_thumbnail = null;
@@ -28,7 +21,7 @@ function getProduct(string $code_name, ?string $selected_suffix) : ?Product {
         $variant_suffix = $variants_row['code_suffix'];
         $variant_code = $product_code . '_' . $variant_suffix;
         $thumbnail_file = get_thumbnail_if_exists($variant_code);
-        $variants[] = new ProductVariant($variants_row['display_name'], $variants_row['color'], $thumbnail_file);
+        $variants[] = new ProductVariant($variant_suffix, $variants_row['display_name'], $variants_row['color'], $thumbnail_file);
         if (
             ($selected_suffix === null && count($variants) == 1) ||
             $variant_suffix === $selected_suffix
@@ -39,7 +32,7 @@ function getProduct(string $code_name, ?string $selected_suffix) : ?Product {
     }
     if (!$first_thumbnail)
         $first_thumbnail = get_thumbnail_if_exists($product_code);
-    return new Product($product_code, $product_row['display_name'], $product_row['price_min'], $product_row['price_max'], $variants, $first_thumbnail, $product_row['short_description']);
+    return new Product($product_code, $product_row['display_name'], $prices['price_min'], $prices['price_max'], $variants, $first_thumbnail, $product_row['short_description']);
 }
 
 $product = null;

@@ -5,14 +5,15 @@ require_once __DIR__ . '/../classes/ProductVariant.php';
 require_once __DIR__ . '/../util/format.php';
 
 $products = [];
-$products_result = $db->query('select code_name, display_name, price_min, price_max from product_base join price_range on product = code_name where standalone = true');
-while ($products_row = $products_result->fetch_assoc()) {
-    $variants_result = $db->query('select code_suffix, display_name, color from product_variant join product_info on product = base and variant = code_suffix where base = \'' . $products_row['code_name'] . '\' order by ordinal asc');
+$products_res = $database->find("product_base", ["standalone" => 1]);
+foreach ($products_res as $products_row) {
+    $product_code = $products_row['code_name'];
+    $variants_result = $database->find("product_variant", ["base" => $product_code]);
+    $prices = $database->findOne("price_range", ["product" => $product_code]);
     $variants = [];
     $first_thumbnail = null;
-    $product_code = $products_row['code_name'];
-    if ($variants_result->num_rows > 0) {
-        while ($variants_row = $variants_result->fetch_assoc()) {
+    if (count($variants_result) > 0) {
+        foreach ($variants_result as $variants_row) {
             $variant_code = $product_code . '_' . $variants_row['code_suffix'];
             $thumbnail_file = get_thumbnail_if_exists($variant_code);
             $variants[] = new ProductVariant($variants_row['code_suffix'], $variants_row['display_name'], $variants_row['color'], $thumbnail_file);
@@ -23,7 +24,7 @@ while ($products_row = $products_result->fetch_assoc()) {
         }
     } else
         $first_thumbnail = get_thumbnail_if_exists($product_code);
-    $products[] = new Product($product_code, $products_row['display_name'], $products_row['price_min'], $products_row['price_max'], $variants, $first_thumbnail);
+    $products[] = new Product($product_code, $products_row['display_name'], $prices['price_min'], $prices['price_max'], $variants, $first_thumbnail);
 }
 ?>
         <template id="no-thumbnail">
