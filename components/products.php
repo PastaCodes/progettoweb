@@ -8,7 +8,10 @@ $products = [];
 $products_res = $database->find("product_base", ["standalone" => 1]);
 foreach ($products_res as $products_row) {
     $product_code = $products_row['code_name'];
-    $variants_result = $database->find("product_variant", ["base" => $product_code]);
+    $variants_result = $database->find("product_variant",
+        ["base" => $product_code],
+        ['order_by' => ['ordinal' => 'ASC']]
+    );
     $prices = $database->findOne("price_range", ["product" => $product_code]);
     $variants = [];
     $first_thumbnail = null;

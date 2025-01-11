@@ -13,10 +13,12 @@ class Database {
 
     public function find(string $table, array $filter = [], array $options = []): array {
         $whereClause = $this->buildWhereClause($filter);
-        // Add the limit of the find operation
+        // Add the other options like limit, distinct, etc..
         $limit = isset($options['limit']) ? 'LIMIT ' . (int)$options['limit'] : '';
+        $distinct = (isset($options['distinct']) && $options['distinct'] == true) ? 'DISTINCT ' : '';
+        $orderBy = isset($options['order_by']) ? 'ORDER BY ' . $this->buildOrderByClause($options['order_by']) : '';
         // Create the base statement
-        $sql = "SELECT * FROM $table $whereClause $limit";
+        $sql = "SELECT $distinct * FROM $table $whereClause $orderBy $limit";
         $stmt = $this->prepareStatement($sql, $filter);
         // Execute the statement
         $stmt->execute();
@@ -26,7 +28,7 @@ class Database {
     }
 
     public function findOne(string $table, array $filter = [], array $options = []): ?array {
-        $result = $this->find($table, $filter, array_merge(options, ['limit' => 1]));
+        $result = $this->find($table, $filter, array_merge($options, ['limit' => 1]));
         return $result[0] ?? null;
     }
 
@@ -80,6 +82,18 @@ class Database {
         // Create a WHERE "key" = ? AND "key" = ? AND ... statement
         $conditions = array_map(fn($key) => "$key = ?", array_keys($filter));
         return "WHERE " . implode(" AND ", $conditions);
+    }
+
+    private function buildOrderByClause($orderBy): string {
+        if (is_array($orderBy)) {
+            $orderByClauses = [];
+            // Create a string containing "column ASC, column DESC, ...."
+            foreach ($orderBy as $column => $direction) {
+                $orderByClauses[] = "$column " . strtoupper($direction);
+            }
+            return implode(', ', $orderByClauses);
+        }
+        return '';
     }
 
     private function prepareStatement(string $sql, array $params): object {
