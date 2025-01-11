@@ -1,7 +1,7 @@
 <?php
 
 class Database {
-    public $db;
+    private $db;
 
     public function __construct(string $host, string $username, string $password, string $dbname) {
         // Connect to the database using the parameters
