@@ -27,8 +27,10 @@ window.addEventListener('load', () => {
         let cartBtnHandler = null;
         const setCartButtonEvent = (radio) => {
             const variantId = radio.getAttribute('data-variant-suffix');
+            const url = new URL(window.location.href);
+            const productId = new URLSearchParams(url.search).get('id');
             addToCartBtn.removeEventListener('click', cartBtnHandler);
-            cartBtnHandler = () => modifyCart("test", variantId);
+            cartBtnHandler = () => modifyCart(productId, variantId);
             addToCartBtn.addEventListener('click', cartBtnHandler);
         };
         // When hovering over a radio button, the associated thumbnail is displayed
