@@ -26,7 +26,7 @@ $body = ob_get_clean();
 <?php foreach ($page->stylesheets as $stylesheet): ?>
         <link rel="stylesheet" type="text/css" href="<?= $stylesheet ?>">
 <?php endforeach ?>
-        <link rel="icon" type="image/x-icon" href="icon.ico">
+        <link rel="icon" type="image/x-icon" href="assets/isi.svg">
 <?php foreach ($page->scripts as $script): ?>
         <?= $script->to_script_tag() ?>
 <?php endforeach ?>
