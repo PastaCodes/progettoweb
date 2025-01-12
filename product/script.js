@@ -22,14 +22,24 @@ window.addEventListener('load', () => {
             }
         }
         const radios = Array.from(radiosSection.children);
+        // Stuff for the cart button 
+        const addToCartBtn = document.querySelector('section > button');
+        let cartBtnHandler = null;
+        const setCartButtonEvent = (radio) => {
+            const variantId = radio.getAttribute('data-variant-suffix');
+            addToCartBtn.removeEventListener('click', cartBtnHandler);
+            cartBtnHandler = () => modifyCart("test", variantId);
+            addToCartBtn.addEventListener('click', cartBtnHandler);
+        };
         // When hovering over a radio button, the associated thumbnail is displayed
         // Otherwise the one associated with the checked button is displayed
         radios.forEach(radio => {
             radio.addEventListener('click', () => {
-                let variant = radio.getAttribute('data-variant-suffix');
-                let url = new URL(window.location.href);
+                const variant = radio.getAttribute('data-variant-suffix');
+                const url = new URL(window.location.href);
                 url.searchParams.set('variant', variant);
                 window.history.replaceState(null, '', url.toString());
+                setCartButtonEvent(radio);
             });
             radio.addEventListener('mouseover', () => {
                 if (!radio.checked)
@@ -39,6 +49,8 @@ window.addEventListener('load', () => {
                 if (!radio.checked)
                     displayThumbnail(radiosSection.querySelector(':checked'));
             });
+            if (radio.checked)
+                setCartButtonEvent(radio);
             // For silly little browsers that do not support attr styling
             radio.style.setProperty('--radio-color', radio.getAttribute('data-color'));
         });

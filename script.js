@@ -38,13 +38,15 @@ window.addEventListener('load', () => {
         article.radios = Array.from(radiosSection.children);
         // When hovering over a radio button, the associated thumbnail is displayed
         // Otherwise the one associated with the checked button is displayed
+        const setArticleLink = (radio) => {
+            const product = article.getAttribute('data-product');
+            const variant = radio.getAttribute('data-variant-suffix');
+            a.setAttribute('href', 'product?id=' + product + '&variant=' + variant);
+        };
         article.radios.forEach(radio => {
             radio.addEventListener('click', ev => {
-                if (article.radios.length <= 5 || ev.isProgrammatic) {
-                    let product = article.getAttribute('data-product');
-                    let variant = radio.getAttribute('data-variant-suffix');
-                    a.setAttribute('href', 'product?id=' + product + '&variant=' + variant);
-                }
+                if (article.radios.length <= 5 || ev.isProgrammatic) 
+                    setArticleLink(radio);
             });
             radio.addEventListener('mouseover', () => {
                 if (!radio.checked)
@@ -54,6 +56,8 @@ window.addEventListener('load', () => {
                 if (!radio.checked)
                     displayThumbnail(radiosSection.querySelector(':checked'));
             });
+            if (radio.checked) 
+                setArticleLink(radio);
             // For silly little browsers that do not support attr styling
             radio.style.setProperty('--radio-color', radio.getAttribute('data-color'));
         });
