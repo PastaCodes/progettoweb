@@ -159,6 +159,25 @@ class Database {
     }
 
     /**
+     * Builds the JOIN clause for a query from an array of joins.
+     *
+     * @param array $joins An array of JOIN clauses.
+     * @return string The JOIN clause, or an empty string if no joins are provided.
+     */
+    private function buildJoinClause(array $joins): string {
+        if (empty($joins)) {
+            return '';
+        }
+        $joinClauses = array_map(function ($join) {
+            $type = strtoupper($join['type'] ?? 'INNER');
+            $table = $join['table'];
+            $on = $join['on'];
+            return "$type JOIN $table ON $on";
+        }, $joins);
+        return implode(' ', $joinClauses);
+    }
+
+    /**
      * Builds the ORDER BY clause for a query from an options array.
      *
      * @param array $orderBy An associative array specifying columns and sorting directions.
