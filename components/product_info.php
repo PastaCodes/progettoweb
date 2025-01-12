@@ -9,6 +9,9 @@ function getProduct(string $code_name, ?string $selected_suffix) : ?Product {
     // Get the current item from the db
     $product_row = $database->find_one(
         table: 'product_base', 
+        joins: [
+            ["type" => "INNER", "table" => "price_range", "on" => "product = code_name" ]
+        ],
         filters: ['code_name' => $code_name, 'standalone' => 1]
     );
     if (!$product_row) {
@@ -18,10 +21,6 @@ function getProduct(string $code_name, ?string $selected_suffix) : ?Product {
         table: 'product_variant', 
         filters: ['base' => $code_name],
         options: ['order_by' => ['ordinal' => 'ASC']]
-    );
-    $prices = $database->find_one(
-        table: 'price_range',
-        filters:['product' => $code_name]
     );
     // Load the variants
     $variants = [];
@@ -42,7 +41,7 @@ function getProduct(string $code_name, ?string $selected_suffix) : ?Product {
     }
     if (!$first_thumbnail)
         $first_thumbnail = get_thumbnail_if_exists($product_code);
-    return new Product($product_code, $product_row['display_name'], $prices['price_min'], $prices['price_max'], $variants, $first_thumbnail, $product_row['short_description']);
+    return new Product($product_code, $product_row['display_name'], $product_row['price_min'], $product_row['price_max'], $variants, $first_thumbnail, $product_row['short_description']);
 }
 
 $product = null;

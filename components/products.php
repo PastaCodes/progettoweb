@@ -7,6 +7,9 @@ require_once __DIR__ . '/../util/format.php';
 $products = [];
 $products_res = $database->find(
     table: "product_base",
+    joins: [
+        ["type" => "INNER", "table" => "price_range", "on" => "product = code_name" ]
+    ],
     filters: ["standalone" => 1]
 );
 foreach ($products_res as $products_row) {
@@ -15,10 +18,6 @@ foreach ($products_res as $products_row) {
         table: "product_variant",
         filters: ["base" => $product_code],
         options: ['order_by' => ['ordinal' => 'ASC']]
-    );
-    $prices = $database->find_one(
-        table: "price_range", 
-        filters: ["product" => $product_code]
     );
     $variants = [];
     $first_thumbnail = null;
@@ -34,7 +33,7 @@ foreach ($products_res as $products_row) {
         }
     } else
         $first_thumbnail = get_thumbnail_if_exists($product_code);
-    $products[] = new Product($product_code, $products_row['display_name'], $prices['price_min'], $prices['price_max'], $variants, $first_thumbnail);
+    $products[] = new Product($product_code, $products_row['display_name'], $products_row['price_min'], $products_row['price_max'], $variants, $first_thumbnail);
 }
 ?>
         <template id="no-thumbnail">
