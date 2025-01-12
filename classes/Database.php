@@ -44,15 +44,14 @@ class Database {
      * @return array An array of associative arrays representing the rows.
      */
     public function find(string $table, array $joins = [], array $filters = [], array $options = []): array {
-        // $joinClause = $this->buildJoinClause($joins);
+        $joinClause = $this->buildJoinClause($joins);
         $whereClause = $this->build_where_clause($filters);
         // Add the other options like limit, distinct, etc..
         $limit = isset($options['limit']) ? 'LIMIT ' . (int)$options['limit'] : '';
         $distinct = (isset($options['distinct']) && $options['distinct'] == true) ? 'DISTINCT ' : '';
         $orderBy = isset($options['order_by']) ? 'ORDER BY ' . $this->build_order_by_clause($options['order_by']) : '';
         // Create the base statement
-        // $sql = "SELECT $distinct * FROM $table $joinClause $whereClause $orderBy $limit";
-        $sql = "SELECT $distinct * FROM $table $whereClause $orderBy $limit";
+        $sql = "SELECT $distinct * FROM $table $joinClause $whereClause $orderBy $limit";
         $stmt = $this->prepare_statement($sql, $filters);
         // Execute the statement
         $stmt->execute();

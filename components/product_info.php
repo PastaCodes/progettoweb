@@ -19,7 +19,10 @@ function getProduct(string $code_name, ?string $selected_suffix) : ?Product {
         filters: ['base' => $code_name],
         options: ['order_by' => ['ordinal' => 'ASC']]
     );
-    $prices = $database->find_one('price_range', ['product' => $code_name]);
+    $prices = $database->find_one(
+        table: 'price_range',
+        filters:['product' => $code_name]
+    );
     // Load the variants
     $variants = [];
     $first_thumbnail = null;
