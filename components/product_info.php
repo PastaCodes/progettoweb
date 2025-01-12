@@ -7,15 +7,19 @@ require_once __DIR__ . '/../util/format.php';
 function getProduct(string $code_name, ?string $selected_suffix) : ?Product {
     global $database;
     // Get the current item from the db
-    $product_row = $database->findOne('product_base', ['code_name' => $code_name, 'standalone' => 1]);
+    $product_row = $database->find_one(
+        table: 'product_base', 
+        filters: ['code_name' => $code_name, 'standalone' => 1]
+    );
     if (!$product_row) {
         return null;
     }
-    $variants_result = $database->find('product_variant', 
-        ['base' => $code_name],
-        ['order_by' => ['ordinal' => 'ASC']]
+    $variants_result = $database->find(
+        table: 'product_variant', 
+        filters: ['base' => $code_name],
+        options: ['order_by' => ['ordinal' => 'ASC']]
     );
-    $prices = $database->findOne('price_range', ['product' => $code_name]);
+    $prices = $database->find_one('price_range', ['product' => $code_name]);
     // Load the variants
     $variants = [];
     $first_thumbnail = null;

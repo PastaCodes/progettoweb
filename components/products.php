@@ -5,14 +5,21 @@ require_once __DIR__ . '/../classes/ProductVariant.php';
 require_once __DIR__ . '/../util/format.php';
 
 $products = [];
-$products_res = $database->find("product_base", ["standalone" => 1]);
+$products_res = $database->find(
+    table: "product_base",
+    filters: ["standalone" => 1]
+);
 foreach ($products_res as $products_row) {
     $product_code = $products_row['code_name'];
-    $variants_result = $database->find("product_variant",
-        ["base" => $product_code],
-        ['order_by' => ['ordinal' => 'ASC']]
+    $variants_result = $database->find(
+        table: "product_variant",
+        filters: ["base" => $product_code],
+        options: ['order_by' => ['ordinal' => 'ASC']]
     );
-    $prices = $database->findOne("price_range", ["product" => $product_code]);
+    $prices = $database->find_one(
+        table: "price_range", 
+        filters: ["product" => $product_code]
+    );
     $variants = [];
     $first_thumbnail = null;
     if (count($variants_result) > 0) {
