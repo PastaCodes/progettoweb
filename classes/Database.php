@@ -35,7 +35,7 @@ class Database {
      * - 'type' => The type of join (INNER, LEFT, RIGHT, etc.).
      * - 'table' => The name of the table to join.
      * - 'on' => The ON condition for the join.
-     * - 'using' => The single column to join on, alternative to the 'on' keyword.
+     * - 'using' => The single column to join on, must have same name on both tables, alternative to the 'on' keyword.
      * @param array  $filters An associative array of conditions for the WHERE clause.
      * Example: ['id' => 1, 'status' => 'active']
      * @param array $options An array of additional options for the query.
@@ -59,6 +59,7 @@ class Database {
             $this->build_order_by_clause($orderBy),
             $limit ? 'LIMIT ' . intval($limit) : ''
         );
+        echo($sql);
         // Execute the query 
         $stmt = $this->prepare_statement($sql, $filters);
         $stmt->execute();
