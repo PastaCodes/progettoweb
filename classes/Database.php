@@ -35,6 +35,7 @@ class Database {
      * - 'type' => The type of join (INNER, LEFT, RIGHT, etc.).
      * - 'table' => The name of the table to join.
      * - 'on' => The ON condition for the join.
+     * - 'using' => The single column to join on, alternative to the 'on' keyword.
      * @param array  $filters An associative array of conditions for the WHERE clause.
      * Example: ['id' => 1, 'status' => 'active']
      * @param array $options An array of additional options for the query.
@@ -44,20 +45,25 @@ class Database {
      * @return array An array of associative arrays representing the rows.
      */
     public function find(string $table, array $joins = [], array $filters = [], array $options = []): array {
-        $joinClause = $this->buildJoinClause($joins);
-        $whereClause = $this->build_where_clause($filters);
-        // Add the other options like limit, distinct, etc..
-        $limit = isset($options['limit']) ? 'LIMIT ' . (int)$options['limit'] : '';
-        $distinct = (isset($options['distinct']) && $options['distinct'] == true) ? 'DISTINCT ' : '';
-        $orderBy = isset($options['order_by']) ? 'ORDER BY ' . $this->build_order_by_clause($options['order_by']) : '';
-        // Create the base statement
-        $sql = "SELECT $distinct * FROM $table $joinClause $whereClause $orderBy $limit";
+        // Get the data from the passed arguments
+        $limit = $options['limit'] ?? null;
+        $distinct = $options['distinct'] ?? false;
+        $orderBy = $options['order_by'] ?? null;
+        // Create the sql query
+        $sql = sprintf(
+            "SELECT %s * FROM %s %s %s %s %s",
+            $distinct ? 'DISTINCT' : '',
+            $table,
+            $this->build_join_clause($joins),
+            $this->build_where_clause($filters),
+            $this->build_order_by_clause($orderBy),
+            $limit ? 'LIMIT ' . intval($limit) : ''
+        );
+        // Execute the query 
         $stmt = $this->prepare_statement($sql, $filters);
-        // Execute the statement
         $stmt->execute();
-        $result = $stmt->get_result();
         // Get the results from the operation
-        return $result->fetch_all(MYSQLI_ASSOC);
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
     /**
@@ -86,10 +92,10 @@ class Database {
         $columns = implode(', ', array_keys($data));
         // Create placeholders per column
         $placeholders = implode(', ', array_fill(0, count($data), '?'));
-        // Create the base statement
+        // Create the query 
         $sql = "INSERT INTO $table ($columns) VALUES ($placeholders)";
+        // Execute the query 
         $stmt = $this->prepare_statement($sql, $data);
-        // Execute the statement
         $stmt->execute();
         // Return the id of the updated value
         return $this->db->insert_id;
@@ -160,20 +166,19 @@ class Database {
     /**
      * Builds the JOIN clause for a query from an array of joins.
      *
-     * @param array $joins An array of JOIN clauses.
+     * @param array $joins An array of JOIN clauses, both using ON and USING clauses.
      * @return string The JOIN clause, or an empty string if no joins are provided.
      */
-    private function buildJoinClause(array $joins): string {
-        if (empty($joins)) {
-            return '';
-        }
-        $joinClauses = array_map(function ($join) {
+    private function build_join_clause(array $joins): string {
+        return implode(' ', array_map(function ($join) {
             $type = strtoupper($join['type'] ?? 'INNER');
             $table = $join['table'];
-            $on = $join['on'];
-            return "$type JOIN $table ON $on";
-        }, $joins);
-        return implode(' ', $joinClauses);
+            if (isset($join['using']))
+                return "$type JOIN $table USING ({$join['using']})";
+            if (isset($join['on']))
+                return "$type JOIN $table ON {$join['on']}";
+            die('Join must specify either \'on\' or \'using\'.');
+        }, $joins));
     }
 
     /**
@@ -183,15 +188,9 @@ class Database {
      * @return string The ORDER BY clause, or an empty string if no sorting is specified.
      */
     private function build_order_by_clause($orderBy): string {
-        if (is_array($orderBy)) {
-            $orderByClauses = [];
-            // Create a string containing "column ASC, column DESC, ...."
-            foreach ($orderBy as $column => $direction) {
-                $orderByClauses[] = "$column " . strtoupper($direction);
-            }
-            return implode(', ', $orderByClauses);
-        }
-        return '';
+        if (!$orderBy)
+            return '';
+        return 'ORDER BY ' . implode(', ', array_map(fn($col, $dir) => "$col " . strtoupper($dir), array_keys($orderBy), $orderBy));
     }
 
     /**
