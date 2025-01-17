@@ -2,19 +2,19 @@
 class Script {
     public ?string $src;
     public string $contents;
-    public string $script_type;
+    public ?string $script_type;
 
-    private function __construct(?string $src = null, string $contents = '', string $type = 'text/javascript') {
+    private function __construct(?string $src = null, string $contents = '', ?string $type = null) {
         $this->src = $src;
         $this->contents = $contents;
         $this->script_type = $type;
     }
 
     public function to_script_tag() : string  {
-        return '<script type=' . $this->script_type . ($this->src ? ' src="' . $this->src . '">' : '>') . $this->contents . '</script>' . "\n";
+        return '<script' . ($this->script_type ? ' type=' . $this->script_type : '') . ($this->src ? ' src="' . $this->src . '">' : '>') . $this->contents . '</script>' . "\n";
     }
 
-    public static function external(string $src, string $type = 'text/javascript') : Script {
+    public static function external(string $src, ?string $type = null) : Script {
         return new Script(src: $src, type: $type);
     }
 

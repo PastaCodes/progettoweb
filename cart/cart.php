@@ -65,7 +65,7 @@ foreach ($cart as $entry) {
                     <img src="<?= $thumbnail ?>" loading="lazy" alt="<?= $entry->thumbnail_alt() ?>">
 <?php else: ?>
                     <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" title="No image available" aria-label="No image available">
                             <use href="assets/ban-solid.svg#root"></use>
                         </svg>
                         <p>No image available</p>
