@@ -37,9 +37,10 @@ class Database {
      * - 'on' => The ON condition for the join.
      * - 'using' => The single column to join on, must have same name on both tables, alternative to the 'on' keyword.
      * @param array  $filters An associative array of conditions for the WHERE clause.
-     * Example: ['id' => 1, 'status' => 'active']
+     * Example: ['id' => 1, 'status' => 'active', 'id' => [1, 2, 3]]
      * @param array $options An array of additional options for the query.
      * - 'limit' => int (limits the number of results)
+     * - 'offset' => int (offsets the starting point of the query)
      * - 'distinct' => bool (selects distinct rows)
      * - 'order_by' => array (specifies sorting, e.g., ['column' => 'ASC'])
      * @return array An array of associative arrays representing the rows.
@@ -53,9 +54,9 @@ class Database {
             $this->build_join_clause($joins),
             $this->build_where_clause($filters),
             $this->build_order_by_clause($options['order_by'] ?? []),
-            isset($options['limit']) ? 'LIMIT ' . intval($options['limit']) : ''
+            isset($options['limit']) ? 'LIMIT ' . intval($options['limit']) : '',
+            isset($options['offset']) ? 'OFFSET ' . intval($options['offset']) : ''
         );
-        echo("<br>$sql");
         // Execute the query 
         $stmt = $this->prepare_statement($sql, $filters);
         $stmt->execute();
@@ -137,13 +138,6 @@ class Database {
     }
 
     /**
-     * Destructor for the Database class. Closes the database connection.
-     */
-    public function __destruct() {
-        $this->db->close();
-    }
-
-    /**
      * Builds the WHERE clause for a query from a filter array.
      *
      * @param array $filters An associative array of conditions.
@@ -153,8 +147,17 @@ class Database {
         if (empty($filters)) {
             return '';
         }
-        // Create a WHERE "key" = ? AND "key" = ? AND ... statement
-        $conditions = array_map(fn($key) => "$key = ?", array_keys($filters));
+        $conditions = [];
+        foreach ($filters as $key => $value) {
+            if (is_array($value)) {
+                // If array, create IN clause
+                $placeholders = implode(', ', array_fill(0, count($value), '?'));
+                $conditions[] = "$key IN ($placeholders)";
+            } else {
+                // Else write a simple statement
+                $conditions[] = "$key = ?";
+            }
+        }
         return 'WHERE ' . implode(' AND ', $conditions);
     }
 
@@ -204,12 +207,31 @@ class Database {
             die('Failed to prepare a statement: ' . $this->mysqli->error);
         }
         if (!empty($params)) {
-            // TODO: maybe change this so parameters can have a type (probably not required though)
-            $types = str_repeat('s', count($params));
-            // Get all values from the array and set them inside the query as strings
-            $stmt->bind_param($types, ...array_values($params));
+            // Helper function to determine parameter type
+            $getType = function($param) {
+                if (is_array($param)) {
+                    return implode('', array_map(function($p) {
+                        return is_int($p) ? 'i' : (is_float($p) ? 'd' : 's');
+                    }, $param));
+                }
+                return is_int($param) ? 'i' : (is_float($param) ? 'd' : 's');
+            };
+            // Flatten params and determine their types
+            $types = implode('', array_map($getType, $params));
+            // https://stackoverflow.com/questions/1319903/how-to-flatten-a-multidimensional-array
+            $values = [];
+            array_walk_recursive($params, function($v) use (&$values) { $values[] = $v; });
+            // Bind the parameters to the statement
+            $stmt->bind_param($types, ...$values);
         }
         return $stmt;
+    }
+
+    /**
+     * Destructor for the Database class. Closes the database connection.
+     */
+    public function __destruct() {
+        $this->db->close();
     }
 }
 
