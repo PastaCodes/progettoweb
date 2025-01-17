@@ -47,7 +47,7 @@ if (isset($_GET['id'])) {
 
 ?>
         <template id="no-thumbnail">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" title="No image available" aria-label="No image available">
                 <use href="assets/ban-solid.svg#root"></use>
             </svg>
             <span>No image available</span>
@@ -80,8 +80,7 @@ if (isset($_GET['id'])) {
                 <p><?= $product->short_description ?></p>
             </section>
             <section>
-                <!-- FIXME: Make radio button change variant here, also probably show how many we have in the cart so far, or some confirmation or something  -->
-                <button onclick='modifyCart("<?= $product->code_name ?>", "<?= $variant->code_suffix ?? null ?>")'>Add to cart</button>
+                <button>Add to cart</button>
             </section>
 <?php endif ?>
         </main>
