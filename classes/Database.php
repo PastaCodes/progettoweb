@@ -59,7 +59,6 @@ class Database {
             $this->build_order_by_clause($orderBy),
             $limit ? 'LIMIT ' . intval($limit) : ''
         );
-        echo($sql);
         // Execute the query 
         $stmt = $this->prepare_statement($sql, $filters);
         $stmt->execute();
