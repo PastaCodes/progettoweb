@@ -2,6 +2,8 @@
 class CartEntry {
     public string $product_code_name;
     public ?string $variant_code_suffix;
+    public ?string $product_display_name = null;
+    public ?string $variant_display_name = null;
     public int $quantity;
     public ?float $unit_price = null;
 
@@ -20,6 +22,10 @@ class CartEntry {
 
     function entry_price() : float {
         return $this->quantity * $this->unit_price;
+    }
+
+    function thumbnail_alt() : string {
+        return 'Image of ' . ($this->variant_code_suffix === null ? $this->product_display_name : $this->product_display_name . ' in the ' . $this->variant_display_name . ' variant');
     }
 }
 ?>

@@ -49,6 +49,10 @@ if (!empty($all_bases)) {
     }
 }
 foreach ($cart as $entry) {
+    $entry->product_display_name = $product_bases_details[$entry->product_code_name]['display_name'];
+    if ($entry->variant_code_suffix !== null) {
+        $entry->variant_display_name = $product_variants_details[$entry->product_code_name][$entry->variant_code_suffix]['display_name'];
+    }
     $entry->unit_price = compound_key($entry->product_code_name, $entry->variant_code_suffix, $product_prices);
 }
 ?>
@@ -58,7 +62,7 @@ foreach ($cart as $entry) {
 <?php foreach ($cart as $entry): ?>
                 <article>
 <?php if ($thumbnail = get_thumbnail_if_exists($entry->full_code_name())): ?>
-                    <img src="<?= $thumbnail ?>" loading="lazy">
+                    <img src="<?= $thumbnail ?>" loading="lazy" alt="<?= $entry->thumbnail_alt() ?>">
 <?php else: ?>
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -67,9 +71,9 @@ foreach ($cart as $entry) {
                         <p>No image available</p>
                     </div>
 <?php endif ?>
-                    <p><a href="product?<?= to_url_params($entry->product_code_name, $entry->variant_code_suffix) ?>"><?= $product_bases_details[$entry->product_code_name]['display_name'] ?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><use href="assets/arrow.svg#root"></use></svg></a></p>
-<?php if ($entry->variant_code_suffix): ?>
-                    <p><?= $product_variants_details[$entry->product_code_name][$entry->variant_code_suffix]['display_name'] ?></p>
+                    <p><a href="product?<?= to_url_params($entry->product_code_name, $entry->variant_code_suffix) ?>"><?= $entry->product_display_name ?> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><use href="assets/arrow.svg#root"></use></svg></a></p>
+<?php if ($entry->variant_code_suffix !== null): ?>
+                    <p><?= $entry->variant_display_name ?></p>
 <?php endif ?>
                     <button>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
