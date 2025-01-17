@@ -1,11 +1,6 @@
 :root {
     --thumbnail-size: 14.2rem;
-    --spacing-vertical-small: 0.4rem;
     --radio-spacing: 0.5rem;
-}
-
-section:last-child {
-    margin-bottom: 0;
 }
 
 main > section {
@@ -103,8 +98,4 @@ article > section:last-child {
 
 [type="radio"]:hover {
     --pico-box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-form-element-focus-color);
-}
-
-nav ul li::before {
-    content: none;
 }

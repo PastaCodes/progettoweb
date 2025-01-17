@@ -1,0 +1,17 @@
+:root {
+    --spacing-vertical-small: 0.4rem;
+}
+
+section:last-child {
+    margin-bottom: 0;
+}
+
+nav ul li::before {
+    content: none;
+}
+
+#theme_switcher {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+}

@@ -1,5 +1,21 @@
 // Wait for the style to be rendered
 window.addEventListener('load', () => {
+    // Cart stuff
+    const addToCartBtn = document.querySelector('section > button');
+    let cartBtnHandler = null;
+    const setCartButtonEvent = (productId, variantId) => {
+        addToCartBtn.removeEventListener('click', cartBtnHandler);
+        cartBtnHandler = () => modifyCart(productId, variantId);
+        addToCartBtn.addEventListener('click', cartBtnHandler);
+    };
+    const setCartButtonEventRadio = (radio) => {
+        const variantId = radio.getAttribute('data-variant-suffix');
+        const url = new URL(window.location.href);
+        const productId = new URLSearchParams(url.search).get('id');
+        setCartButtonEvent(productId, variantId);
+    };
+    // Set cart button base event
+    setCartButtonEvent(new URLSearchParams(new URL(window.location.href).search).get('id'));
     // Retrieve the elements to be used when no thumbnail is available
     const noThumbnailTemplate = document.getElementById('no-thumbnail');
     const radiosSection = document.querySelector('main > section:nth-child(2):not(:nth-last-child(2))');
@@ -22,17 +38,6 @@ window.addEventListener('load', () => {
             }
         }
         const radios = Array.from(radiosSection.children);
-        // Stuff for the cart button 
-        const addToCartBtn = document.querySelector('section > button');
-        let cartBtnHandler = null;
-        const setCartButtonEvent = (radio) => {
-            const variantId = radio.getAttribute('data-variant-suffix');
-            const url = new URL(window.location.href);
-            const productId = new URLSearchParams(url.search).get('id');
-            addToCartBtn.removeEventListener('click', cartBtnHandler);
-            cartBtnHandler = () => modifyCart(productId, variantId);
-            addToCartBtn.addEventListener('click', cartBtnHandler);
-        };
         // When hovering over a radio button, the associated thumbnail is displayed
         // Otherwise the one associated with the checked button is displayed
         radios.forEach(radio => {
@@ -41,7 +46,7 @@ window.addEventListener('load', () => {
                 const url = new URL(window.location.href);
                 url.searchParams.set('variant', variant);
                 window.history.replaceState(null, '', url.toString());
-                setCartButtonEvent(radio);
+                setCartButtonEventRadio(radio);
             });
             radio.addEventListener('mouseover', () => {
                 if (!radio.checked)
@@ -52,7 +57,7 @@ window.addEventListener('load', () => {
                     displayThumbnail(radiosSection.querySelector(':checked'));
             });
             if (radio.checked)
-                setCartButtonEvent(radio);
+                setCartButtonEventRadio(radio);
             // For silly little browsers that do not support attr styling
             radio.style.setProperty('--radio-color', radio.getAttribute('data-color'));
         });
