@@ -45,20 +45,17 @@ class Database {
      * @return array An array of associative arrays representing the rows.
      */
     public function find(string $table, array $joins = [], array $filters = [], array $options = []): array {
-        // Get the data from the passed arguments
-        $limit = $options['limit'] ?? null;
-        $distinct = $options['distinct'] ?? false;
-        $orderBy = $options['order_by'] ?? null;
         // Create the sql query
         $sql = sprintf(
             "SELECT %s * FROM %s %s %s %s %s",
-            $distinct ? 'DISTINCT' : '',
+            $options['distinct'] ?? false ? 'DISTINCT' : '',
             $table,
             $this->build_join_clause($joins),
             $this->build_where_clause($filters),
-            $this->build_order_by_clause($orderBy),
-            $limit ? 'LIMIT ' . intval($limit) : ''
+            $this->build_order_by_clause($options['order_by'] ?? []),
+            isset($options['limit']) ? 'LIMIT ' . intval($options['limit']) : ''
         );
+        echo("<br>$sql");
         // Execute the query 
         $stmt = $this->prepare_statement($sql, $filters);
         $stmt->execute();
@@ -113,8 +110,7 @@ class Database {
         // Use the data keys to create a series of "column = ?, ..." components of the query
         $setClause = implode(', ', array_map(fn($key) => "$key = ?", array_keys($data)));
         // Create the base query
-        $whereClause = $this->build_where_clause($filters);
-        $sql = "UPDATE $table SET $setClause $whereClause";
+        $sql = "UPDATE $table SET $setClause " . $this->build_where_clause($filters);
         // Use both the data and the filter to replace the ?
         $stmt = $this->prepare_statement($sql, array_merge($data, $filters));
         // Execute the query
@@ -132,8 +128,7 @@ class Database {
      */
     public function delete(string $table, array $filters = []): int {
         // Create the base query
-        $whereClause = $this->build_where_clause($filters);
-        $sql = "DELETE FROM $table $whereClause";
+        $sql = "DELETE FROM $table " . $this->build_where_clause($filters);;
         $stmt = $this->prepare_statement($sql, $filters);
         // Execute the query
         $stmt->execute();
@@ -170,6 +165,8 @@ class Database {
      * @return string The JOIN clause, or an empty string if no joins are provided.
      */
     private function build_join_clause(array $joins): string {
+        if (empty($joins))
+            return '';
         return implode(' ', array_map(function ($join) {
             $type = strtoupper($join['type'] ?? 'INNER');
             $table = $join['table'];
@@ -188,7 +185,7 @@ class Database {
      * @return string The ORDER BY clause, or an empty string if no sorting is specified.
      */
     private function build_order_by_clause($orderBy): string {
-        if (!$orderBy)
+        if (empty($orderBy))
             return '';
         return 'ORDER BY ' . implode(', ', array_map(fn($col, $dir) => "$col " . strtoupper($dir), array_keys($orderBy), $orderBy));
     }
