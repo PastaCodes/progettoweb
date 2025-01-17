@@ -41,7 +41,7 @@ $body = ob_get_clean();
             <nav><ul>
                 <li><a href="">Homepage</a></li>
                 <li><a href="">Products</a></li>
-                <li><a href="">Carrello</a></li>
+                <li><a href="cart">Carrello</a></li>
             </ul></nav>
         </header>
 <?php endif ?>

@@ -54,7 +54,3 @@ main > section:nth-child(2):not(:nth-last-child(2)) {
 [type="radio"]:hover {
     --pico-box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-form-element-focus-color);
 }
-
-nav ul li::before {
-    content: none;
-}
