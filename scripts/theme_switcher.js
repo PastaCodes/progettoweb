@@ -6,7 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const switchTheme = (themeStr) => {
         // Switch button text
         btn.innerHTML = themeStr === 'dark' ? '🌙' : '☀️';
-        btn.setAttribute('title', 'Switch to ' + (themeStr === 'dark' ? 'light' : 'dark') + ' theme');
+        const btnTitle = 'Switch to ' + (themeStr === 'dark' ? 'light' : 'dark') + ' theme';
+        btn.setAttribute('title', btnTitle);
+        btn.setAttribute('aria-label', btnTitle);
         // Switch page color theme
         docElt.setAttribute('data-theme', themeStr);
         // Set theme preference to new theme
