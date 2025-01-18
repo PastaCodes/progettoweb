@@ -7,6 +7,7 @@ $cart = [];
 $product_bases = [];
 $all_bases = [];
 $product_variants = [];
+// Get products from cookie
 $cart_cookie = $_COOKIE['shopping_cart'] ?? '{}';
 foreach (json_decode($cart_cookie) as $product => $entry) {
     if (is_int($entry)) {
@@ -20,38 +21,41 @@ foreach (json_decode($cart_cookie) as $product => $entry) {
     }
     $all_bases[] = $product;
 }
-$product_bases_details = [];
-$product_variants_details = [];
-$product_prices = [];
+// Fetch product base and variant details
+$product_details = [];
 if (!empty($all_bases)) {
-    $products_result = $db->query('select code_name, display_name from product_base where code_name in (' . implode(', ', array_map(fn($p) => '\'' . $p . '\'', $all_bases)) . ')');
-    while ($products_row = $products_result->fetch_assoc()) {
-        $product_bases_details[$products_row['code_name']] = $products_row;
-    }
-    if (!empty($product_bases)) {
-        $products_result = $db->query('select product, price from product_info where product in (' . implode(', ', array_map(fn($p) => '\'' . $p . '\'', $product_bases)) . ') and variant is null');
-        while ($products_row = $products_result->fetch_assoc()) {
-            $product_prices[$products_row['product']] = $products_row['price'];
-        }
-    }
-    if (!empty($product_variants)) {
-        $variants_result = $db->query('select base, code_suffix, display_name, price from product_variant join product_info on product = base and variant = code_suffix where ' . implode(' or ', array_map(fn($v) => '(base =\'' . $v[0] . '\' and code_suffix = \'' . $v[1] . '\')', $product_variants)));
-        while ($variants_row = $variants_result->fetch_assoc()) {
-            if (!array_key_exists($variants_row['base'], $product_variants_details)) {
-                $product_variants_details[$variants_row['base']] = [];
-            }
-            $product_variants_details[$variants_row['base']][$variants_row['code_suffix']] = $variants_row;
-            if (!array_key_exists($variants_row['base'], $product_prices)) {
-                $product_prices[$variants_row['base']] = [];
-            }
-            $product_prices[$variants_row['base']][$variants_row['code_suffix']] = $variants_row['price'];
+    $product_details = $database->find(
+        'product_base',
+        [
+            [
+                'type' => 'INNER',
+                'table' => 'product_info',
+                'on' => 'product = code_name',
+            ],
+            [
+                'type' => 'LEFT',
+                'table' => 'product_variant',
+                'on' => 'base = code_name',
+            ]
+        ],
+        ['product_base.code_name' => $all_bases],
+        ['distinct' => true]
+    );
+    // Organize product details based on base and variant
+    foreach ($product_details as $detail) {
+        $product_bases_details[$detail['code_name']] = $detail;
+        if (!$detail['variant'])
+            $product_prices[$detail['product']] = $detail['price'];
+        else {
+            $product_variants_details[$detail['base']][$detail['code_suffix']] = $detail;
+            $product_prices[$detail['base']][$detail['code_suffix']] = $detail['price'];
         }
     }
 }
 foreach ($cart as $entry) {
-    $entry->product_display_name = $product_bases_details[$entry->product_code_name]['display_name'];
+    $entry->product_display_name = $product_bases_details[$entry->product_code_name]['product_base.display_name'] ?? null;
     if ($entry->variant_code_suffix !== null) {
-        $entry->variant_display_name = $product_variants_details[$entry->product_code_name][$entry->variant_code_suffix]['display_name'];
+        $entry->variant_display_name = $product_variants_details[$entry->product_code_name][$entry->variant_code_suffix]['product_variant.display_name'] ?? null;
     }
     $entry->unit_price = compound_key($entry->product_code_name, $entry->variant_code_suffix, $product_prices);
 }

@@ -36,6 +36,7 @@ class Database {
      * - 'table' => The name of the table to join.
      * - 'on' => The ON condition for the join.
      * - 'using' => The single column to join on, must have same name on both tables, alternative to the 'on' keyword.
+     * When using join, the columns with the same name will be prefixed by the table name 'table_name.column_name'.
      * @param array  $filters An associative array of conditions for the WHERE clause.
      * Example: ['id' => 1, 'status' => 'active', 'id' => [1, 2, 3]]
      * @param array $options An array of additional options for the query.
@@ -46,10 +47,14 @@ class Database {
      * @return array An array of associative arrays representing the rows.
      */
     public function find(string $table, array $joins = [], array $filters = [], array $options = []): array {
+        // Generate the list of columns with table prefixes for collision handling
+        $columns = $this->get_prefixed_columns($table, $joins);
+        $columnList = implode(', ', $columns);
         // Create the sql query
         $sql = sprintf(
-            "SELECT %s * FROM %s %s %s %s %s",
+            "SELECT %s %s FROM %s %s %s %s %s",
             $options['distinct'] ?? false ? 'DISTINCT' : '',
+            $columnList,
             $table,
             $this->build_join_clause($joins),
             $this->build_where_clause($filters),
@@ -135,6 +140,51 @@ class Database {
         $stmt->execute();
         // Return the count of modified rows
         return $stmt->affected_rows;
+    }
+
+    /**
+     * Generates a list of columns with table prefixes to avoid name collisions with joins.
+     *
+     * @param string $table The name of the main table.
+     * @param array $joins The array of joins (see `find` method for structure).
+     * @return array The list of columns with table prefixes.
+     */
+    private function get_prefixed_columns(string $table, array $joins): array {
+        // Get columns for all involved tables
+        $tables = [$table];
+        foreach ($joins as $join) {
+            $tables[] = $join['table'];
+        }
+        $allColumns = [];
+        $tableColumns = [];
+        // Fetch column information for each table
+        foreach ($tables as $tbl) {
+            $query = "SHOW COLUMNS FROM $tbl";
+            $result = $this->db->query($query);
+            if (!$result) {
+                die('Failed to retrieve columns for table: ' . $tbl);
+            }
+            $columns = [];
+            while ($row = $result->fetch_assoc()) {
+                $columns[] = $row['Field'];
+                $allColumns[] = $row['Field'];
+            }
+            $tableColumns[$tbl] = $columns;
+        }
+        // Identify duplicate column names
+        $duplicateColumns = array_keys(array_filter(array_count_values($allColumns), fn($count) => $count > 1));
+        // Build the final column list
+        $columnsWithAliases = [];
+        foreach ($tableColumns as $tbl => $columns) {
+            foreach ($columns as $col) {
+                if (in_array($col, $duplicateColumns)) {
+                    $columnsWithAliases[] = sprintf('%s.%s AS `%s.%s`', $tbl, $col, $tbl, $col);
+                } else {
+                    $columnsWithAliases[] = sprintf('%s.%s', $tbl, $col);
+                }
+            }
+        }
+        return $columnsWithAliases;
     }
 
     /**
