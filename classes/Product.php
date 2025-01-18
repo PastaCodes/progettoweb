@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ ."/ProductBase.php";
-require_once __DIR__ ."/ProductVariant.php";
-require_once __DIR__ ."/Image.php";
+require_once __DIR__ . "/ProductBase.php";
+require_once __DIR__ . "/ProductVariant.php";
+require_once __DIR__ . "/Image.php";
 
 class Product {
     public ProductBase $base;

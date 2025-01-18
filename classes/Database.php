@@ -8,7 +8,7 @@ class Database {
     /**
      * @var mysqli $db The database connection instance.
      */
-    private $db;
+    public $db;
 
     /**
      * Constructor for the Database class.

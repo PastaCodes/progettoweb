@@ -11,3 +11,4 @@ if (SETTINGS['hosted-locally']) {
 }
 
 $database = new Database($servername, $username, $password, $dbname);
+$db = $database->db;
