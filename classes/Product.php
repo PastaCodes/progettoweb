@@ -47,30 +47,40 @@ class Product {
     }
 
     public static function fetch_products(): array {
-        global $db;
-        $products_result = $db->query('
-            select b.code_name base_code_name, b.display_name base_display_name, price_min, price_max,
-                    v.code_suffix variant_code_suffix, v.display_name variant_display_name, v.color
-                from product_base b left join product_variant v on v.base = b.code_name
-                    join price_range on product = code_name where standalone = true
-                order by v.ordinal
-        ');
+        global $database;
+        $products_result = $database->find(
+            table: 'product_base',
+            joins: [
+                [
+                    'type' => 'INNER',
+                    'table' => 'price_range',
+                    'on' => 'product = code_name',
+                ],
+                [
+                    'type' => 'LEFT',
+                    'table' => 'product_variant',
+                    'on' => 'base = code_name',
+                ]
+            ],
+            filters: ['standalone' => true],
+            options: ['order_by' => ['code_name' => 'ASC', 'ordinal' => 'ASC']]
+        );
         $products = [];
-        while ($products_row = $products_result->fetch_assoc()) {
-            if (!array_key_exists($products_row['base_code_name'], $products)) {
-                $product = $products[$products_row['base_code_name']] = Product::from($products_row['base_code_name'], $products_row['variant_code_suffix']);
-                $product->base->display_name = $products_row['base_display_name'];
+        foreach ($products_result as $products_row) {
+            if (!array_key_exists($products_row['code_name'], $products)) {
+                $product = $products[$products_row['code_name']] = Product::from($products_row['code_name'], $products_row['code_suffix']);
+                $product->base->display_name = $products_row['product_base.display_name'];
                 $product->base->price_min = $products_row['price_min'];
                 $product->base->price_max = $products_row['price_max'];
                 $variant_product = $product;
             } else {
-                $product = $products[$products_row['base_code_name']];
-                $variant_product = new Product($product->base, new ProductVariant($products_row['variant_code_suffix']));
+                $product = $products[$products_row['code_name']];
+                $variant_product = new Product($product->base, new ProductVariant($products_row['code_suffix']));
             }
-            if ($products_row['variant_code_suffix'] === null) {
+            if (!$products_row['code_suffix']) {
                 continue;
             }
-            $variant_product->variant->display_name = $products_row['variant_display_name'];
+            $variant_product->variant->display_name = $products_row['product_variant.display_name'];
             $variant_product->variant->color = $products_row['color'];
             $product->base->variants[] = $variant_product;
         }
@@ -78,29 +88,38 @@ class Product {
     }
 
     public function fetch_all_details() {
-        global $db;
-        $details_result = $db->query('
-            select b.display_name base_display_name, b.short_description, b.standalone,
-                    v.code_suffix variant_code_suffix, v.display_name variant_display_name, v.color, price
-                from product_base b left join product_variant v on v.base = b.code_name
-                    join product_info on product = b.code_name and (v.code_suffix is null or variant = v.code_suffix)
-                where code_name = \'' . $this->base->code_name . '\'
-                order by v.ordinal'
+        global $database;
+        $details_result = $database->find(
+            table: 'product_base',
+            joins: [
+                [
+                    'type' => 'INNER',
+                    'table' => 'product_info',
+                    'on' => 'product = code_name',
+                ],
+                [
+                    'type' => 'LEFT',
+                    'table' => 'product_variant',
+                    'on' => 'base = code_name AND (code_suffix is null or variant = code_suffix)',
+                ]
+            ],
+            filters: ['code_name' => $this->base->code_name],
+            options: ['order_by' => ['ordinal' => 'ASC']]
         );
-        while ($details_row = $details_result->fetch_assoc()) {
+        foreach ($details_result as $details_row) {
             if ($this->base->display_name === false) {
-                $this->base->display_name = $details_row['base_display_name'];
+                $this->base->display_name = $details_row['product_base.display_name'];
                 $this->base->short_description = $details_row['short_description'];
                 $this->base->is_standalone = $details_row['standalone'];
             }
-            if ($details_row['variant_code_suffix'] === $this->variant?->code_suffix) {
+            if ($details_row['code_suffix'] === $this->variant?->code_suffix) {
                 $variant_product = $this;
             } else {
-                $variant_product = new Product($this->base, new ProductVariant($details_row['variant_code_suffix']));
+                $variant_product = new Product($this->base, new ProductVariant($details_row['code_suffix']));
             }
             if ($variant_product !== null) {
                 if ($variant_product->variant !== null) {
-                    $variant_product->variant->display_name = $details_row['variant_display_name'];
+                    $variant_product->variant->display_name = $details_row['product_variant.display_name'];
                     $variant_product->variant->color = $details_row['color'];
                     $this->base->variants[] = $variant_product;
                 }
