@@ -32,7 +32,7 @@ while ($products_row = $products_result->fetch_assoc()) {
 }
 ?>
         <template id="no-thumbnail">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" title="No image available" aria-label="No image available">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-label="No image available">
                 <use href="assets/nothing.svg#root"></use>
             </svg>
             <span>No image available</span>
@@ -46,7 +46,7 @@ while ($products_row = $products_result->fetch_assoc()) {
 <?php if ($product->thumbnail() !== null): ?>
                             <img src="<?= $product->thumbnail()->file ?>" loading="lazy" alt="<?= $product->thumbnail()->alt_text ?>">
 <?php else: ?>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-label="No image available">
                                 <use href="assets/nothing.svg#root"></use>
                             </svg>
                             <span>No image available</span>

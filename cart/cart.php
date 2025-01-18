@@ -28,7 +28,7 @@ if (!empty($cart->entries)) {
                     <p><?= $entry->product->variant->display_name ?></p>
 <?php endif ?>
                     <button>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-label="Remove from cart">
                             <use href="assets/remove.svg#root"></use>
                         </svg>
                     </button>
