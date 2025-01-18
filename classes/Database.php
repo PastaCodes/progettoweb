@@ -8,7 +8,7 @@ class Database {
     /**
      * @var mysqli $db The database connection instance.
      */
-    public $db;
+    private $db;
 
     /**
      * Constructor for the Database class.
@@ -49,12 +49,12 @@ class Database {
     public function find(string $table, array $joins = [], array $filters = [], array $options = []): array {
         // Generate the list of columns with table prefixes for collision handling
         $columns = $this->get_prefixed_columns($table, $joins);
-        $columnList = implode(', ', $columns);
+        $column_list = implode(', ', $columns);
         // Create the sql query
         $sql = sprintf(
             "SELECT %s %s FROM %s %s %s %s %s",
             $options['distinct'] ?? false ? 'DISTINCT' : '',
-            $columnList,
+            $column_list,
             $table,
             $this->build_join_clause($joins),
             $this->build_where_clause($filters),
@@ -114,9 +114,9 @@ class Database {
      */
     public function update(string $table, array $filters = [], array $data): int {
         // Use the data keys to create a series of "column = ?, ..." components of the query
-        $setClause = implode(', ', array_map(fn($key) => "$key = ?", array_keys($data)));
+        $set_clause = implode(', ', array_map(fn($key) => "$key = ?", array_keys($data)));
         // Create the base query
-        $sql = "UPDATE $table SET $setClause " . $this->build_where_clause($filters);
+        $sql = "UPDATE $table SET $set_clause " . $this->build_where_clause($filters);
         // Use both the data and the filter to replace the ?
         $stmt = $this->prepare_statement($sql, array_merge($data, $filters));
         // Execute the query
@@ -155,8 +155,8 @@ class Database {
         foreach ($joins as $join) {
             $tables[] = $join['table'];
         }
-        $allColumns = [];
-        $tableColumns = [];
+        $all_columns = [];
+        $table_columns = [];
         // Fetch column information for each table
         foreach ($tables as $tbl) {
             $query = "SHOW COLUMNS FROM $tbl";
@@ -167,15 +167,15 @@ class Database {
             $columns = [];
             while ($row = $result->fetch_assoc()) {
                 $columns[] = $row['Field'];
-                $allColumns[] = $row['Field'];
+                $all_columns[] = $row['Field'];
             }
-            $tableColumns[$tbl] = $columns;
+            $table_columns[$tbl] = $columns;
         }
         // Identify duplicate column names
-        $duplicateColumns = array_keys(array_filter(array_count_values($allColumns), fn($count) => $count > 1));
+        $duplicateColumns = array_keys(array_filter(array_count_values($all_columns), fn($count) => $count > 1));
         // Build the final column list
         $columnsWithAliases = [];
-        foreach ($tableColumns as $tbl => $columns) {
+        foreach ($table_columns as $tbl => $columns) {
             foreach ($columns as $col) {
                 if (in_array($col, $duplicateColumns)) {
                     $columnsWithAliases[] = sprintf('%s.%s AS `%s.%s`', $tbl, $col, $tbl, $col);
@@ -218,15 +218,17 @@ class Database {
      * @return string The JOIN clause, or an empty string if no joins are provided.
      */
     private function build_join_clause(array $joins): string {
-        if (empty($joins))
+        if (empty($joins)) {
             return '';
+        }
         return implode(' ', array_map(function ($join) {
             $type = strtoupper($join['type'] ?? 'INNER');
             $table = $join['table'];
-            if (isset($join['using']))
+            if (isset($join['using'])) {
                 return "$type JOIN $table USING ({$join['using']})";
-            if (isset($join['on']))
+            } else if (isset($join['on'])) {
                 return "$type JOIN $table ON {$join['on']}";
+            }
             die('Join must specify either \'on\' or \'using\'.');
         }, $joins));
     }
@@ -234,13 +236,14 @@ class Database {
     /**
      * Builds the ORDER BY clause for a query from an options array.
      *
-     * @param array $orderBy An associative array specifying columns and sorting directions.
+     * @param array $order_by An associative array specifying columns and sorting directions.
      * @return string The ORDER BY clause, or an empty string if no sorting is specified.
      */
-    private function build_order_by_clause($orderBy): string {
-        if (empty($orderBy))
+    private function build_order_by_clause(array $order_by): string {
+        if (empty($order_by)) {
             return '';
-        return 'ORDER BY ' . implode(', ', array_map(fn($col, $dir) => "$col " . strtoupper($dir), array_keys($orderBy), $orderBy));
+        }
+        return 'ORDER BY ' . implode(', ', array_map(fn($col, $dir) => "$col " . strtoupper($dir), array_keys($order_by), $order_by));
     }
 
     /**

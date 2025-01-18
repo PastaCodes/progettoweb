@@ -51,15 +51,18 @@ window.addEventListener('load', () => {
                 setCartButtonEventRadio(radio);
             });
             radio.addEventListener('mouseover', () => {
-                if (!radio.checked)
+                if (!radio.checked) {
                     displayThumbnail(radio);
+                }
             });
             radio.addEventListener('mouseout', () => {
-                if (!radio.checked)
+                if (!radio.checked) {
                     displayThumbnail(radiosSection.querySelector(':checked'));
+                }
             });
-            if (radio.checked)
+            if (radio.checked) {
                 setCartButtonEventRadio(radio);
+            }
             // For silly little browsers that do not support attr styling
             radio.style.setProperty('--radio-color', radio.getAttribute('data-color'));
         });

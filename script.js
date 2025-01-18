@@ -16,8 +16,9 @@ window.addEventListener('load', () => {
                 ev.stopPropagation();
             }
         });
-        if (!radiosSection)
+        if (!radiosSection) {
             return; // Skip to next article
+        }
         const thumbnailSection = article.querySelector('section:nth-child(1)');
         const displayThumbnail = (activeRadio) => {
             let img = thumbnailSection.querySelector('img');
@@ -47,19 +48,23 @@ window.addEventListener('load', () => {
         };
         article.radios.forEach(radio => {
             radio.addEventListener('click', ev => {
-                if (article.radios.length <= 5 || ev.isProgrammatic) 
+                if (article.radios.length <= 5 || ev.isProgrammatic) {
                     setArticleLink(radio);
+                }
             });
             radio.addEventListener('mouseover', () => {
-                if (!radio.checked)
+                if (!radio.checked) {
                     displayThumbnail(radio);
+                }
             });
             radio.addEventListener('mouseout', () => {
-                if (!radio.checked)
+                if (!radio.checked) {
                     displayThumbnail(radiosSection.querySelector(':checked'));
+                }
             });
-            if (radio.checked) 
+            if (radio.checked) {
                 setArticleLink(radio);
+            }
             // For silly little browsers that do not support attr styling
             radio.style.setProperty('--radio-color', radio.getAttribute('data-color'));
         });
@@ -145,8 +150,9 @@ window.addEventListener('load', () => {
                 inDeadzone = article.radios.some(radio => {
                     let rect = radio.getBoundingClientRect();
                     // Rough x check
-                    if (ev.clientX < rect.x - deadzone || ev.clientX > rect.x + diameter + deadzone)
+                    if (ev.clientX < rect.x - deadzone || ev.clientX > rect.x + diameter + deadzone) {
                         return false;
+                    }
                     let dx = ev.clientX - (rect.x + diameter / 2);
                     let dy = ev.clientY - (rect.y + diameter / 2);
                     return dx * dx + dy * dy <= deadRadius2;
