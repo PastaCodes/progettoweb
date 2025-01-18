@@ -46,6 +46,37 @@ class Product {
         return $html;
     }
 
+    public static function fetch_products(): array {
+        global $db;
+        $products_result = $db->query('
+            select b.code_name base_code_name, b.display_name base_display_name, price_min, price_max,
+                    v.code_suffix variant_code_suffix, v.display_name variant_display_name, v.color
+                from product_base b left join product_variant v on v.base = b.code_name
+                    join price_range on product = code_name where standalone = true
+                order by v.ordinal
+        ');
+        $products = [];
+        while ($products_row = $products_result->fetch_assoc()) {
+            if (!array_key_exists($products_row['base_code_name'], $products)) {
+                $product = $products[$products_row['base_code_name']] = Product::from($products_row['base_code_name'], $products_row['variant_code_suffix']);
+                $product->base->display_name = $products_row['base_display_name'];
+                $product->base->price_min = $products_row['price_min'];
+                $product->base->price_max = $products_row['price_max'];
+                $variant_product = $product;
+            } else {
+                $product = $products[$products_row['base_code_name']];
+                $variant_product = new Product($product->base, new ProductVariant($products_row['variant_code_suffix']));
+            }
+            if ($products_row['variant_code_suffix'] === null) {
+                continue;
+            }
+            $variant_product->variant->display_name = $products_row['variant_display_name'];
+            $variant_product->variant->color = $products_row['color'];
+            $product->base->variants[] = $variant_product;
+        }
+        return $products;
+    }
+
     public function fetch_all_details() {
         global $db;
         $details_result = $db->query('
