@@ -1,15 +1,11 @@
 <?php
 class ProductVariant {
     public string $code_suffix;
-    public string $display_name;
-    public string $color;
-    public ?string $thumbnail;
+    public string|false $display_name = false;
+    public string|false $color = false;
 
-    function __construct(string $code_suffix, string $display_name, string $color, ?string $thumbnail = null) {
+    public function __construct(string $code_suffix) {
         $this->code_suffix = $code_suffix;
-        $this->display_name = $display_name;
-        $this->color = $color;
-        $this->thumbnail = $thumbnail;
     }
 }
 ?>

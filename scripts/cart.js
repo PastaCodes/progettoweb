@@ -1,6 +1,6 @@
 import { createCookie, getCookie, deleteCookie } from "./cookie.js";
 
-const CART_COOKIE_NAME = 'shopping_cart';
+const CART_COOKIE_NAME = 'cart';
 
 // variant_id = null if product has no variant
 function modifyCart(product_id, variant_id, quantity = 1) {

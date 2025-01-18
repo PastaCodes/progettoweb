@@ -23,14 +23,16 @@ window.addEventListener('load', () => {
         const thumbnailSection = document.querySelector('main > section:nth-child(1)');
         const displayThumbnail = (activeRadio) => {
             let img = thumbnailSection.querySelector('img');
-            const thumbnail = activeRadio.getAttribute('data-thumbnail');
-            if (thumbnail && !img) {
+            const thumbnailFile = activeRadio.getAttribute('data-thumbnail-file');
+            const thumbnailAltText = activeRadio.getAttribute('data-thumbnail-alt');
+            if (thumbnailFile && !img) {
                 // Replace the 'no thumbnail' elements with a new img
                 thumbnailSection.replaceChildren(img = document.createElement('img'));
             }
-            if (thumbnail) {
+            if (thumbnailFile) {
                 // Reuse the already present img to avoid flashes
-                img.src = thumbnail;
+                img.src = thumbnailFile;
+                img.alt = thumbnailAltText;
                 img.loading = 'eager';
             } else if (img) {
                 // Replace the img with the 'no thumbnail' elements

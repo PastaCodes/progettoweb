@@ -11,15 +11,15 @@ class Script {
     }
 
     public function to_script_tag() : string  {
-        return '<script' . ($this->script_type ? ' type=' . $this->script_type : '') . ($this->src ? ' src="' . $this->src . '">' : '>') . $this->contents . '</script>' . "\n";
+        return '<script' . ($this->script_type === null ? '' : ' type=' . $this->script_type) . ($this->src === null ? '>' : ' src="' . $this->src . '">') . $this->contents . '</script>' . "\n";
     }
 
     public static function external(string $src, ?string $type = null) : Script {
         return new Script(src: $src, type: $type);
     }
 
-    public static function internal(string $contents) : Script {
-        return new Script(contents: $contents);
+    public static function internal(string $contents, ?string $type = null) : Script {
+        return new Script(contents: $contents, type: $type);
     }
 }
 ?>
