@@ -6,6 +6,7 @@ class Page {
     public bool $has_feet = false;
     public array $stylesheets;
     public array $scripts;
+    public array $prefetch;
     public bool $allow_indexing = false;
 }
 ?>

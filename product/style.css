@@ -29,7 +29,7 @@ main > section:first-child span {
     color: var(--pico-muted-color);
 }
 
-main > section:nth-child(2):not(:nth-last-child(2)) {
+main > section:nth-child(2):not(:nth-last-child(2)):not(:last-child) {
     display: flex;
     flex-direction: row;
     gap: var(--radio-spacing);

@@ -20,6 +20,19 @@ article > :first-child {
     grid-column: 1;
 }
 
+article > div:first-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+article > :first-child svg {
+    height: 5rem;
+    color: var(--pico-muted-color);
+    margin-bottom: var(--spacing-vertical-small);
+}
+
 button svg {
     height: 1em;
 }
@@ -28,13 +41,13 @@ article p {
     margin-bottom: 0;
 }
 
-article p:first-of-type {
+article > p:first-of-type {
     font-weight: bold;
     grid-row: 1;
     grid-column: 2;
 }
 
-article p a {
+article > p a {
     color: var(--pico-primary-inverted);
 }
 

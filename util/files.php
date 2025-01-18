@@ -3,17 +3,17 @@ function get_directory() : string {
     return substr(getcwd() . '/', strlen(DOCUMENT_ROOT));
 }
 
+function file_exists_rel(string $file): bool {
+    return file_exists(DOCUMENT_ROOT . $file);
+}
+
 function add_file_if_exists(string $file, array &$files, ?callable $map = null) {
-    if (file_exists(DOCUMENT_ROOT . $file))
+    if (file_exists_rel($file))
         $files[] = $map ? $map($file) : $file;
 }
 
 function get_file_if_exists(string $file) : ?string {
-    return file_exists(DOCUMENT_ROOT . $file) ? $file : null;
-}
-
-function get_thumbnail_if_exists(string $code) : ?string {
-    return get_file_if_exists('assets/thumbnails/' . $code . '.png');
+    return file_exists_rel($file) ? $file : null;
 }
 
 function read_file(string $file) : string {
