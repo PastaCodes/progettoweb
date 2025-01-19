@@ -99,14 +99,14 @@ main > div > button, main > div > [role="group"] > button {
     text-align: center;
 }
 
-main > div > p:nth-last-child(2) {
+main > div > p:nth-last-of-type(2) {
     grid-row: 1;
     grid-column: 3 / 5;
     justify-self: right;
     font-size: 1.4rem;
 }
 
-main > div > p:last-child {
+main > div > p:nth-last-of-type(1) {
     grid-row: 2;
     grid-column: 3 / 5;
     justify-self: right;

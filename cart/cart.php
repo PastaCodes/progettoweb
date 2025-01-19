@@ -26,6 +26,8 @@ if (!empty($cart->entries)) {
 <?php if ($entry->product->variant !== null): ?>
                 <p><?= $entry->product->variant->display_name ?></p>
 <?php endif ?>
+                <p>&euro; <?= format_price($entry->entry_price()) ?></p>
+                <p>&euro; <?= format_price($entry->product->price) ?>/pc</p>
                 <button>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" aria-label="Remove from cart">
                         <use href="assets/remove.svg#root"></use>
@@ -36,8 +38,6 @@ if (!empty($cart->entries)) {
                     <input name="quantity" type="number" min="1" max="99" data-unit-price="<?= $entry->product->price ?>" data-base-code="<?= $entry->product->base->code_name?>"<?= $entry->product->variant ? ' data-variant-suffix="' . $entry->product->variant->code_suffix . '"' : '' ?> value="<?= $entry->quantity ?>">
                     <button <?= $entry->quantity === 99 ? 'disabled' : ''?>>+</button>
                 </div>
-                <p>&euro; <?= format_price($entry->entry_price()) ?></p>
-                <p>&euro; <?= format_price($entry->product->price) ?>/pc</p>
             </div>
 <?php endforeach ?>
         </main>

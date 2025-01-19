@@ -40,16 +40,16 @@ window.addEventListener('load', () => {
         const productBaseCode = inputProductQty.getAttribute('data-base-code');
         const productVariantSuffix = inputProductQty.getAttribute('data-variant-suffix');
         // Get price related stuff
-        const fullCartProductPriceElt = cartProductSection.querySelector('p:nth-last-child(2)');
+        const fullCartProductPriceElt = cartProductSection.querySelector('p:nth-last-of-type(2)');
         const productUnitPrice = parseFloat(inputProductQty.getAttribute('data-unit-price'));
         // Get buttons
-        const btnDelete = cartProductSection.querySelector('button:nth-last-child(4)');
+        const btnDelete = cartProductSection.querySelector('button:nth-last-of-type(1)');
         const btnDecrement = cartProductSection.querySelector('button:first-child');
         const btnIncrement = cartProductSection.querySelector('button:last-child');
         // Functions to streamline updating a product's values
         const updatePrice = (quantity) => {
             const newPrice = productUnitPrice * quantity;
-            fullCartProductPriceElt.innerHTML = `&euro; ${priceFormat(newPrice, ',', '.')}`;
+            fullCartProductPriceElt.innerHTML = '&euro; ' + priceFormat(newPrice, ',', '.');
         };
         const updateIncDecButtons = (value) => {
             btnDecrement.disabled = '';
