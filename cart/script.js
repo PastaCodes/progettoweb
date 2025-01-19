@@ -82,8 +82,11 @@ window.addEventListener('load', () => {
             btnDelete.disabled = true;
             btnDecrement.disabled = true;
             btnIncrement.disabled = true;
+            // Bandaid fix as no animation can be done with auto height
+            const eltHeight = cartProductSection.getBoundingClientRect().height;
+            cartProductSection.style.setProperty('--element-height', `${eltHeight}px`);
             // Little animation for fun
-            cartProductSection.style.animation = 'productRemove 0.8s ease-in-out';
+            cartProductSection.style.animation = 'productRemove 0.8s ease-in-out forwards';
             // Remove the element from the html after the animation
             cartProductSection.addEventListener('animationend', () => cartProductSection.remove());
         });
