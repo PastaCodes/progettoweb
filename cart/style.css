@@ -118,3 +118,17 @@ input[type="number"] {
     appearance: textfield;
     -moz-appearance: textfield;
 }
+
+@keyframes productRemove {
+    0% {
+        transform: translateX(0);
+        opacity: 1.0;
+    }
+    25% {
+        transform: translateX(-2vw);
+    }
+    100% {
+        transform: translateX(50vw);
+        opacity: 0.0;
+    }
+}
