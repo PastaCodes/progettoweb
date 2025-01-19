@@ -50,7 +50,7 @@ window.addEventListener('load', () => {
         inputProductQty.addEventListener('change', (evt) => {
             const newValue = evt.target.value;
             const actualValue = valueClamp(inputProductQty);
-            updatePrice(newValue);
+            updatePrice(actualValue);
             setCart(productBaseCode, productVariantSuffix, actualValue);
         });
         // Delete button
