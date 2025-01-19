@@ -2,14 +2,19 @@
     --thumbnail-size: 10rem;
 }
 
-article {
+main > div {
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: max-content auto max-content max-content;
     grid-template-rows: max-content 1fr max-content;
+    padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
+    border-radius: var(--pico-border-radius);
+    background: var(--pico-card-background-color);
+    box-shadow: var(--pico-card-box-shadow);
+    margin-bottom: var(--pico-block-spacing-vertical);
 }
 
-article > :first-child {
+main > div > :first-child {
     width: var(--thumbnail-size);
     height: var(--thumbnail-size);
     border-radius: var(--pico-border-radius);
@@ -20,48 +25,47 @@ article > :first-child {
     grid-column: 1;
 }
 
-article > div:first-child {
+main > div > div:first-child {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-article > :first-child svg {
+main > div > div:first-child > svg {
     height: 5rem;
     color: var(--pico-muted-color);
     margin-bottom: var(--spacing-vertical-small);
 }
 
-button svg {
+main > div > button > svg {
     height: 1em;
 }
 
-article p {
+main > div p, main > div a {
     margin-bottom: 0;
+    width: fit-content;
+    height: fit-content;
 }
 
-article > p:first-of-type {
+main > div > a {
     font-weight: bold;
     grid-row: 1;
     grid-column: 2;
-}
-
-article > p a {
     color: var(--pico-primary-inverted);
 }
 
-a svg {
+main > div > a > svg {
     display: inline-block;
     height: 1em;
 }
 
-article p:nth-child(3) {
+main > div > p:nth-child(3) {
     grid-row: 2;
     grid-column: 2;
 }
 
-article > button {
+main > div > button {
     grid-row: 3;
     grid-column: 3;
     margin-right: var(--pico-block-spacing-horizontal);
@@ -75,7 +79,7 @@ article > button {
     margin-bottom: 0;
 }
 
-article > button, article > [role="group"] > button {
+main > div > button, main > div > [role="group"] > button {
     padding: 0;
     width: 2rem;
     height: 2rem;
@@ -91,14 +95,14 @@ article > button, article > [role="group"] > button {
     text-align: center;
 }
 
-article p:nth-last-child(2) {
+main > div > p:nth-last-child(2) {
     grid-row: 1;
     grid-column: 3 / 5;
     justify-self: right;
     font-size: 1.4rem;
 }
 
-article p:last-child {
+main > div > p:last-child {
     grid-row: 2;
     grid-column: 3 / 5;
     justify-self: right;

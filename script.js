@@ -1,41 +1,42 @@
+// const radioTransitionRuleIndex = document.styleSheets[0].insertRule('[type="radio"] { transition: none; }');
 // Wait for the style to be rendered
 window.addEventListener('load', () => {
     // Retrieve the elements to be used when no thumbnail is available
     const noThumbnailTemplate = document.getElementById('no-thumbnail');
-    document.querySelectorAll('main > section > a').forEach(a => {
-        const article = a.querySelector('article');
-        const radiosSection = article.querySelector('section:nth-child(2):not(:last-child)');
+    document.querySelectorAll('main > div').forEach(article => {
+        const radiosSection = article.querySelector('div:nth-child(2)');
         article.deadzonePointers = new Set();
         article.addEventListener('click', ev => {
             // If this pointer was dragged on the radiosSection do not register the click
-            if (
-                (ev.target === radiosSection && radiosSection.dragged === ev.pointerId) ||
-                (ev.target.type !== 'radio' && article.deadzonePointers.has(ev.pointerId))
-            ) {
-                ev.preventDefault();
-                ev.stopPropagation();
+            if (!article.deadzonePointers.has(ev.pointerId) && (radiosSection === null || !radiosSection.dragged)) {
+                window.location.href = article.getAttribute('data-link');
             }
         });
         if (!radiosSection) {
             return; // Skip to next article
         }
-        const thumbnailSection = article.querySelector('section:nth-child(1)');
+        radiosSection.style.touchAction = 'none'; // Handle scrolling manually
+        let thumbnailElement = article.querySelector(':first-child');
         const displayThumbnail = (activeRadio) => {
-            let img = thumbnailSection.querySelector('img');
+            const isImage = thumbnailElement instanceof HTMLImageElement;
             const thumbnailFile = activeRadio.getAttribute('data-thumbnail-file');
             const thumbnailAltText = activeRadio.getAttribute('data-thumbnail-alt');
-            if (thumbnailFile && !img) {
+            if (thumbnailFile && !isImage) {
                 // Replace the 'no thumbnail' elements with a new img
-                thumbnailSection.replaceChildren(img = document.createElement('img'));
+                const img = document.createElement('img');
+                thumbnailElement.replaceWith(img);
+                thumbnailElement = img;
             }
             if (thumbnailFile) {
                 // Reuse the already present img to avoid flashes
-                img.src = thumbnailFile;
-                img.alt = thumbnailAltText;
-                img.loading = 'eager';
-            } else if (img) {
+                thumbnailElement.src = thumbnailFile;
+                thumbnailElement.alt = thumbnailAltText;
+                thumbnailElement.loading = 'eager';
+            } else if (isImage) {
                 // Replace the img with the 'no thumbnail' elements
-                thumbnailSection.innerHTML = noThumbnailTemplate.innerHTML;
+                const noThumbnail = noThumbnailTemplate.content.cloneNode(true).firstElementChild;
+                thumbnailElement.replaceWith(noThumbnail);
+                thumbnailElement = noThumbnail;
             }
         }
         article.radios = Array.from(radiosSection.children);
@@ -44,7 +45,7 @@ window.addEventListener('load', () => {
         const setArticleLink = (radio) => {
             const product = article.getAttribute('data-product');
             const variant = radio.getAttribute('data-variant-suffix');
-            a.setAttribute('href', 'product?id=' + product + '&variant=' + variant);
+            article.setAttribute('data-link', 'product?id=' + product + '&variant=' + variant);
         };
         article.radios.forEach(radio => {
             radio.addEventListener('click', ev => {
@@ -65,8 +66,13 @@ window.addEventListener('load', () => {
             if (radio.checked) {
                 setArticleLink(radio);
             }
+            const transition = radio.style.transition;
+            radio.style.transition = 'none'; // Disable transition momentarily
             // For silly little browsers that do not support attr styling
             radio.style.setProperty('--radio-color', radio.getAttribute('data-color'));
+            requestAnimationFrame(() => {
+                radio.style.transition = transition;
+            });
         });
         // Up to 5 radio buttons can be displayed neatly without needing the scrolling functionality
         if (article.radios.length > 5) {
@@ -159,11 +165,11 @@ window.addEventListener('load', () => {
                 });
             }
             if (inDeadzone) {
-                a.style.cursor = 'default';
+                article.style.cursor = 'default';
                 article.deadzonePointers.add(ev.pointerId);
                 article.setAttribute('data-hover-disabled', 'disabled');
             } else {
-                a.style.cursor = 'pointer';
+                article.style.cursor = 'pointer';
                 article.deadzonePointers.delete(ev.pointerId);
                 article.removeAttribute('data-hover-disabled');
             }

@@ -29,7 +29,7 @@ window.addEventListener('load', () => {
         return valueClamp(input);
     };
     // For each product within the cart
-    document.querySelectorAll('article').forEach(cartProductSection => {
+    document.querySelectorAll('main > div').forEach(cartProductSection => {
         // Get product data
         const inputProductQty = cartProductSection.querySelector('input');
         const productBaseCode = inputProductQty.getAttribute('data-base-code');

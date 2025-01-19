@@ -3,61 +3,63 @@
     --radio-spacing: 0.5rem;
 }
 
-main > section {
+main {
     display: grid;
     justify-content: center;
     grid-template-columns: repeat(auto-fill, calc(var(--thumbnail-size) + 2 * var(--pico-block-spacing-horizontal)));
     gap: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
 }
 
-main > section > a {
-    display: contents;
-    color: inherit;
-}
-
-article {
+main > div {
     display: flex;
+    height: 22rem;
     flex-direction: column;
-    margin-bottom: 0;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
+    border-radius: var(--pico-border-radius);
+    background: var(--pico-card-background-color);
+    box-shadow: var(--pico-card-box-shadow);
     transition: box-shadow var(--pico-transition);
 }
 
-article:hover:not([data-hover-disabled]) {
+main > div p {
+    margin-bottom: 0;
+}
+
+main > div:hover:not([data-hover-disabled]) {
     box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-primary-focus);
 }
 
-article > section {
+main > div > :first-child {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-article > section:first-child, article > section:last-child {
     justify-content: center;
-}
-
-article > section:first-child {
     width: var(--thumbnail-size);
     height: var(--thumbnail-size);
     border-radius: var(--pico-border-radius);
     overflow: hidden;
+    margin-bottom: var(--pico-block-spacing-vertical);
 }
 
-section > svg {
+main > div > div:first-child > svg {
     width: 6rem;
     color: var(--pico-muted-color);
     margin-bottom: var(--spacing-vertical-small);
 }
 
-article > section:first-child span {
+main > div > div:first-child > p {
     color: var(--pico-muted-color);
 }
 
-article > section:nth-child(2):not(:last-child) {
+main > div > div:nth-child(2) {
+    width: 100%;
+    display: flex;
     flex-direction: row;
     gap: var(--radio-spacing);
-    overflow-x: auto;
-    touch-action: none; /* Handled manually with js */
+    overflow-x: scroll;
     padding: 0.125em calc(50% - 2.5 * 1.25rem - 2 * var(--radio-spacing));
     mask-image: linear-gradient(to right, #0000 0%, #000F 25%, #000F 75%, #0000 100%);
     -webkit-mask-image: linear-gradient(to right, #0000 0%, #000F 25%, #000F 75%, #0000 100%);
@@ -66,12 +68,20 @@ article > section:nth-child(2):not(:last-child) {
     scrollbar-width: none; /* Hide scrollbar for Firefox 😊 */
 }
 
-article > section:nth-child(2):not(:last-child)::-webkit-scrollbar {
+main > div > div:nth-child(2)::-webkit-scrollbar {
     display: none; /* Hide scrollbar for Chrome, Safari and Opera 😊 god I love CSS */
 }
 
-article > section:last-child {
-    flex: 1;
+main > div > p:last-child {
+    font-size: 0.875em;
+}
+
+main > div > :nth-last-child(2) {
+    margin-top: auto;
+}
+
+main > div > :last-child {
+    margin-bottom: auto;
 }
 
 [type="radio"] {

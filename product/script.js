@@ -1,42 +1,54 @@
 // Wait for the style to be rendered
 window.addEventListener('load', () => {
     // Cart stuff
-    const addToCartBtn = document.querySelector('section > button');
-    let cartBtnHandler = null;
-    const setCartButtonEvent = (productId, variantId) => {
-        addToCartBtn.removeEventListener('click', cartBtnHandler);
-        cartBtnHandler = () => modifyCart(productId, variantId);
-        addToCartBtn.addEventListener('click', cartBtnHandler);
-    };
-    const setCartButtonEventRadio = (radio) => {
-        const variantId = radio.getAttribute('data-variant-suffix');
-        const url = new URL(window.location.href);
-        const productId = new URLSearchParams(url.search).get('id');
-        setCartButtonEvent(productId, variantId);
-    };
-    // Set cart button base event
-    setCartButtonEvent(new URLSearchParams(new URL(window.location.href).search).get('id'));
+    const addToCartBtn = document.querySelector('main > button');
+    if (addToCartBtn) {
+        let cartBtnHandler = null;
+        const setCartButtonEvent = (productId, variantId) => {
+            addToCartBtn.removeEventListener('click', cartBtnHandler);
+            cartBtnHandler = () => modifyCart(productId, variantId);
+            addToCartBtn.addEventListener('click', cartBtnHandler);
+        };
+        const setCartButtonEventRadio = (radio) => {
+            const variantId = radio.getAttribute('data-variant-suffix');
+            const url = new URL(window.location.href);
+            const productId = new URLSearchParams(url.search).get('id');
+            setCartButtonEvent(productId, variantId);
+        };
+        document.querySelectorAll('[type="radio"]').forEach(radio => {
+            radio.addEventListener('click', () => setCartButtonEventRadio(radio));
+            if (radio.checked) {
+                setCartButtonEventRadio(radio);
+            }
+        });
+        // Set cart button base event
+        setCartButtonEvent(new URLSearchParams(new URL(window.location.href).search).get('id'));
+    }
     // Retrieve the elements to be used when no thumbnail is available
     const noThumbnailTemplate = document.getElementById('no-thumbnail');
-    const radiosSection = document.querySelector('main > section:nth-child(2):not(:nth-last-child(2))');
+    const radiosSection = document.querySelector('main > div:nth-child(2)');
     if (radiosSection) {
-        const thumbnailSection = document.querySelector('main > section:nth-child(1)');
+        const thumbnailElement = document.querySelector('main > :not(h1):first-child');
         const displayThumbnail = (activeRadio) => {
-            let img = thumbnailSection.querySelector('img');
+            const isImage = thumbnailElement instanceof HTMLImageElement;
             const thumbnailFile = activeRadio.getAttribute('data-thumbnail-file');
             const thumbnailAltText = activeRadio.getAttribute('data-thumbnail-alt');
-            if (thumbnailFile && !img) {
+            if (thumbnailFile && !isImage) {
                 // Replace the 'no thumbnail' elements with a new img
-                thumbnailSection.replaceChildren(img = document.createElement('img'));
+                const img = document.createElement('img');
+                thumbnailElement.replaceWith(img);
+                thumbnailElement = img;
             }
             if (thumbnailFile) {
                 // Reuse the already present img to avoid flashes
-                img.src = thumbnailFile;
-                img.alt = thumbnailAltText;
-                img.loading = 'eager';
-            } else if (img) {
+                thumbnailElement.src = thumbnailFile;
+                thumbnailElement.alt = thumbnailAltText;
+                thumbnailElement.loading = 'eager';
+            } else if (isImage) {
                 // Replace the img with the 'no thumbnail' elements
-                thumbnailSection.innerHTML = noThumbnailTemplate.innerHTML;
+                const noThumbnail = noThumbnailTemplate.content.cloneNode(true).firstElementChild;
+                thumbnailElement.replaceWith(noThumbnail);
+                thumbnailElement = noThumbnail;
             }
         }
         const radios = Array.from(radiosSection.children);
@@ -48,7 +60,6 @@ window.addEventListener('load', () => {
                 const url = new URL(window.location.href);
                 url.searchParams.set('variant', variant);
                 window.history.replaceState(null, '', url.toString());
-                setCartButtonEventRadio(radio);
             });
             radio.addEventListener('mouseover', () => {
                 if (!radio.checked) {
@@ -60,11 +71,13 @@ window.addEventListener('load', () => {
                     displayThumbnail(radiosSection.querySelector(':checked'));
                 }
             });
-            if (radio.checked) {
-                setCartButtonEventRadio(radio);
-            }
+            const transition = radio.style.transition;
+            radio.style.transition = 'none'; // Disable transition momentarily
             // For silly little browsers that do not support attr styling
             radio.style.setProperty('--radio-color', radio.getAttribute('data-color'));
+            requestAnimationFrame(() => {
+                radio.style.transition = transition;
+            });
         });
     }
 });
