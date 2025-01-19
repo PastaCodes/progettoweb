@@ -63,7 +63,7 @@ window.addEventListener('load', () => {
             btnDecrement.disabled = true;
             btnIncrement.disabled = true;
             // Little animation for fun
-            cartProductSection.style.animation = "productRemove 0.4s ease-in-out"
+            cartProductSection.style.animation = 'productRemove 0.4s ease-in-out';
             // Remove the element from the html after the animation
             setTimeout(() => {
                 cartProductSection.remove();

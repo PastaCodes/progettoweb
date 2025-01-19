@@ -2,10 +2,6 @@
     --spacing-vertical-small: 0.4rem;
 }
 
-section:last-child {
-    margin-bottom: 0;
-}
-
 nav ul li::before {
     content: none;
 }

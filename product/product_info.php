@@ -25,7 +25,7 @@ $product->fetch_all_details();
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-label="No image available">
                     <use href="assets/nothing.svg#root"></use>
                 </svg>
-                <span>No image available</span>
+                <p>No image available</p>
             </div>
 <?php else: ?>
             <img src="<?= $product->thumbnail()->file ?>" loading="lazy" alt="<?= $product->thumbnail()->alt_text ?>">

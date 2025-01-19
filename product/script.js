@@ -15,14 +15,14 @@ window.addEventListener('load', () => {
             const productId = new URLSearchParams(url.search).get('id');
             setCartButtonEvent(productId, variantId);
         };
+        // Set cart button base event
+        setCartButtonEvent(new URLSearchParams(new URL(window.location.href).search).get('id'));
         document.querySelectorAll('[type="radio"]').forEach(radio => {
             radio.addEventListener('click', () => setCartButtonEventRadio(radio));
             if (radio.checked) {
                 setCartButtonEventRadio(radio);
             }
         });
-        // Set cart button base event
-        setCartButtonEvent(new URLSearchParams(new URL(window.location.href).search).get('id'));
     }
     // Retrieve the elements to be used when no thumbnail is available
     const noThumbnailTemplate = document.getElementById('no-thumbnail');

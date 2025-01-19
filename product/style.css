@@ -24,6 +24,7 @@ main > div:first-child > svg {
 
 main > div:first-child > p {
     color: var(--pico-muted-color);
+    margin-bottom: 0;
 }
 
 main > div:nth-child(2) {
