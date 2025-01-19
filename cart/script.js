@@ -1,3 +1,14 @@
+function priceFormat(number, decimalSeparator, thousandSeparator) {
+    // Convert number to string with 2 decimal places
+    const parts = number.toFixed(2).split('.');
+    const integerPart = parts[0];
+    const decimalPart = parts[1];
+    // Add custom thousand separators
+    const withThousandSeparators = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, thousandSeparator);
+    // Combine integer and decimal parts with the custom decimal separator
+    return withThousandSeparators + decimalSeparator + decimalPart;
+}
+
 // Wait for the style to be rendered
 window.addEventListener('load', () => {
     // Ensure new value for inputs stays in range
@@ -23,6 +34,13 @@ window.addEventListener('load', () => {
         const inputProductQty = cartProductSection.querySelector('input');
         const productBaseCode = inputProductQty.getAttribute('data-base-code');
         const productVariantSuffix = inputProductQty.getAttribute('data-variant-suffix');
+        // Get price related stuff
+        const fullCartProductPriceElt = cartProductSection.querySelector('p:nth-last-child(2)');
+        const productUnitPrice = parseFloat(inputProductQty.getAttribute('data-unit-price'));
+        const updatePrice = (quantity) => {
+            const newPrice = productUnitPrice * quantity;
+            fullCartProductPriceElt.innerHTML = `&euro; ${priceFormat(newPrice, ',', '.')}`;
+        };
         // Get buttons
         const btnDelete = cartProductSection.querySelector('button:nth-last-child(4)');
         const btnDecrement = cartProductSection.querySelector('button:first-child');
@@ -32,12 +50,14 @@ window.addEventListener('load', () => {
         inputProductQty.addEventListener('change', (evt) => {
             const newValue = evt.target.value;
             const actualValue = valueClamp(inputProductQty);
+            updatePrice(newValue);
             setCart(productBaseCode, productVariantSuffix, actualValue);
         });
         // Delete button
         btnDelete.addEventListener('click', () => {
             // Set product quantity to 0
             inputProductQty.value = 0;
+            updatePrice(0);
             setCart(productBaseCode, productVariantSuffix, 0);
             // Disable all buttons
             inputProductQty.disabled = true;
@@ -59,11 +79,13 @@ window.addEventListener('load', () => {
         // Decrement product quantity
         btnDecrement.addEventListener('click', () => {
             const actualValue = setInputValue(inputProductQty, parseInt(inputProductQty.value) - 1);
+            updatePrice(actualValue);
             setCart(productBaseCode, productVariantSuffix, actualValue);
         });
         // Increment product quantity
         btnIncrement.addEventListener('click', () => {
             const actualValue = setInputValue(inputProductQty, parseInt(inputProductQty.value) + 1);
+            updatePrice(actualValue);
             setCart(productBaseCode, productVariantSuffix, actualValue);
         });
     });
