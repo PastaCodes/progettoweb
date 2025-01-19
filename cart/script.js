@@ -65,9 +65,7 @@ window.addEventListener('load', () => {
             // Little animation for fun
             cartProductSection.style.animation = 'productRemove 0.4s ease-in-out';
             // Remove the element from the html after the animation
-            setTimeout(() => {
-                cartProductSection.remove();
-            }, 400);
+            cartProductSection.addEventListener('animationend', () => cartProductSection.remove());
         });
         // Decrement product quantity
         btnDecrement.addEventListener('click', () => {
