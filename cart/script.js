@@ -56,8 +56,6 @@ window.addEventListener('load', () => {
         // Delete button
         btnDelete.addEventListener('click', () => {
             // Set product quantity to 0
-            inputProductQty.value = 0;
-            updatePrice(0);
             setCart(productBaseCode, productVariantSuffix, 0);
             // Disable all buttons
             inputProductQty.disabled = true;
@@ -65,12 +63,7 @@ window.addEventListener('load', () => {
             btnDecrement.disabled = true;
             btnIncrement.disabled = true;
             // Little animation for fun
-            cartProductSection.style.transition = "transform 0.1s ease-out"
-            cartProductSection.style.transform = "translateX(-2vw)";
-            setTimeout(() => {
-                cartProductSection.style.transition = "transform 0.3s ease-in"
-                cartProductSection.style.transform = "translateX(100vw)";
-            }, 100);
+            cartProductSection.style.animation = "productRemove 0.4s ease-in-out"
             // Remove the element from the html after the animation
             setTimeout(() => {
                 cartProductSection.remove();
