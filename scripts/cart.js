@@ -87,6 +87,11 @@ function modifyProductInCart(cart, productId, quantity) {
     }
 }
 
+function clearCart() {
+    // Delete the cart cookie
+    deleteCookie(CART_COOKIE_NAME);
+}
+
 // ????? Why are modules like this
 window.setCart = setCart;
 window.modifyCart = modifyCart;

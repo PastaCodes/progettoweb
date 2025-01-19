@@ -36,8 +36,11 @@ window.addEventListener('load', () => {
         });
         // Delete button
         btnDelete.addEventListener('click', () => {
+            // Set product quantity to 0
             inputProductQty.value = 0;
             setCart(productBaseCode, productVariantSuffix, 0);
+            // Remove the element from the html
+            cartProductSection.remove();
         });
         // Decrement product quantity
         btnDecrement.addEventListener('click', () => {
