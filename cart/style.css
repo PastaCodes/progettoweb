@@ -135,8 +135,15 @@ body {
     25% {
         transform: translateX(-2vw);
     }
+    50% {
+        transform: translateX(50vw);
+        opacity: 0.0;
+    }
     100% {
         transform: translateX(50vw);
         opacity: 0.0;
+        padding: 0;
+        height: 0;
+        margin: 0;
     }
 }
