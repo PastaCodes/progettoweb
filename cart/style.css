@@ -128,22 +128,21 @@ body {
 }
 
 @keyframes productRemove {
+    /* TODO: Height not working for some reason */
     0% {
         transform: translateX(0);
         opacity: 1.0;
+        height: auto;
     }
     25% {
         transform: translateX(-2vw);
-    }
-    50% {
-        transform: translateX(50vw);
-        opacity: 0.0;
+        height: auto;
     }
     100% {
-        transform: translateX(50vw);
+        transform: translateX(100vw);
         opacity: 0.0;
+        height: 0px;
         padding: 0;
-        height: 0;
         margin: 0;
     }
 }
