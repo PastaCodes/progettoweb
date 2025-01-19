@@ -37,21 +37,36 @@ window.addEventListener('load', () => {
         // Get price related stuff
         const fullCartProductPriceElt = cartProductSection.querySelector('p:nth-last-child(2)');
         const productUnitPrice = parseFloat(inputProductQty.getAttribute('data-unit-price'));
-        const updatePrice = (quantity) => {
-            const newPrice = productUnitPrice * quantity;
-            fullCartProductPriceElt.innerHTML = `&euro; ${priceFormat(newPrice, ',', '.')}`;
-        };
         // Get buttons
         const btnDelete = cartProductSection.querySelector('button:nth-last-child(4)');
         const btnDecrement = cartProductSection.querySelector('button:first-child');
         const btnIncrement = cartProductSection.querySelector('button:last-child');
+        // Functions to streamline updating a product's values
+        const updatePrice = (quantity) => {
+            const newPrice = productUnitPrice * quantity;
+            fullCartProductPriceElt.innerHTML = `&euro; ${priceFormat(newPrice, ',', '.')}`;
+        };
+        const updateIncDecButtons = (value) => {
+            btnDecrement.disabled = '';
+            btnIncrement.disabled = '';
+            if (value == parseInt(inputProductQty.max)) {
+                btnIncrement.disabled = true;   
+            } 
+            if (value == parseInt(inputProductQty.min)) {
+                btnDecrement.disabled = true;   
+            }
+        };
+        const updateProductData = (newValue) => {
+            const actualValue = setInputValue(inputProductQty, newValue);
+            updatePrice(actualValue);
+            setCart(productBaseCode, productVariantSuffix, actualValue);
+            updateIncDecButtons(actualValue); 
+        };
         // Setup listeners
         // Changing input value manually
         inputProductQty.addEventListener('change', (evt) => {
             const newValue = evt.target.value;
-            const actualValue = valueClamp(inputProductQty);
-            updatePrice(actualValue);
-            setCart(productBaseCode, productVariantSuffix, actualValue);
+            updateProductData(parseInt(newValue));
         });
         // Delete button
         btnDelete.addEventListener('click', () => {
@@ -69,15 +84,11 @@ window.addEventListener('load', () => {
         });
         // Decrement product quantity
         btnDecrement.addEventListener('click', () => {
-            const actualValue = setInputValue(inputProductQty, parseInt(inputProductQty.value) - 1);
-            updatePrice(actualValue);
-            setCart(productBaseCode, productVariantSuffix, actualValue);
+            updateProductData(parseInt(inputProductQty.value) - 1);
         });
         // Increment product quantity
         btnIncrement.addEventListener('click', () => {
-            const actualValue = setInputValue(inputProductQty, parseInt(inputProductQty.value) + 1);
-            updatePrice(actualValue);
-            setCart(productBaseCode, productVariantSuffix, actualValue);
+            updateProductData(parseInt(inputProductQty.value) + 1);
         });
     });
 });

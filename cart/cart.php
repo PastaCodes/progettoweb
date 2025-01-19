@@ -32,9 +32,9 @@ if (!empty($cart->entries)) {
                     </svg>
                 </button>
                 <div role="group">
-                    <button>-</button>
+                    <button <?= $entry->quantity === 1 ? 'disabled' : ''?>>-</button>
                     <input name="quantity" type="number" min="1" max="99" data-unit-price="<?= $entry->product->price ?>" data-base-code="<?= $entry->product->base->code_name?>"<?= $entry->product->variant ? ' data-variant-suffix="' . $entry->product->variant->code_suffix . '"' : '' ?> value="<?= $entry->quantity ?>">
-                    <button>+</button>
+                    <button <?= $entry->quantity === 99 ? 'disabled' : ''?>>+</button>
                 </div>
                 <p>&euro; <?= format_price($entry->entry_price()) ?></p>
                 <p>&euro; <?= format_price($entry->product->price) ?>/pc</p>
