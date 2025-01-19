@@ -25,8 +25,13 @@ window.addEventListener('load', () => {
         return val;
     };
     const setInputValue = (input, value) => {
-        input.value = value;
-        return valueClamp(input);
+        if (Number.isInteger(value)) {
+            input.value = value;
+            return valueClamp(input);
+        }
+        const val = parseInt(input.min);
+        input.value = val;
+        return val;
     };
     // For each product within the cart
     document.querySelectorAll('main > div').forEach(cartProductSection => {
