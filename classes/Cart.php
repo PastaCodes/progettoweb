@@ -27,7 +27,7 @@ class Cart {
                 [
                     'type' => 'LEFT',
                     'table' => 'product_variant',
-                    'on' => 'base = code_name',
+                    'on' => 'base = code_name and (code_suffix is null or variant = code_suffix)',
                 ]
             ],
             filters: ['product_base.code_name' => array_map(fn($entry): string => $entry->product->base->code_name, $this->entries)],
