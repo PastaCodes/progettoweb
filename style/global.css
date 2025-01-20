@@ -16,7 +16,7 @@ button > svg {
     width: 1em;
 }
 
-svg {
+img, svg {
     pointer-events: none;
 }
 
