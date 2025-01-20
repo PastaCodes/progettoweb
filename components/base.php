@@ -45,7 +45,11 @@ $body = ob_get_clean();
             </ul></nav>
         </header>
 <?php endif ?>
-        <button id="theme_switcher" title="Switch to dark theme">☀️</button>
+        <button id="theme-switcher" title="Switch to dark theme">
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                <use href="assets/lightmode.svg#lightmode"></use>
+            </svg>
+        </button>
 <?= $body ?>
 <?php if ($page->has_feet): ?>
         <footer>

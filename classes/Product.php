@@ -25,7 +25,7 @@ class Product {
     public function thumbnail(): ?Image {
         if ($this->thumbnail === false) {
             $this->thumbnail = Image::if_exists('assets/thumbnails/' . $this->full_code_name() . '.png',
-                'Image of ' . ($this->variant === null ? $this->base->display_name : $this->base->display_name . ' in the ' . $this->variant->display_name . ' variant')
+                'Photo of ' . ($this->variant === null ? $this->base->display_name : $this->base->display_name . ' in the ' . $this->variant->display_name . ' variant')
             );
         }
         return $this->thumbnail;
@@ -35,10 +35,13 @@ class Product {
         return $this->variant === null ? 'id=' . $this->base->code_name : 'id=' . $this->base->code_name . '&variant=' . $this->variant->code_suffix;
     }
 
-    public function to_radio_attributes(string $selected_suffix): string {
+    public function to_radio_attributes(string $selected_suffix, bool $include_price = false): string {
         $html = 'title="'. $this->variant->display_name . '" data-variant-suffix="' . $this->variant->code_suffix .'" data-color="#'. $this->variant->color . '"';
         if ($this->thumbnail() !== null) {
             $html .= ' data-thumbnail-file="' . $this->thumbnail()->file .'" data-thumbnail-alt="'. $this->thumbnail()->alt_text . '"';
+        }
+        if ($include_price) {
+            $html .= ' data-price="' . number_format($this->price, 2) . '"';
         }
         if ($this->variant->code_suffix === $selected_suffix) {
             $html .= ' checked="checked"';

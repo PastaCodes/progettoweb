@@ -2,6 +2,10 @@
     --thumbnail-size: 10rem;
 }
 
+main {
+    contain: layout;
+}
+
 main > div {
     display: grid;
     grid-auto-flow: column;
@@ -12,6 +16,8 @@ main > div {
     background: var(--pico-card-background-color);
     box-shadow: var(--pico-card-box-shadow);
     margin-bottom: var(--pico-block-spacing-vertical);
+    --initial-height: calc(2 * var(--pico-block-spacing-vertical) + var(--thumbnail-size));
+    max-height: var(--initial-height);
 }
 
 main > div > :first-child {
@@ -33,6 +39,7 @@ main > div > div:first-child {
 }
 
 main > div > div:first-child > svg {
+    width: 5rem;
     height: 5rem;
     color: var(--pico-muted-color);
     margin-bottom: var(--spacing-vertical-small);
@@ -40,10 +47,6 @@ main > div > div:first-child > svg {
 
 main > div > div:first-child > p {
     color: var(--pico-muted-color);
-}
-
-main > div > button > svg {
-    height: 1em;
 }
 
 main > div p, main > div a {
@@ -61,6 +64,7 @@ main > div > a {
 
 main > div > a > svg {
     display: inline-block;
+    width: 1em;
     height: 1em;
 }
 
@@ -123,28 +127,26 @@ input[type="number"] {
     -moz-appearance: textfield;
 }
 
-body {
-    overflow-x: hidden;
-}
-
-@keyframes productRemove {
+@keyframes product-remove {
     0% {
         transform: translateX(0);
-        opacity: 1.0;
-        height: var(--element-height);
+        opacity: 1;
     }
     25% {
-        transform: translateX(-2vw);
-        height: var(--element-height);
+        transform: translateX(-1rem);
+    }
+    50% {
+        transform: translateX(5rem);
+        opacity: 0;
+        max-height: var(--initial-height);
+        margin-bottom: var(--pico-block-spacing-vertical);
+        padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
     }
     100% {
-        transform: translateX(100vw);
-        overflow: hidden;
-        opacity: 0.0;
-        height: 0;
-        padding-top: 0;
-        padding-bottom: 0;
-        margin-top: 0;
+        transform: translateX(5rem);
+        opacity: 0;
+        max-height: 0;
         margin-bottom: 0;
+        padding: 0;
     }
 }

@@ -1,14 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Get document tag
     const docElt = document.documentElement;
-    const btn = document.querySelector('#theme_switcher');
+    const btn = document.querySelector('#theme-switcher');
+    const use = btn.querySelector('svg > use');
     // Function to switch the theme of the page
     const switchTheme = (themeStr) => {
-        // Switch button text
-        btn.innerHTML = themeStr === 'dark' ? '🌙' : '☀️';
+        // Switch button icon
+        use.setAttribute('href', themeStr === 'dark' ? 'assets/darkmode.svg#darkmode' : 'assets/lightmode.svg#lightmode');
         const btnTitle = 'Switch to ' + (themeStr === 'dark' ? 'light' : 'dark') + ' theme';
         btn.setAttribute('title', btnTitle);
-        btn.setAttribute('aria-label', btnTitle);
         // Switch page color theme
         docElt.setAttribute('data-theme', themeStr);
         // Set theme preference to new theme

@@ -2,12 +2,28 @@
     --spacing-vertical-small: 0.4rem;
 }
 
+html {
+    overflow-y: scroll;
+}
+
 nav ul li::before {
     content: none;
 }
 
-#theme_switcher {
+button > svg {
+    display: block;
+    height: 1em;
+    width: 1em;
+}
+
+img, svg {
+    pointer-events: none;
+}
+
+#theme-switcher {
     position: fixed;
     top: 1rem;
     right: 1rem;
+    padding: 0.5rem;
+    font-size: 2em;
 }
