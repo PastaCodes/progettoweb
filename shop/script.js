@@ -3,7 +3,7 @@
 window.addEventListener('load', () => {
     // Retrieve the elements to be used when no thumbnail is available
     const noThumbnailTemplate = document.getElementById('no-thumbnail');
-    document.querySelectorAll('main > div').forEach(article => {
+    document.querySelectorAll('main > div > div').forEach(article => {
         const radiosSection = article.querySelector('div:nth-child(2)');
         article.deadzonePointers = new Set();
         article.primingPointers = new Map();
