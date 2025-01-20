@@ -38,7 +38,8 @@ class Database {
      * - 'using' => The single column to join on, must have same name on both tables, alternative to the 'on' keyword.
      * When using join, the columns with the same name will be prefixed by the table name 'table_name.column_name'.
      * @param array  $filters An associative array of conditions for the WHERE clause.
-     * Example: ['id' => 1, 'status' => 'active', 'id' => [1, 2, 3]]
+     * Example: ['id' => 1, 'status' => 'active', 
+     * 'id' => [1, 2, 3], 'id' => '!= 3', 'cost' => '> 2', 'name' = '%substr%']
      * @param array $options An array of additional options for the query.
      * - 'limit' => int (limits the number of results)
      * - 'offset' => int (offsets the starting point of the query)
@@ -185,7 +186,8 @@ class Database {
     }
 
     /**
-     * Builds the WHERE clause for a query from a filter array.
+     * Builds the WHERE clause for a query from a filter array, implementing oparators 
+     * and other type specific clauses.
      *
      * @param array $filters An associative array of conditions.
      * @return string The WHERE clause, or an empty string if no conditions are provided.
@@ -200,9 +202,23 @@ class Database {
                 // If array, create IN clause
                 $placeholders = implode(', ', array_fill(0, count($value), '?'));
                 $conditions[] = "$key IN ($placeholders)";
+            } else if (is_string($value)) {
+                // If string with %, use LIKE
+                if (strpos($value, '%') !== false) {
+                    $conditions[] = "$key LIKE ?";
+                } else {
+                    // Default to '='
+                    $conditions[] = "$key = ?";
+                }
             } else {
-                // Else write a simple statement
-                $conditions[] = "$key = ?";
+                // Handle comparison operators (>, <, !=)
+                if (preg_match('/^(>|\<|!=)$/', $value)) {
+                    $operator = substr($value, 0, 2);
+                    $conditions[] = "$key $operator ?";
+                } else {
+                    // Default to '='
+                    $conditions[] = "$key = ?";
+                }
             }
         }
         return 'WHERE ' . implode(' AND ', $conditions);

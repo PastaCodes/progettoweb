@@ -26,7 +26,7 @@ $categories = $database->find(table: 'category');
         <main>
             <form action="shop" method="GET">
                 <fieldset>
-                    <input type="search" name="search" placeholder="Search">
+                    <input type="search" name="search" placeholder="Search"<?= $filter_search ? ' value=' . $filter_search . '' : '' ?>>
                     <label>
                         Category
                         <select name="category">

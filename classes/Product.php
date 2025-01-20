@@ -55,7 +55,9 @@ class Product {
         if ($category) {
             $filters['category'] = $category;
         }
-        // TODO: add filter search
+        if ($search) {
+            $filters['product_base.display_name'] = "%$search%";
+        }
         $products_result = $database->find(
             table: 'product_base',
             joins: [
