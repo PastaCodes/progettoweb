@@ -29,7 +29,7 @@ $categories = $database->find(table: 'category');
                     <input type="search" name="search" placeholder="Search"<?= $filter_search ? ' value=' . $filter_search . '' : '' ?>>
                     <label>
                         Category
-                        <select name="category">
+                        <select name="category" onchange="document.querySelector('main > form').submit()">
                             <option value=""<?= !$filter_category ? ' selected="selected"' : '' ?>>Any</option>
 <?php foreach ($categories as $category): ?>
                             <option value="<?= $category['display_name'] ?>"<?= $filter_category && $filter_category == $category['display_name'] ? ' selected="selected"' : '' ?>><?= $category['display_name'] ?></option>
@@ -37,7 +37,6 @@ $categories = $database->find(table: 'category');
                         </select>
                     </label>
                 </fieldset>
-                <input type="submit" value="Filter">
             </form>
             <div>
 <?php foreach ($products as $product): ?>
