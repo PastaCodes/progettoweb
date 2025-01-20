@@ -3,14 +3,14 @@
     --radio-spacing: 0.5rem;
 }
 
-main {
+main > div {
     display: grid;
     justify-content: center;
     grid-template-columns: repeat(auto-fill, calc(var(--thumbnail-size) + 2 * var(--pico-spacing)));
     gap: var(--pico-spacing);
 }
 
-main > div {
+main > div > div {
     display: flex;
     height: 22rem;
     flex-direction: column;
@@ -24,16 +24,16 @@ main > div {
     user-select: none;
 }
 
-main > div p {
+main > div > div p {
     margin-bottom: 0;
 }
 
-main > div:where(:hover, :focus, :focus-visible):not([data-hover-disabled]) {
+main > div > div:where(:hover, :focus, :focus-visible):not([data-hover-disabled]) {
     box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-primary-focus);
     outline: none;
 }
 
-main > div > :first-child {
+main > div > div > :first-child {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -45,18 +45,18 @@ main > div > :first-child {
     margin-bottom: var(--pico-spacing);
 }
 
-main > div > div:first-child > svg {
+main > div > div > div:first-child > svg {
     width: 6rem;
     height: 6rem;
     color: var(--pico-muted-color);
     margin-bottom: var(--spacing-small);
 }
 
-main > div > div:first-child > p {
+main > div > div > div:first-child > p {
     color: var(--pico-muted-color);
 }
 
-main > div > div:nth-child(2) {
+main > div > div > div:nth-child(2) {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -70,19 +70,19 @@ main > div > div:nth-child(2) {
     scrollbar-width: none; /* Hide scrollbar for Firefox 😊 */
 }
 
-main > div > div:nth-child(2)::-webkit-scrollbar {
+main > div > div > div:nth-child(2)::-webkit-scrollbar {
     display: none; /* Hide scrollbar for Chrome, Safari and Opera 😊 god I love CSS */
 }
 
-main > div > p:last-child {
+main > div > div > p:last-child {
     font-size: 0.875em;
 }
 
-main > div > :nth-last-child(2) {
+main > div > div > :nth-last-child(2) {
     margin-top: auto;
 }
 
-main > div > :last-child {
+main > div > div > :last-child {
     margin-bottom: auto;
 }
 
