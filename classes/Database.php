@@ -47,14 +47,10 @@ class Database {
      * @return array An array of associative arrays representing the rows.
      */
     public function find(string $table, array $joins = [], array $filters = [], array $options = []): array {
-        // Generate the list of columns with table prefixes for collision handling
-        $columns = $this->get_prefixed_columns($table, $joins);
-        $column_list = implode(', ', $columns);
         // Create the sql query
         $sql = sprintf(
-            "SELECT %s %s FROM %s %s %s %s %s",
+            "SELECT %s * FROM %s %s %s %s %s",
             $options['distinct'] ?? false ? 'DISTINCT' : '',
-            $column_list,
             $table,
             $this->build_join_clause($joins),
             $this->build_where_clause($filters),
@@ -65,8 +61,9 @@ class Database {
         // Execute the query 
         $stmt = $this->prepare_statement($sql, $filters);
         $stmt->execute();
-        // Get the results from the operation
-        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        // Get results from the query
+        $results = $stmt->get_result();
+        return $this->alias_duplicate_columns($results);
     }
 
     /**
@@ -143,48 +140,48 @@ class Database {
     }
 
     /**
-     * Generates a list of columns with table prefixes to avoid name collisions with joins.
+     * Aliases duplicate column names from the query using the table name.
      *
-     * @param string $table The name of the main table.
-     * @param array $joins The array of joins (see `find` method for structure).
-     * @return array The list of columns with table prefixes.
+     * @param object $results The result value from a statment execution
+     * @return array An associative array containing all the data from the query.
      */
-    private function get_prefixed_columns(string $table, array $joins): array {
-        // Get columns for all involved tables
-        $tables = [$table];
-        foreach ($joins as $join) {
-            $tables[] = $join['table'];
-        }
-        $all_columns = [];
-        $table_columns = [];
-        // Fetch column information for each table
-        foreach ($tables as $tbl) {
-            $query = "SHOW COLUMNS FROM $tbl";
-            $result = $this->db->query($query);
-            if (!$result) {
-                die('Failed to retrieve columns for table: ' . $tbl);
+    private function alias_duplicate_columns(object $results): array {
+        // Fetch field names and handle duplicates
+        $has_dupes = [];
+        $fields = [];
+        // Get field names from the result metadata
+        while ($field = $results->fetch_field()) {
+            $field_name = $field->name;
+            // Check if the column name has already been seen
+            if (!array_key_exists($field_name, $has_dupes)) {
+                $has_dupes[$field_name] = false;
+            } else {
+                $has_dupes[$field_name] = true;
             }
-            $columns = [];
-            while ($row = $result->fetch_assoc()) {
-                $columns[] = $row['Field'];
-                $all_columns[] = $row['Field'];
-            }
-            $table_columns[$tbl] = $columns;
+            $fields[] = $field;
         }
-        // Identify duplicate column names
-        $duplicateColumns = array_keys(array_filter(array_count_values($all_columns), fn($count) => $count > 1));
-        // Build the final column list
-        $columnsWithAliases = [];
-        foreach ($table_columns as $tbl => $columns) {
-            foreach ($columns as $col) {
-                if (in_array($col, $duplicateColumns)) {
-                    $columnsWithAliases[] = sprintf('%s.%s AS `%s.%s`', $tbl, $col, $tbl, $col);
-                } else {
-                    $columnsWithAliases[] = sprintf('%s.%s', $tbl, $col);
-                }
+        // Alias names
+        $aliased_names = [];
+        foreach ($fields as $field) {
+            $field_name = $field->name;
+            $field_table = $field->table;
+            // Check if the column name has already been seen
+            if ($has_dupes[$field_name]) {
+                $aliased_names[] = "$field_table.$field_name";
+            } else {
+                $aliased_names[] = $field_name;
             }
         }
-        return $columnsWithAliases;
+        // Fetch data using aliased column names
+        $parsed_results = [];
+        while ($row = $results->fetch_row()) {
+            $aliased_row = [];
+            foreach ($row as $index => $value) {
+                $aliased_row[$aliased_names[$index]] = $value;
+            }
+            $parsed_results[] = $aliased_row;
+        }
+        return $parsed_results;
     }
 
     /**
