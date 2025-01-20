@@ -111,3 +111,16 @@ main > div > div > :last-child {
 [type="radio"]:where(:hover, :focus, :focus-visible) {
     --pico-box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-form-element-focus-color);
 }
+
+main > form > fieldset {
+    display: grid;
+    grid-template-rows: fit-content;
+    grid-template-columns: 3fr 1fr;
+    gap: var(--pico-spacing);
+    align-items: center;
+}
+
+main > form > fieldset > input[type="search"] {
+    margin-top: calc(var(--pico-spacing) * .375 + 1rem);
+}
+
