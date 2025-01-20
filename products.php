@@ -8,8 +8,8 @@ $products = Product::fetch_products();
 ?>
         <template id="no-thumbnail">
             <div>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-label="No image available">
-                    <use href="assets/nothing.svg#root"></use>
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                    <use href="assets/nothing.svg#nothing"></use>
                 </svg>
                 <p>No image available</p>
             </div>
@@ -21,8 +21,8 @@ $products = Product::fetch_products();
                 <img src="<?= $product->thumbnail()->file ?>" loading="lazy" alt="<?= $product->thumbnail()->alt_text ?>">
 <?php else: ?>
                 <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-label="No image available">
-                        <use href="assets/nothing.svg#root"></use>
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                        <use href="assets/nothing.svg#nothing"></use>
                     </svg>
                     <p>No image available</p>
                 </div>

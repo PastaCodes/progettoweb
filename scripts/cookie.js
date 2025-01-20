@@ -3,11 +3,11 @@ export function createCookie(name, value, time) {
     const date = new Date();
     date.setTime(date.getTime() + time);
     const expires = `expires = ${date.toUTCString()}; `;
-    document.cookie = `${name} = ${value || ""}; ${expires || ""}path=/`;
+    document.cookie = `${name} = ${value || ""}; SameSite=Strict; ${expires || ""}path=/`;
 }
 
 export function deleteCookie(name) {
-    document.cookie = `${name} =; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; Max-Age=-99999999;`;
+    document.cookie = `${name} =; SameSite=Strict; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; Max-Age=-99999999;`;
 }
 
 export function getCookie(name) {

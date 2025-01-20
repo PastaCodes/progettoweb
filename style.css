@@ -46,6 +46,7 @@ main > div > :first-child {
 
 main > div > div:first-child > svg {
     width: 6rem;
+    height: 6rem;
     color: var(--pico-muted-color);
     margin-bottom: var(--spacing-vertical-small);
 }

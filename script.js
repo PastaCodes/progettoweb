@@ -6,9 +6,30 @@ window.addEventListener('load', () => {
     document.querySelectorAll('main > div').forEach(article => {
         const radiosSection = article.querySelector('div:nth-child(2)');
         article.deadzonePointers = new Set();
-        article.addEventListener('click', ev => {
-            // If this pointer was dragged on the radiosSection do not register the click
-            if (!article.deadzonePointers.has(ev.pointerId) && (radiosSection === null || !radiosSection.dragged)) {
+        article.primingPointers = new Map();
+        article.addEventListener('pointerdown', ev => {
+            article.primingPointers.set(ev.pointerId, [ev.clientX, ev.clientY]);
+        });
+        article.addEventListener('pointermove', ev => {
+            if (article.primingPointers.has(ev.pointerId)) {
+                const [initialX, initialY] = article.primingPointers.get(ev.pointerId);
+                const dx = ev.clientX - initialX;
+                const dy = ev.clientY - initialY;
+                // Dragging more than 50 px prevents the click action
+                if (dx * dx + dy * dy > 50 * 50) {
+                    article.primingPointers.delete(ev.pointerId);
+                }
+            }
+        });
+        article.addEventListener('pointerleave', ev => {
+            article.primingPointers.delete(ev.pointerId);
+        });
+        article.addEventListener('pointerup', ev => {
+            if (
+                article.primingPointers.has(ev.pointerId) &&
+                !article.deadzonePointers.has(ev.pointerId)
+            ) {
+                article.primingPointers.delete(ev.pointerId);
                 window.location.href = article.getAttribute('data-link');
             }
         });
@@ -66,26 +87,36 @@ window.addEventListener('load', () => {
             if (radio.checked) {
                 setArticleLink(radio);
             }
+            // Set --radio-color manually because of silly little browsers that do not support attr styling
+            // But first disable transition momentarily
             const transition = radio.style.transition;
-            radio.style.transition = 'none'; // Disable transition momentarily
-            // For silly little browsers that do not support attr styling
+            radio.style.transitionDuration = '0s';
             radio.style.setProperty('--radio-color', radio.getAttribute('data-color'));
+            // Dear God
             requestAnimationFrame(() => {
-                radio.style.transition = transition;
+                requestAnimationFrame(() => {
+                    radio.style.transition = transition;
+                });
             });
         });
         // Up to 5 radio buttons can be displayed neatly without needing the scrolling functionality
         if (article.radios.length > 5) {
+            const updateScrollFactor = (scrollLeft = null) => {
+                radiosSection.scrollFactor = (scrollLeft || radiosSection.scrollLeft) / parseFloat(window.getComputedStyle(radiosSection).width);
+            }
+            updateScrollFactor();
             // When clicking on a section assign a moveHandler and an upHandler (if it doesn't have one already)
             radiosSection.addEventListener('pointerdown', ev => {
                 if (!radiosSection.moveHandler) {
                     radiosSection.dragged = null;
                     radiosSection.moveHandler = ev => {
                         if (ev.pointerId === radiosSection.moveHandler.id) {
-                            radiosSection.scrollTo(radiosSection.moveHandler.initialScroll - ev.clientX + radiosSection.moveHandler.initialX, 0);
+                            radiosSection.scrollLeft = radiosSection.moveHandler.initialScroll - ev.clientX + radiosSection.moveHandler.initialX;
+                            updateScrollFactor();
                             // Any movement of more than 10 px is considered intentional,
                             // which means no click action should occur
                             if (Math.abs(ev.clientX - radiosSection.moveHandler.initialX) > 10) {
+                                article.primingPointers.delete(ev.pointerId);
                                 radiosSection.moveHandler.target = null;
                                 radiosSection.dragged = ev.pointerId;
                             }
@@ -106,34 +137,32 @@ window.addEventListener('load', () => {
                             window.removeEventListener('pointermove', radiosSection.moveHandler);
                             radiosSection.moveHandler = null;
                             window.removeEventListener('pointerup', upHandler);
+                            if (radiosSection.dragged === ev.pointerId) {
+                                ev.stopPropagation();
+                            }
                         }
                     }
                     window.addEventListener('pointerup', upHandler);
                 }
             });
-            // Scrolls to have the selected radio button in the center (or close to it)
-            const updateScroll = () => {
-                const radio = article.radios[radiosSection.selectedIndex];
-                const radioStyle = window.getComputedStyle(radio);
-                const radiosSectionStyle = window.getComputedStyle(radiosSection);
-                // To avoid having too many radio buttons hidden, and also remain consistent with the '5 policy',
-                // clamp the index so that, when clicking the first and second buttons, the third gets centered,
-                // and, similarly, when clicking the last and second-to-last buttons, the third-to-last gets centered
-                const clampedIndex = Math.min(Math.max(radiosSection.selectedIndex, 2), article.radios.length - 3);
-                const offset = (clampedIndex - 2) * (parseFloat(radioStyle.width) + parseFloat(radiosSectionStyle.gap));
-                radiosSection.scrollTo({
-                    top: 0,
-                    left: offset,
-                    behavior: 'smooth'
-                });
-            };
-            radiosSection.selectedIndex = 0;
-            updateScroll();
             article.radios.forEach((radio, index) => {
                 radio.addEventListener('click', ev => {
                     if (ev.isProgrammatic) {
-                        radiosSection.selectedIndex = index;
-                        updateScroll();
+                        // Scroll to have the selected radio button in the center (or close to it)
+                        const radio = article.radios[index];
+                        const radioStyle = window.getComputedStyle(radio);
+                        const radiosSectionStyle = window.getComputedStyle(radiosSection);
+                        // To avoid having too many radio buttons hidden, and also remain consistent with the '5 policy',
+                        // clamp the index so that, when clicking the first and second buttons, the third gets centered,
+                        // and, similarly, when clicking the last and second-to-last buttons, the third-to-last gets centered
+                        const clampedIndex = Math.min(Math.max(index, 2), article.radios.length - 3);
+                        const offset = (clampedIndex - 2) * (parseFloat(radioStyle.width) + parseFloat(radiosSectionStyle.gap));
+                        radiosSection.scrollTo({
+                            top: 0,
+                            left: offset,
+                            behavior: 'smooth'
+                        });
+                        updateScrollFactor(offset);
                     } else {
                         // Ignore/disable all events triggered directly by the browser
                         ev.preventDefault();
@@ -143,7 +172,13 @@ window.addEventListener('load', () => {
             });
             // The scroll position might need to be updated when zooming or resizing
             // This is likely because of the font size breakpoints set by pico
-            window.addEventListener('resize', updateScroll);
+            window.addEventListener('resize', () => {
+                radiosSection.scrollTo({
+                    top: 0,
+                    left: radiosSection.scrollFactor * parseFloat(window.getComputedStyle(radiosSection).width),
+                    behavior: 'smooth'
+                });
+            });
         }
         article.addEventListener('pointermove', ev => {
             const deadzone = 6 / window.devicePixelRatio;

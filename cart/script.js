@@ -1,12 +1,9 @@
-function priceFormat(number, decimalSeparator, thousandSeparator) {
-    // Convert number to string with 2 decimal places
+function formatPrice(number) {
     const parts = number.toFixed(2).split('.');
     const integerPart = parts[0];
     const decimalPart = parts[1];
-    // Add custom thousand separators
-    const withThousandSeparators = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, thousandSeparator);
-    // Combine integer and decimal parts with the custom decimal separator
-    return withThousandSeparators + decimalSeparator + decimalPart;
+    const withThousandSeparators = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return '&euro; ' + withThousandSeparators + ',' + decimalPart;
 }
 
 // Wait for the style to be rendered
@@ -29,9 +26,7 @@ window.addEventListener('load', () => {
             input.value = value;
             return valueClamp(input);
         }
-        const val = parseInt(input.min);
-        input.value = val;
-        return val;
+        return input.value = input.lastValidValue;
     };
     // For each product within the cart
     document.querySelectorAll('main > div').forEach(cartProductSection => {
@@ -49,7 +44,7 @@ window.addEventListener('load', () => {
         // Functions to streamline updating a product's values
         const updatePrice = (quantity) => {
             const newPrice = productUnitPrice * quantity;
-            fullCartProductPriceElt.innerHTML = '&euro; ' + priceFormat(newPrice, ',', '.');
+            fullCartProductPriceElt.innerHTML = formatPrice(newPrice);
         };
         const updateIncDecButtons = (value) => {
             btnDecrement.disabled = '';
@@ -69,9 +64,26 @@ window.addEventListener('load', () => {
         };
         // Setup listeners
         // Changing input value manually
-        inputProductQty.addEventListener('change', (evt) => {
-            const newValue = evt.target.value;
-            updateProductData(parseInt(newValue));
+        inputProductQty.addEventListener('change', () => {
+            updateProductData(parseInt(inputProductQty.value));
+        });
+        inputProductQty.lastValidValue = inputProductQty.value;
+        inputProductQty.addEventListener('input', () => {
+            const newValue = inputProductQty.value;
+            if (!/^([1-9][0-9]?)?$/.test(newValue)) {
+                // Revert to last valid value with the associated selection
+                inputProductQty.value = inputProductQty.lastValidValue;
+                inputProductQty.setSelectionRange(...Object.values(inputProductQty.lastSelection));
+            } else if (newValue !== '') {
+                inputProductQty.lastValidValue = newValue;
+            }
+        });
+        inputProductQty.addEventListener('beforeinput', () => {
+            inputProductQty.lastSelection = {
+                start: inputProductQty.selectionStart,
+                end: inputProductQty.selectionEnd,
+                direction: inputProductQty.selectionDirection,
+            };
         });
         // Delete button
         btnDelete.addEventListener('click', () => {
@@ -83,7 +95,7 @@ window.addEventListener('load', () => {
             btnDecrement.disabled = true;
             btnIncrement.disabled = true;
             // Little animation for fun
-            cartProductSection.style.animation = 'productRemove 0.4s ease-in-out';
+            cartProductSection.style.animation = 'product-remove 0.4s ease-in-out';
             // Remove the element from the html after the animation
             cartProductSection.addEventListener('animationend', () => cartProductSection.remove());
         });
