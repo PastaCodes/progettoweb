@@ -26,8 +26,6 @@ header {
     display: flex;
     gap: var(--pico-spacing);
     z-index: 1;
-    padding-left: var(--pico-spacing) !important;
-    padding-right: var(--pico-spacing) !important;
     user-select: none;
 }
 
@@ -58,13 +56,28 @@ header > nav > ul {
     width: 100%;
 }
 
-header > nav, header > nav > ul > li:last-child {
+header > nav, header > nav > ul > li:nth-last-child(3) {
     flex-grow: 1;
     text-align: right;
 }
 
+header > nav > ul::before, header > nav > ul::after {
+    content: "|";
+    margin: 0 var(--spacing-small);
+    order: 1;
+}
+
+header > nav > ul > li:nth-child(3) {
+    order: 1;
+}
+
+header > nav > ul > li:nth-child(4) {
+    order: 2;
+}
+
 header > a:first-child:hover {
-    background-color: var(--pico-card-background-color);
+    background-color: color-mix(in srgb, var(--pico-primary) 40%, transparent);
+    backdrop-filter: opacity(0.5);
 }
 
 header > a:first-child > svg {
@@ -81,10 +94,11 @@ main {
     padding-top: var(--pico-outline-width) !important;
 }
 
-a > svg {
+a:not(header > a:first-child) > svg {
     display: inline-block;
     width: 1em;
     height: 1em;
+    transform: translateY(-0.14em);
 }
 
 img, svg {
@@ -98,6 +112,7 @@ img, svg {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-small);
+    z-index: 1;
 }
 
 #side-buttons > button {
