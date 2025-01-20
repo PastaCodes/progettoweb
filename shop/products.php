@@ -16,22 +16,23 @@ $categories = $database->find(table: 'category');
             </div>
         </template>
         <main>
-            <form>
+            <form action="shop" method="GET">
                 <fieldset>
                     <label>
-                        Cerca
-                        <input type="search" placeholder="Search"></input>
+                        Search
+                        <input type="search" name="search" placeholder="Search">
                     </label>
                     <label>
-                        Sex
-                        <select>
+                        Category
+                        <select name="category">
+                            <option value=""></option>
 <?php foreach ($categories as $category): ?>
                             <option value="<?= $category['display_name'] ?>"><?= $category['display_name'] ?></option>
 <?php endforeach ?>
                         </select>
                     </label>
                 </fieldset>
-                <input type="button" value="Filter"></input>
+                <input type="submit" value="Filter">
             </form>
             <div>
 <?php foreach ($products as $product): ?>
