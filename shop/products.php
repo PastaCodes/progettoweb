@@ -30,7 +30,7 @@ $categories = $database->find(table: 'category');
                     <label>
                         Category
                         <select name="category">
-                            <option value=""<?= !$filter_category ? ' selected="selected"' : '' ?>></option>
+                            <option value=""<?= !$filter_category ? ' selected="selected"' : '' ?>>Any</option>
 <?php foreach ($categories as $category): ?>
                             <option value="<?= $category['display_name'] ?>"<?= $filter_category && $filter_category == $category['display_name'] ? ' selected="selected"' : '' ?>><?= $category['display_name'] ?></option>
 <?php endforeach ?>
