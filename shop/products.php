@@ -18,10 +18,7 @@ $categories = $database->find(table: 'category');
         <main>
             <form action="shop" method="GET">
                 <fieldset>
-                    <label>
-                        Search
-                        <input type="search" name="search" placeholder="Search">
-                    </label>
+                    <input type="search" name="search" placeholder="Search">
                     <label>
                         Category
                         <select name="category">
