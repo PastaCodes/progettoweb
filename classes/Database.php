@@ -254,7 +254,7 @@ class Database {
     private function prepare_statement(string $sql, array $params): object {
         $stmt = $this->db->prepare($sql);
         if (!$stmt) {
-            die('Failed to prepare a statement: ' . $this->mysqli->error);
+            die('Failed to prepare a statement: ' . $this->db->error);
         }
         if (!empty($params)) {
             // Helper function to determine parameter type
