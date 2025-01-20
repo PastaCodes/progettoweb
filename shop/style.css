@@ -75,7 +75,7 @@ main > div > div:nth-child(2)::-webkit-scrollbar {
 }
 
 main > div > p:last-child {
-    font-size: 0.875em;
+    font-size: 87.5%;
 }
 
 main > div > :nth-last-child(2) {

@@ -1,18 +1,21 @@
 :root {
     --spacing-small: 0.4rem;
+    --font-size-adjust: 1;
 }
 
 html {
     overflow-y: scroll;
+    padding: 0 calc(2 * var(--pico-spacing) + 3rem);
 }
 
 body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    font-size: calc(1em * var(--font-size-adjust));
 }
 
-main, header, footer {
+body > main, body > header, body > footer {
     contain: layout;
 }
 
@@ -26,7 +29,7 @@ button > svg {
     height: 1em;
 }
 
-header {
+body > header {
     position: sticky;
     top: 0;
     display: flex;
@@ -35,7 +38,7 @@ header {
     user-select: none;
 }
 
-header::before {
+body > header::before {
     content: "";
     position: absolute;
     top: 0;
@@ -48,7 +51,7 @@ header::before {
     z-index: -1;
 }
 
-header > a:first-child {
+body > header > a:first-child {
     display: flex;
     align-items: center;
     gap: var(--pico-spacing);
@@ -58,73 +61,47 @@ header > a:first-child {
     border-radius: var(--pico-border-radius);
 }
 
-/*
-header > nav > ul {
-    width: 100%;
-}
-
-header > nav, header > nav > ul > li:nth-last-child(3) {
-    flex-grow: 1;
-    text-align: right;
-}
-
-/*
-header > nav > ul::before, header > nav > ul::after {
-    content: "|";
-    margin: 0 var(--spacing-small);
-    order: 1;
-}
-
-header > nav > ul > li:nth-child(4) {
-    order: 1;
-}
-
-header > nav > ul > li:nth-child(5) {
-    order: 2;
-}
-*/
-
-header > nav {
+body > header > nav {
     flex-basis: 100%;
 }
 
-header > nav > ul {
+body > header > nav > ul {
     margin: 0 !important;
     width: 100%;
     display: flex;
 }
 
-header > nav > ul > li {
+body > header > nav > ul > li {
     padding: 0;
 }
 
-header > nav > ul > li:not(:first-child, :nth-child(4)) {
+body > header > nav > ul > li:not(:first-child, :nth-child(4)) {
     padding-left: 1ch;
 }
 
-header > nav > ul > li:nth-child(4) {
+body > header > nav > ul > li:nth-child(4) {
     flex-grow: 1;
     text-align: right;
 }
 
-header > nav > ul > li:not(:first-child, :nth-child(4))::before {
+body > header > nav > ul > li:not(:first-child, :nth-child(4))::before {
     content: '\2502';
     margin-right: 1ch;
     width: 1ch;
     text-align: center;
 }
 
-header > a:first-child > svg {
+body > header > a:first-child > svg {
     width: 4em;
     height: 4em;
 }
 
-header > a:first-child > h1 {
-    font-size: 2em;
+body > header > a:first-child > h1 {
+    font-size: 200%;
     margin-bottom: 0;
 }
 
-main {
+body > main {
     flex-grow: 1;
     padding-top: var(--pico-outline-width) !important;
     margin-bottom: 2rem;
@@ -153,25 +130,34 @@ img, svg {
 
 #side-buttons > button {
     padding: 0.5rem;
-    font-size: 2em;
+    font-size: 2rem;
 }
 
-footer {
+body > footer {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }
 
-footer > a:first-of-type {
+body > footer > a:first-of-type {
     order: -1;
 }
 
-footer > :last-child {
+body > footer > :last-child {
     text-align: center;
     flex-basis: 100%;
 }
 
-footer::before {
+body > footer::before {
     content: "\2013";
     margin: 0 var(--spacing-small);
+}
+
+dialog legend {
+    font-weight: bold !important;
+    margin-bottom: var(--pico-spacing);
+}
+
+dialog label {
+    margin-bottom: var(--pico-spacing);
 }

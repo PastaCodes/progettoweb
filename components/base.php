@@ -2,6 +2,7 @@
 ob_start();
 require_once __DIR__ . '/../' . $page->body;
 $body = ob_get_clean();
+$accessibility = json_decode($_COOKIE['accessibility'] ?? '{}');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,5 +75,37 @@ $body = ob_get_clean();
             <p>&copy; 2025 IsiFitGems s.r.l.</p>
         </footer>
 <?php endif ?>
+        <dialog id="accessibility">
+            <article>
+                <header>
+                    <h3>Accessibility options</h3>
+                </header>
+                <fieldset>
+                    <legend>Filters</legend>
+                    <label>
+                        <input name="high-contrast" type="checkbox" role="switch"<?php if ($accessibility->high_constrast ?? false): ?> checked="checked" <?php endif ?>>
+                        High contrast
+                    </label>
+                    <label>
+                        <input name="grayscale" type="checkbox" role="switch"<?php if ($accessibility->grayscale ?? false): ?> checked="checked" <?php endif ?>>
+                        Grayscale
+                    </label>
+                    <label>
+                        <input name="reduced-strain" type="checkbox" role="switch"<?php if ($accessibility->reduced_strain ?? false): ?> checked="checked" <?php endif ?>>
+                        Reduced eye strain
+                    </label>
+                </fieldset>
+                <fieldset>
+                    <legend>Other</legend>
+                    <label>
+                        <input name="larger-text" type="checkbox" role="switch"<?php if ($accessibility->larger_text ?? false): ?> checked="checked" <?php endif ?>>
+                        Larger text
+                    </label>
+                </fieldset>
+                <footer>
+                    <button autofocus role="button">Confirm</button>
+                </footer>
+            </article>
+        </dialog>
     </body>
 </html>

@@ -97,7 +97,7 @@ main > div > p:nth-last-of-type(2) {
     grid-row: 1;
     grid-column: 3 / 5;
     justify-self: right;
-    font-size: 1.4rem;
+    font-size: 140%;
 }
 
 main > div > p:nth-last-of-type(1) {
