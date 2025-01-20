@@ -46,6 +46,8 @@ $body = ob_get_clean();
             </a>
             <nav><ul>
                 <li><a href="shop">Shop</a></li>
+                <li><a>Notifications <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/notifications.svg#notifications"></use></svg></a></li>
+                <li><a href="">Your orders <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/orders.svg#orders"></use></svg></a></li>
                 <li><a href="cart">Your cart <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/cart.svg#cart"></use></svg></a></li>
             </ul></nav>
         </header>
