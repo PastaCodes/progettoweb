@@ -4,7 +4,15 @@ require_once '../classes/Product.php';
 require_once '../classes/ProductVariant.php';
 require_once '../util/format.php';
 
-$products = Product::fetch_products();
+$filter_search = null;
+$filter_category = null;
+if (isset($_GET['search'])) {
+    $filter_search = $_GET['search'];
+}
+if (isset($_GET['category'])) {
+    $filter_category = $_GET['category'];
+}
+$products = Product::fetch_products($filter_search, $filter_category);
 $categories = $database->find(table: 'category');
 ?>
         <template id="no-thumbnail">
@@ -22,9 +30,9 @@ $categories = $database->find(table: 'category');
                     <label>
                         Category
                         <select name="category">
-                            <option value=""></option>
+                            <option value=""<?= !$filter_category ? ' selected="selected"' : '' ?>></option>
 <?php foreach ($categories as $category): ?>
-                            <option value="<?= $category['display_name'] ?>"><?= $category['display_name'] ?></option>
+                            <option value="<?= $category['display_name'] ?>"<?= $filter_category && $filter_category == $category['display_name'] ? ' selected="selected"' : '' ?>><?= $category['display_name'] ?></option>
 <?php endforeach ?>
                         </select>
                     </label>

@@ -49,8 +49,13 @@ class Product {
         return $html;
     }
 
-    public static function fetch_products(): array {
+    public static function fetch_products(?string $search = null, ?string $category = null): array {
         global $database;
+        $filters = ['standalone' => true];
+        if ($category) {
+            $filters['category'] = $category;
+        }
+        // TODO: add filter search
         $products_result = $database->find(
             table: 'product_base',
             joins: [
@@ -65,7 +70,7 @@ class Product {
                     'on' => 'base = code_name',
                 ]
             ],
-            filters: ['standalone' => true],
+            filters: $filters,
             options: ['order_by' => ['code_name' => 'ASC', 'ordinal' => 'ASC']]
         );
         $products = [];
