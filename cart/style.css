@@ -2,21 +2,17 @@
     --thumbnail-size: 10rem;
 }
 
-main {
-    contain: layout;
-}
-
 main > div {
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: max-content auto max-content max-content;
     grid-template-rows: max-content 1fr max-content;
-    padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
+    padding: var(--pico-spacing);
     border-radius: var(--pico-border-radius);
     background: var(--pico-card-background-color);
     box-shadow: var(--pico-card-box-shadow);
-    margin-bottom: var(--pico-block-spacing-vertical);
-    --initial-height: calc(2 * var(--pico-block-spacing-vertical) + var(--thumbnail-size));
+    margin-bottom: var(--pico-spacing);
+    --initial-height: calc(2 * var(--pico-spacing) + var(--thumbnail-size));
     max-height: var(--initial-height);
 }
 
@@ -42,7 +38,7 @@ main > div > div:first-child > svg {
     width: 5rem;
     height: 5rem;
     color: var(--pico-muted-color);
-    margin-bottom: var(--spacing-vertical-small);
+    margin-bottom: var(--spacing-small);
 }
 
 main > div > div:first-child > p {
@@ -62,12 +58,6 @@ main > div > a {
     color: var(--pico-primary-inverted);
 }
 
-main > div > a > svg {
-    display: inline-block;
-    width: 1em;
-    height: 1em;
-}
-
 main > div > p:nth-child(3) {
     grid-row: 2;
     grid-column: 2;
@@ -76,7 +66,7 @@ main > div > p:nth-child(3) {
 main > div > button {
     grid-row: 3;
     grid-column: 3;
-    margin-right: var(--pico-block-spacing-horizontal);
+    margin-right: var(--pico-spacing);
 }
 
 [role="group"] {
@@ -139,8 +129,8 @@ input[type="number"] {
         transform: translateX(5rem);
         opacity: 0;
         max-height: var(--initial-height);
-        margin-bottom: var(--pico-block-spacing-vertical);
-        padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
+        margin-bottom: var(--pico-spacing);
+        padding: var(--pico-spacing);
     }
     100% {
         transform: translateX(5rem);

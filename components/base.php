@@ -38,18 +38,30 @@ $body = ob_get_clean();
     <body>
 <?php if ($page->has_navbar): ?>
         <header>
+            <a href="">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="IsiFitGems logo">
+                    <use href="assets/isi.svg#isi"></use>
+                </svg>
+                <h1>IsiFitGems</h1>
+            </a>
             <nav><ul>
-                <li><a href="">Homepage</a></li>
-                <li><a href="">Products</a></li>
-                <li><a href="cart">Carrello</a></li>
+                <li><a href="shop">Shop</a></li>
+                <li><a href="cart">Your cart <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/cart.svg#cart"></use></svg></a></li>
             </ul></nav>
         </header>
 <?php endif ?>
-        <button id="theme-switcher" title="Switch to dark theme">
-            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
-                <use href="assets/lightmode.svg#lightmode"></use>
-            </svg>
-        </button>
+        <div id="side-buttons">
+            <button title="Switch to dark theme">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                    <use href="assets/lightmode.svg#lightmode"></use>
+                </svg>
+            </button>
+            <button title="Accessibility options">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                    <use href="assets/accessibility.svg#accessibility"></use>
+                </svg>
+            </button>
+        </div>
 <?= $body ?>
 <?php if ($page->has_feet): ?>
         <footer>

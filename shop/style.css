@@ -6,8 +6,8 @@
 main {
     display: grid;
     justify-content: center;
-    grid-template-columns: repeat(auto-fill, calc(var(--thumbnail-size) + 2 * var(--pico-block-spacing-horizontal)));
-    gap: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
+    grid-template-columns: repeat(auto-fill, calc(var(--thumbnail-size) + 2 * var(--pico-spacing)));
+    gap: var(--pico-spacing);
 }
 
 main > div {
@@ -16,20 +16,21 @@ main > div {
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-    user-select: none;
-    padding: var(--pico-block-spacing-vertical) var(--pico-block-spacing-horizontal);
+    padding: var(--pico-spacing) var(--pico-spacing);
     border-radius: var(--pico-border-radius);
     background: var(--pico-card-background-color);
     box-shadow: var(--pico-card-box-shadow);
     transition: box-shadow var(--pico-transition);
+    user-select: none;
 }
 
 main > div p {
     margin-bottom: 0;
 }
 
-main > div:hover:not([data-hover-disabled]) {
+main > div:where(:hover, :focus, :focus-visible):not([data-hover-disabled]) {
     box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-primary-focus);
+    outline: none;
 }
 
 main > div > :first-child {
@@ -41,14 +42,14 @@ main > div > :first-child {
     height: var(--thumbnail-size);
     border-radius: var(--pico-border-radius);
     overflow: hidden;
-    margin-bottom: var(--pico-block-spacing-vertical);
+    margin-bottom: var(--pico-spacing);
 }
 
 main > div > div:first-child > svg {
     width: 6rem;
     height: 6rem;
     color: var(--pico-muted-color);
-    margin-bottom: var(--spacing-vertical-small);
+    margin-bottom: var(--spacing-small);
 }
 
 main > div > div:first-child > p {
@@ -64,7 +65,7 @@ main > div > div:nth-child(2) {
     padding: 0.125em calc(50% - 2.5 * 1.25rem - 2 * var(--radio-spacing));
     mask-image: linear-gradient(to right, #0000 0%, #000F 25%, #000F 75%, #0000 100%);
     -webkit-mask-image: linear-gradient(to right, #0000 0%, #000F 25%, #000F 75%, #0000 100%);
-    margin-bottom: var(--spacing-vertical-small);
+    margin-bottom: var(--spacing-small);
     -ms-overflow-style: none; /* Hide scrollbar for IE and Edge 😊 */
     scrollbar-width: none; /* Hide scrollbar for Firefox 😊 */
 }
@@ -103,10 +104,10 @@ main > div > :last-child {
     margin-right: auto;
 }
 
-[type="radio"]:not(:hover) {
+[type="radio"]:not(:where(:hover, :focus, :focus-visible)) {
     --pico-box-shadow: none !important;
 }
 
-[type="radio"]:hover {
+[type="radio"]:where(:hover, :focus, :focus-visible) {
     --pico-box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-form-element-focus-color);
 }

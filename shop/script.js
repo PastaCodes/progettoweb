@@ -33,6 +33,11 @@ window.addEventListener('load', () => {
                 window.location.href = article.getAttribute('data-link');
             }
         });
+        article.addEventListener('keyup', ev => {
+            if (ev.key === 'Enter') {
+                window.location.href = article.getAttribute('data-link');
+            }
+        });
         if (!radiosSection) {
             return; // Skip to next article
         }
@@ -70,8 +75,9 @@ window.addEventListener('load', () => {
         };
         article.radios.forEach(radio => {
             radio.addEventListener('click', ev => {
-                if (article.radios.length <= 5 || ev.isProgrammatic) {
+                if (article.radios.length <= 5 || ev.isProgrammatic || ev.pointerId === -1) {
                     setArticleLink(radio);
+                    displayThumbnail(radio);
                 }
             });
             radio.addEventListener('mouseover', () => {
@@ -147,7 +153,7 @@ window.addEventListener('load', () => {
             });
             article.radios.forEach((radio, index) => {
                 radio.addEventListener('click', ev => {
-                    if (ev.isProgrammatic) {
+                    if (ev.isProgrammatic || ev.pointerId === -1) {
                         // Scroll to have the selected radio button in the center (or close to it)
                         const radio = article.radios[index];
                         const radioStyle = window.getComputedStyle(radio);

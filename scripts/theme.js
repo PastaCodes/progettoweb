@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Get document tag
     const docElt = document.documentElement;
-    const btn = document.querySelector('#theme-switcher');
+    const btn = document.querySelector('#side-buttons > :first-child');
     const use = btn.querySelector('svg > use');
     // Function to switch the theme of the page
     const switchTheme = (themeStr) => {

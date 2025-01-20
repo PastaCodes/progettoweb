@@ -1,8 +1,8 @@
 <?php
-require_once 'util/db.php';
-require_once 'classes/Product.php';
-require_once 'classes/ProductVariant.php';
-require_once 'util/format.php';
+require_once '../util/db.php';
+require_once '../classes/Product.php';
+require_once '../classes/ProductVariant.php';
+require_once '../util/format.php';
 
 $products = Product::fetch_products();
 ?>
@@ -16,7 +16,7 @@ $products = Product::fetch_products();
         </template>
         <main>
 <?php foreach ($products as $product): ?>
-            <div data-product="<?= $product->base->code_name ?>" data-link="product?<?= $product->to_url_params() ?>">
+            <div data-product="<?= $product->base->code_name ?>" data-link="product?<?= $product->to_url_params() ?>" tabindex="0">
 <?php if ($product->thumbnail() !== null): ?>
                 <img src="<?= $product->thumbnail()->file ?>" loading="lazy" alt="<?= $product->thumbnail()->alt_text ?>">
 <?php else: ?>

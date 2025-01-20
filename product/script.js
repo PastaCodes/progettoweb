@@ -57,6 +57,9 @@ window.addEventListener('load', () => {
                 url.searchParams.set('variant', variant);
                 window.history.replaceState(null, '', url.toString());
                 addToCartBtn?.setAttribute('data-variant-suffix', radio.getAttribute('data-variant-suffix'));
+                displayThumbnail(radio);
+                variantDisplay.innerHTML = radio.getAttribute('title');
+                priceDisplay.innerHTML = formatPrice(parseFloat(radio.getAttribute('data-price')));
             });
             radio.addEventListener('mouseover', () => {
                 if (!radio.checked) {

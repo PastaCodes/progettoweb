@@ -1,9 +1,13 @@
 :root {
-    --spacing-vertical-small: 0.4rem;
+    --spacing-small: 0.4rem;
 }
 
 html {
     overflow-y: scroll;
+}
+
+main, header, footer {
+    contain: layout;
 }
 
 nav ul li::before {
@@ -12,18 +16,91 @@ nav ul li::before {
 
 button > svg {
     display: block;
-    height: 1em;
     width: 1em;
+    height: 1em;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    gap: var(--pico-spacing);
+    z-index: 1;
+    padding-left: var(--pico-spacing) !important;
+    padding-right: var(--pico-spacing) !important;
+    user-select: none;
+}
+
+header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100vw;
+    height: 100%;
+    background: color-mix(in srgb, var(--pico-background-color) 90%, transparent);
+    backdrop-filter: blur(1.6rem);
+    transform: translateX(-50%);
+    z-index: -1;
+}
+
+header > a:first-child {
+    display: flex;
+    align-items: center;
+    gap: var(--pico-spacing);
+    padding: var(--spacing-small);
+    padding-right: var(--pico-spacing);
+    text-decoration: none;
+    border-radius: var(--pico-border-radius);
+}
+
+header > nav > ul {
+    width: 100%;
+}
+
+header > nav, header > nav > ul > li:last-child {
+    flex-grow: 1;
+    text-align: right;
+}
+
+header > a:first-child:hover {
+    background-color: var(--pico-card-background-color);
+}
+
+header > a:first-child > svg {
+    width: 4em;
+    height: 4em;
+}
+
+header > a:first-child > h1 {
+    font-size: 2em;
+    margin-bottom: 0;
+}
+
+main {
+    padding-top: var(--pico-outline-width) !important;
+}
+
+a > svg {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
 }
 
 img, svg {
     pointer-events: none;
 }
 
-#theme-switcher {
+#side-buttons {
     position: fixed;
-    top: 1rem;
+    top: 10rem;
     right: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-small);
+}
+
+#side-buttons > button {
     padding: 0.5rem;
     font-size: 2em;
 }

@@ -1,6 +1,6 @@
 :root {
     --thumbnail-size: 30rem;
-    --spacing-vertical-small: 0.4rem;
+    --spacing-small: 0.4rem;
     --radio-spacing: 0.5rem;
 }
 
@@ -13,14 +13,14 @@ main > :not(h1):first-child {
     height: var(--thumbnail-size);
     border-radius: var(--pico-border-radius);
     overflow: hidden;
-    margin-bottom: var(--pico-block-spacing-vertical);
+    margin-bottom: var(--pico-spacing);
 }
 
 main > div:first-child > svg {
     width: 6rem;
     height: 6rem;
     color: var(--pico-muted-color);
-    margin-bottom: var(--spacing-vertical-small);
+    margin-bottom: var(--spacing-small);
 }
 
 main > div:first-child > p {
@@ -33,7 +33,7 @@ main > div:nth-child(2) {
     flex-direction: row;
     gap: var(--radio-spacing);
     padding: 0.125em;
-    margin-bottom: var(--spacing-vertical-small);
+    margin-bottom: var(--spacing-small);
 }
 
 [type="radio"] {
@@ -46,10 +46,10 @@ main > div:nth-child(2) {
     margin: 0;
 }
 
-[type="radio"]:not(:hover) {
+[type="radio"]:not(:where(:hover, :focus, :focus-visible)) {
     --pico-box-shadow: none !important;
 }
 
-[type="radio"]:hover {
+[type="radio"]:where(:hover, :focus, :focus-visible) {
     --pico-box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-form-element-focus-color);
 }
