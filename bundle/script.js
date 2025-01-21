@@ -1,4 +1,4 @@
-// import { formatPrice } from '../scripts/global.js';
+import { formatPrice } from '../scripts/util.js';
 
 // Wait for the style to be rendered
 window.addEventListener('load', () => {
