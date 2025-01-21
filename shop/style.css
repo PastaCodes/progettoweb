@@ -114,13 +114,16 @@ main > div > div > :last-child {
 
 main > form > fieldset {
     display: grid;
-    grid-template-rows: fit-content;
     grid-template-columns: 3fr 1fr;
     gap: var(--pico-spacing);
-    align-items: center;
+    align-items: end;
+    margin-bottom: calc(2 * var(--pico-spacing));
 }
 
-main > form > fieldset > input[type="search"] {
-    margin-top: calc(var(--pico-spacing) * .375 + 1rem);
+main > form > fieldset * {
+    margin: 0 !important;
 }
 
+main > form > fieldset select {
+    margin-top: calc(var(--pico-spacing)* .375) !important;
+}

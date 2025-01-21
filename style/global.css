@@ -103,7 +103,7 @@ body > header > a:first-child > h1 {
 
 body > main {
     flex-grow: 1;
-    padding-top: var(--pico-outline-width) !important;
+    padding-top: 0;
     margin-bottom: 2rem;
 }
 
