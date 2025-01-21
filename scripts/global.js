@@ -16,6 +16,9 @@ function timeAgo(ms) {
     }
 }
 
+const NOTIFICATIONS_LOCAL_STORAGE = 'notifications';
+const ACCESSIBILITY_COOKIE_NAME = 'accessibility';
+
 document.addEventListener('DOMContentLoaded', () => {
     // ===== Colortheme switch =====
     // Get document tag
@@ -54,9 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
             accessibility['larger_text'] = true;
         }
         if (Object.keys(accessibility).length === 0) {
-            deleteCookie('accessibility');
+            deleteCookie(ACCESSIBILITY_COOKIE_NAME);
         } else {
-            createCookie('accessibility', JSON.stringify(accessibility), 30 * 24 * 60 * 60 * 1000);
+            createCookie(ACCESSIBILITY_COOKIE_NAME, JSON.stringify(accessibility), 30 * 24 * 60 * 60 * 1000);
         }
     };
     const accessibilityButton = document.querySelector('#side-buttons > :last-child');
@@ -135,5 +138,49 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === "Escape") {
             closeModal();
         }
+    });
+    // Function to edit section visibility based on it being read
+    const updateSectionRead = (section) => {
+        const readNotifications = JSON.parse(localStorage.getItem(NOTIFICATIONS_LOCAL_STORAGE));
+        const notificationId = section.getAttribute('data-id');
+        if (readNotifications && readNotifications.includes(notificationId)) {
+            section.style.filter = "brightness(0.7)";
+        } else {
+            section.style.filter = "";
+        }
+    };
+    // Setup read button
+    notifications.querySelectorAll('article > section > button:first-of-type').forEach(btn => {
+        updateSectionRead(btn.parentElement);
+        btn.addEventListener('click', () => {
+            const readNotifications = JSON.parse(localStorage.getItem(NOTIFICATIONS_LOCAL_STORAGE));
+            const notificationId = btn.parentElement.getAttribute('data-id');
+            // If there is no notification, add a new local storage item with the id
+            if (!readNotifications) {
+                localStorage.setItem(NOTIFICATIONS_LOCAL_STORAGE, JSON.stringify([notificationId]));
+            } else {
+            // If it was not read, add it to the list
+                if (!readNotifications.includes(notificationId)) {
+                    readNotifications.push(notificationId);
+                    localStorage.setItem(NOTIFICATIONS_LOCAL_STORAGE, JSON.stringify(readNotifications));
+                } else {
+                    // Remove the element from the list if it was read
+                    const idx = readNotifications.indexOf(notificationId);
+                    readNotifications.splice(idx, 1);
+                    localStorage.setItem(NOTIFICATIONS_LOCAL_STORAGE, JSON.stringify(readNotifications));
+                    if (readNotifications.length <= 0) {
+                        localStorage.removeItem(NOTIFICATIONS_LOCAL_STORAGE);
+                    }
+                }
+            }
+            updateSectionRead(btn.parentElement);
+        });
+    });
+    // Setup erase button
+    notifications.querySelectorAll('article > section > button:last-of-type').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const notificationId = btn.parentElement.getAttribute('data-id');
+            console.log("ERASE", notificationId);
+        });
     });
 });
