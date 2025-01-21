@@ -3,6 +3,9 @@ ob_start();
 require_once __DIR__ . '/../' . $page->body;
 $body = ob_get_clean();
 $accessibility = json_decode($_COOKIE['accessibility'] ?? '{}');
+// Notification stuff
+require_once __DIR__ . '/../classes/Notification.php';
+$notifications = Notification::fetch_all();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -80,24 +83,14 @@ $accessibility = json_decode($_COOKIE['accessibility'] ?? '{}');
                 <header>
                     <h3>Notifications</h3>
                 </header>
+<?php foreach ($notifications as $notification): ?>
                 <section>
-                    <h4>Notifica 1</h4>
-                    <p>Descrizione notifica 1</p>
+                    <h4><?= $notification->title ?></h4>
+                    <p><?= $notification->description ?></p>
                     <button>R</button>
                     <button>D</button>
                 </section>
-                <section>
-                    <h4>Notifica 2</h4>
-                    <p>Descrizione notifica lunga. asdasd accessories aabfji bfi awbf ouwabf joanb jowebg jebhig seoj hsjog bdjg bdov dog brejg beog bij</p>
-                    <button>R</button>
-                    <button>D</button>
-                </section>
-                <section>
-                    <h4>Notifica 3</h4>
-                    <p>Descrizione notifica 3</p>
-                    <button>R</button>
-                    <button>D</button>
-                </section>
+<?php endforeach ?>
                 <footer>
                     <button>Close</button>
                 </footer>
