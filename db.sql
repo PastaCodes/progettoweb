@@ -48,11 +48,17 @@ CREATE TABLE IF NOT EXISTS `notification` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-TRUNCATE TABLE `notification`;DROP VIEW IF EXISTS `price_range`;
+TRUNCATE TABLE `notification`;
+INSERT INTO `notification` (`id`, `title`, `description`, `created_at`) VALUES
+(1, 'No products in stock!', 'The product \'moai_pin\' has gone out of stock. Make sure to restock it as soon as possible!', '2025-01-21 21:59:32'),
+(2, 'You died.', 'I\'m not sure how, but you died. Must be your unlucky day mate.', '2025-01-19 12:32:21'),
+(3, 'Cart updated.', 'You have added \"sus\" to your cart.', '2025-01-21 22:02:23');
+
+DROP VIEW IF EXISTS `price_range`;
 CREATE TABLE IF NOT EXISTS `price_range` (
 `product` varchar(255)
 ,`price_min` decimal(10,2)

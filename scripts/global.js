@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     checkboxHideRead.addEventListener('click', () => {
-        notifications.querySelectorAll('section').forEach(s => updateSectionRead(s, s.querySelector('button:first-of-child')));
+        notifications.querySelectorAll('section').forEach(s => updateSectionRead(s, s.querySelector('button:first-of-type')));
     });
     // Initialize Read Button Listeners
     notifications.querySelectorAll('article > section > button:first-of-type').forEach(btn => {
