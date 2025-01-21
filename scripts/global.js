@@ -114,10 +114,11 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.removeItem(NOTIFICATIONS_LOCAL_STORAGE);
         }
     };
-    const updateSectionRead = (section) => {
+    const updateSectionRead = (section, readBtn) => {
         const readNotifications = getReadNotifications();
         const notificationId = section.getAttribute('data-id');
         const isRead = readNotifications.includes(notificationId);
+        readBtn.innerHTML = isRead ? 'U' : 'R';
         section.style.filter = isRead ? 'brightness(0.5)' : '';
         section.style.display = isRead && checkboxHideRead.checked ? 'none' : '';
     };
@@ -177,17 +178,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     checkboxHideRead.addEventListener('click', () => {
-        notifications.querySelectorAll('section').forEach(updateSectionRead);
+        notifications.querySelectorAll('section').forEach(s => updateSectionRead(s, s.querySelector('button:first-of-child')));
     });
     // Initialize Read Button Listeners
     notifications.querySelectorAll('article > section > button:first-of-type').forEach(btn => {
         const section = btn.parentElement;
-        updateSectionRead(section);
+        updateSectionRead(section, btn);
         btn.addEventListener('click', () => {
             const notificationId = section.getAttribute('data-id');
             const isRead = getReadNotifications().includes(notificationId);
             toggleReadStatus(notificationId, isRead);
-            updateSectionRead(section);
+            updateSectionRead(section, btn);
         });
     });
     // Setup erase button
