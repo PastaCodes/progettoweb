@@ -161,3 +161,31 @@ dialog legend {
 dialog label {
     margin-bottom: var(--pico-spacing);
 }
+
+#notifications > article > section {
+    display: grid;
+    grid-template-columns: auto min-content min-content;
+    grid-template-rows: fit-content fit-content;
+    grid-gap: var(--spacing-small);
+    background: var(--pico-background-color);
+    border-radius: 1rem;
+    padding: var(--pico-spacing);
+}
+
+#notifications > article > section > button:first-child {
+    grid-column: 2;
+}
+
+#notifications > article > section > button:last-child {
+    grid-column: 3;
+}
+
+#notifications > article > section > h4 {
+    grid-row: 1;
+    grid-column: 1 / 2;
+}
+
+#notifications > article > section > p {
+    grid-row: 2;
+    grid-column: 1 / 4;
+}

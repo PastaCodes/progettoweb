@@ -83,17 +83,23 @@ $accessibility = json_decode($_COOKIE['accessibility'] ?? '{}');
                 <section>
                     <h4>Notifica 1</h4>
                     <p>Descrizione notifica 1</p>
+                    <button>R</button>
+                    <button>D</button>
                 </section>
                 <section>
                     <h4>Notifica 2</h4>
-                    <p>Descrizione notifica 2</p>
+                    <p>Descrizione notifica lunga. asdasd accessories aabfji bfi awbf ouwabf joanb jowebg jebhig seoj hsjog bdjg bdov dog brejg beog bij</p>
+                    <button>R</button>
+                    <button>D</button>
                 </section>
                 <section>
                     <h4>Notifica 3</h4>
                     <p>Descrizione notifica 3</p>
+                    <button>R</button>
+                    <button>D</button>
                 </section>
                 <footer>
-                    <button autofocus>Close</button>
+                    <button>Close</button>
                 </footer>
             </article>
         </dialog>
@@ -125,7 +131,7 @@ $accessibility = json_decode($_COOKIE['accessibility'] ?? '{}');
                     </label>
                 </fieldset>
                 <footer>
-                    <button autofocus>Confirm</button>
+                    <button>Confirm</button>
                 </footer>
             </article>
         </dialog>
