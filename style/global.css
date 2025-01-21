@@ -164,7 +164,7 @@ dialog label {
 
 #notifications > article > section {
     display: grid;
-    grid-template-columns: auto min-content min-content min-content;
+    grid-template-columns: fit-content auto min-content min-content;
     grid-template-rows: fit-content fit-content;
     grid-gap: var(--spacing-small);
     background: var(--pico-background-color);
