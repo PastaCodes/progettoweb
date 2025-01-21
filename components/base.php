@@ -84,7 +84,7 @@ $notifications = Notification::fetch_all();
                     <h3>Notifications</h3>
                 </header>
 <?php foreach ($notifications as $notification): ?>
-                <section data-timestamp="<?= $notification->created_at->format('Y-m-d H:i:s') ?>">
+                <section data-id="<?= $notification->id ?>" data-timestamp="<?= $notification->created_at->format('Y-m-d H:i:s') ?>">
                     <h4><?= $notification->title ?></h4>
                     <p>1s ago</p>
                     <p><?= $notification->description ?></p>
