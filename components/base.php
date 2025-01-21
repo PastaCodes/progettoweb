@@ -83,7 +83,7 @@ $accessibility = json_decode($_COOKIE['accessibility'] ?? '{}');
                 <fieldset>
                     <legend>Filters</legend>
                     <label>
-                        <input name="high-contrast" type="checkbox" role="switch"<?php if ($accessibility->high_constrast ?? false): ?> checked="checked" <?php endif ?>>
+                        <input name="high-contrast" type="checkbox" role="switch"<?php if ($accessibility->high_contrast ?? false): ?> checked="checked" <?php endif ?>>
                         High contrast
                     </label>
                     <label>

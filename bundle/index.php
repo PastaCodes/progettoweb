@@ -1,8 +1,7 @@
 <?php
 require_once '../util/setup.php';
 $page->title = 'Shop - IsiFitGems';
-$page->body = 'shop/products.php';
-$page->allow_indexing = true;
+$page->body = 'bundle/bundle_info.php';
 $page->has_navbar = true;
 $page->has_feet = true;
 require_once '../components/base.php';

@@ -1,6 +1,6 @@
 <?php
 require_once '../util/setup.php';
-$page->title = 'Product Info';
+$page->title = 'Shop - IsiFitGems';
 $page->body = 'product/product_info.php';
 $page->allow_indexing = false;
 $page->has_navbar = true;
