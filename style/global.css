@@ -164,7 +164,7 @@ dialog label {
 
 #notifications > article > section {
     display: grid;
-    grid-template-columns: auto min-content min-content;
+    grid-template-columns: auto min-content min-content min-content;
     grid-template-rows: fit-content fit-content;
     grid-gap: var(--spacing-small);
     background: var(--pico-background-color);
@@ -172,20 +172,27 @@ dialog label {
     padding: var(--pico-spacing);
 }
 
-#notifications > article > section > button:first-child {
-    grid-column: 2;
+#notifications > article > section > button:first-of-type {
+    grid-row: 1;
+    grid-column: 3;
 }
 
-#notifications > article > section > button:last-child {
-    grid-column: 3;
+#notifications > article > section > button:last-of-type {
+    grid-row: 1;
+    grid-column: 4;
 }
 
 #notifications > article > section > h4 {
     grid-row: 1;
-    grid-column: 1 / 2;
+    grid-column: 1;
 }
 
-#notifications > article > section > p {
+#notifications > article > section > p:first-of-type {
+    grid-row: 1;
+    grid-column: 2;
+}
+
+#notifications > article > section > p:last-of-type {
     grid-row: 2;
-    grid-column: 1 / 4;
+    grid-column: 1 / 5;
 }

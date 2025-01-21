@@ -1,5 +1,21 @@
 import { createCookie, getCookie, deleteCookie } from "./cookie.js";
 
+function timeAgo(ms) {
+    const seconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    if (seconds < 60) {
+        return `less than a minute ago`;
+    } else if (minutes < 60) {
+        return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+    } else if (hours < 24) {
+        return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+    } else {
+        return `${days} day${days !== 1 ? 's' : ''} ago`;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // ===== Colortheme switch =====
     // Get document tag
@@ -81,11 +97,43 @@ document.addEventListener('DOMContentLoaded', () => {
     largerTextToggle.addEventListener('click', updateText);
     updateText(false);
     // ===== Notification stuff =====
+    // Update notification ticker function
+    const updateNotificationTimestamps = () => {
+        notifications.querySelectorAll('article > section').forEach(notification => {
+            const currTimestamp = new Date(notification.getAttribute('data-timestamp'));
+            const timeTicker = notification.querySelector("p:first-of-type");
+            const differenceMillis = Date.now() - currTimestamp;
+            timeTicker.innerHTML = timeAgo(differenceMillis);
+        });
+    };
+    // Add callbacks to the link
     const notificationLink = document.querySelector('nav > ul :nth-child(4) > a');
+    let notifInterval = null;
     notificationLink.addEventListener('click', () => {
+        // Start updating notification counter
+        updateNotificationTimestamps();
+        if (!notifInterval) {
+            notifInterval = setInterval(() => {
+                updateNotificationTimestamps();
+            }, 60000);
+        }
+        // Show notification modal
         notifications.showModal();
     });
+    // Exit from notification modal properly
+    const closeModal = () => {
+         notifications.close();
+        if (notifInterval) {
+            clearInterval(notifInterval);
+            notifInterval = null;
+        }
+    };
     notifications.querySelector("footer > button").addEventListener('click', () => {
-        notifications.close();
+        closeModal(); 
+    });
+    notifications.addEventListener('keydown', (e) => {
+        if (e.key === "Escape") {
+            closeModal();
+        }
     });
 });
