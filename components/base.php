@@ -49,7 +49,7 @@ $accessibility = json_decode($_COOKIE['accessibility'] ?? '{}');
                 <li><a href="shop">Our products</a></li>
                 <li><a href="">Bundles</a></li>
                 <li><a href="">Support</a></li>
-                <li><a href="">Notifications <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/notifications.svg#notifications"></use></svg></a></li>
+                <li><a href="javascript:void(0)">Notifications <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/notifications.svg#notifications"></use></svg></a></li>
                 <li><a href="">Your orders <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/orders.svg#orders"></use></svg></a></li>
                 <li><a href="cart">Your cart <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/cart.svg#cart"></use></svg></a></li>
             </ul></nav>
@@ -75,6 +75,28 @@ $accessibility = json_decode($_COOKIE['accessibility'] ?? '{}');
             <p>&copy; 2025 IsiFitGems s.r.l.</p>
         </footer>
 <?php endif ?>
+        <dialog id="notifications">
+            <article>
+                <header>
+                    <h3>Notifications</h3>
+                </header>
+                <section>
+                    <h4>Notifica 1</h4>
+                    <p>Descrizione notifica 1</p>
+                </section>
+                <section>
+                    <h4>Notifica 2</h4>
+                    <p>Descrizione notifica 2</p>
+                </section>
+                <section>
+                    <h4>Notifica 3</h4>
+                    <p>Descrizione notifica 3</p>
+                </section>
+                <footer>
+                    <button autofocus>Close</button>
+                </footer>
+            </article>
+        </dialog>
         <dialog id="accessibility">
             <article>
                 <header>

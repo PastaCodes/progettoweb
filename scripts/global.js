@@ -1,6 +1,7 @@
 import { createCookie, getCookie, deleteCookie } from "./cookie.js";
 
 document.addEventListener('DOMContentLoaded', () => {
+    // ===== Colortheme switch =====
     // Get document tag
     const docElt = document.documentElement;
     const btn = document.querySelector('#side-buttons > :first-child');
@@ -21,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', () => {
         switchTheme(docElt.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
     });
-
+    // ===== Accessibility Options =====
     const updateCookie = () => {
         let accessibility = {};
         if (highContrastToggle.checked) {
@@ -79,4 +80,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     largerTextToggle.addEventListener('click', updateText);
     updateText(false);
+    // ===== Notification stuff =====
+    const notificationLink = document.querySelector('nav > ul :nth-child(4) > a');
+    notificationLink.addEventListener('click', () => {
+        notifications.showModal();
+    });
+    notifications.querySelector("footer > button").addEventListener('click', () => {
+        notifications.close();
+    });
 });
