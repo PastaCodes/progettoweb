@@ -1,5 +1,4 @@
 <?php
-require_once '../util/db.php';
 require_once '../classes/Product.php';
 require_once '../classes/ProductVariant.php';
 require_once '../util/format.php';
@@ -17,9 +16,6 @@ $product->fetch_all_details();
             </div>
         </template>
         <main>
-<?php if ($product === null): ?>
-            <h1>Product not found</h1>
-<?php else: ?>
 <?php if ($product->thumbnail() === null): ?>
             <div>
                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
@@ -45,6 +41,5 @@ $product->fetch_all_details();
             <p><?= format_price($product->price) ?></p>
 <?php if ($product->base->is_standalone): ?>
             <button data-product-name="<?= $product->base->code_name ?>"<?php if ($product->variant !== null): ?> data-variant-suffix="<?= $product->variant->code_suffix ?>"<?php endif ?>>Add to cart</button>
-<?php endif ?>
 <?php endif ?>
         </main>

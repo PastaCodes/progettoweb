@@ -1,0 +1,85 @@
+:root {
+    --thumbnail-size: 14rem;
+}
+
+main > section:first-of-type > div {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: max-content auto;
+    grid-template-rows: max-content 1fr;
+    padding: var(--pico-spacing);
+    border-radius: var(--pico-border-radius);
+    background: var(--pico-card-background-color);
+    box-shadow: var(--pico-card-box-shadow);
+    margin-bottom: var(--pico-spacing);
+}
+
+main > section:first-of-type > div > :first-child {
+    width: var(--thumbnail-size);
+    height: var(--thumbnail-size);
+    border-radius: var(--pico-border-radius);
+    overflow: hidden;
+    margin-bottom: 0;
+    margin-right: 2rem;
+    grid-row: 1 / -1;
+    grid-column: 1;
+    user-select: none;
+}
+
+main > section:first-of-type > div > div:first-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+main > section:first-of-type > div > div:first-child > svg {
+    width: 6rem;
+    height: 6rem;
+    color: var(--pico-muted-color);
+    margin-bottom: var(--spacing-small);
+}
+
+main > section:first-of-type > div > div:first-child > p {
+    color: var(--pico-muted-color);
+}
+
+main > section:first-of-type > div p, main > section:first-of-type > div a {
+    margin-bottom: 0;
+    width: fit-content;
+    height: fit-content;
+}
+
+main > section:first-of-type > div > a {
+    font-weight: bold;
+    grid-row: 1;
+    grid-column: 2;
+    margin-bottom: var(--spacing-small);
+    color: var(--pico-primary-inverted);
+}
+
+main > section:nth-of-type(2) {
+    margin-bottom: var(--pico-spacing);
+}
+
+main > section:nth-of-type(2) > p {
+    margin-bottom: var(--spacing-small);
+}
+
+[type="radio"] {
+    --radio-color: attr(data-color color);
+    --pico-primary-border: var(--radio-color);
+    outline: 0.05rem solid var(--pico-muted-color);
+    outline-offset: -0.05rem;
+    flex: 0 0 auto;
+    background-color: color-mix(in oklab, var(--radio-color) 90%, #000);
+    margin: 0;
+}
+
+[type="radio"]:not(:where(:hover, :focus, :focus-visible)) {
+    --pico-box-shadow: none !important;
+}
+
+[type="radio"]:where(:hover, :focus, :focus-visible) {
+    --pico-box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-form-element-focus-color);
+}

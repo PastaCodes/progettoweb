@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . "/../util/db.php";
 require_once __DIR__ . "/ProductBase.php";
 require_once __DIR__ . "/ProductVariant.php";
 require_once __DIR__ . "/Image.php";
@@ -36,17 +37,27 @@ class Product {
     }
 
     public function to_radio_attributes(string $selected_suffix, bool $include_price = false): string {
-        $html = 'title="'. $this->variant->display_name . '" data-variant-suffix="' . $this->variant->code_suffix .'" data-color="#'. $this->variant->color . '"';
+        $html = $this->variant->to_radio_attributes($selected_suffix);
         if ($this->thumbnail() !== null) {
             $html .= ' data-thumbnail-file="' . $this->thumbnail()->file .'" data-thumbnail-alt="'. $this->thumbnail()->alt_text . '"';
         }
         if ($include_price) {
             $html .= ' data-price="' . number_format($this->price, 2) . '"';
         }
-        if ($this->variant->code_suffix === $selected_suffix) {
-            $html .= ' checked="checked"';
-        }
         return $html;
+    }
+
+    public function to_variants_data(): string {
+        $data = [];
+        foreach ($this->base->variants as $variant) {
+            $variant_data = ['price' => $variant->price];
+            if ($variant->thumbnail() !== null) {
+                $variant_data['thumbnail_file'] = $variant->thumbnail()->file;
+                $variant_data['thumbnail_alt'] = $variant->thumbnail()->alt_text;
+            }
+            $data[$variant->variant->code_suffix] = $variant_data;
+        }
+        return json_encode($data);
     }
 
     public static function fetch_products(?string $search = null, ?string $category = null): array {

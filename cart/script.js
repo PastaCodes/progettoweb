@@ -1,10 +1,5 @@
-function formatPrice(number) {
-    const parts = number.toFixed(2).split('.');
-    const integerPart = parts[0];
-    const decimalPart = parts[1];
-    const withThousandSeparators = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    return '&euro; ' + withThousandSeparators + ',' + decimalPart;
-}
+import { formatPrice } from '../scripts/global.js';
+import { setCart } from '../scripts/cart.js';
 
 // Wait for the style to be rendered
 window.addEventListener('load', () => {
@@ -38,6 +33,10 @@ window.addEventListener('load', () => {
         const fullCartProductPriceElt = cartProductSection.querySelector('p:nth-last-of-type(2)');
         const productUnitPrice = parseFloat(inputProductQty.getAttribute('data-unit-price'));
         // Get buttons
+
+// ????? Why are modules like this
+window.setCart = setCart;
+window.modifyCart = modifyCart;
         const btnDelete = cartProductSection.querySelector('button:nth-last-of-type(1)');
         const btnDecrement = cartProductSection.querySelector('button:first-child');
         const btnIncrement = cartProductSection.querySelector('button:last-child');

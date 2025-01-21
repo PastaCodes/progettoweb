@@ -25,6 +25,7 @@ main > div > :first-child {
     margin-right: 2rem;
     grid-row: 1 / -1;
     grid-column: 1;
+    user-select: none;
 }
 
 main > div > div:first-child {

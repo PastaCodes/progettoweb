@@ -1,4 +1,12 @@
-import { createCookie, getCookie, deleteCookie } from "./cookie.js";
+import { createCookie, deleteCookie } from "./cookie.js";
+
+export function formatPrice(number) {
+    const parts = number.toFixed(2).split('.');
+    const integerPart = parts[0];
+    const decimalPart = parts[1];
+    const withThousandSeparators = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return '&euro; ' + withThousandSeparators + ',' + decimalPart;
+}
 
 function timeAgo(ms) {
     const seconds = Math.floor(ms / 1000);
