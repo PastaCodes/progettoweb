@@ -136,6 +136,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const readNotifications = getReadNotifications().length;
         const unreadCount = totalNotifications - readNotifications;
         notificationCounterElt.innerHTML = unreadCount > 0 ? unreadCount : '';
+        if (unreadCount > 0) {
+            notificationCounterElt.style.display = '';
+            notificationCounterElt.style.animation = '';
+        } else {
+            notificationCounterElt.style.display = 'none';
+            notificationCounterElt.style.animation = 'none';
+            void notificationCounterElt.offsetWidth;
+        }
     };
     const updateNotificationTimestamps = () => {
         notifications.querySelectorAll('article > section').forEach(notification => {
@@ -152,7 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
             clearInterval(notifInterval);
             notifInterval = null;
         }
-        console.log("CLOSED");
     };
     // Event Listeners
     notificationLink.addEventListener('click', () => {
