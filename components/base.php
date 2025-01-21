@@ -82,6 +82,10 @@ $notifications = Notification::fetch_all();
             <article>
                 <header>
                     <h3>Notifications</h3>
+                    <label>
+                        Hide seen
+                        <input name="hide-seen" type="checkbox" role="switch">
+                    </label>
                 </header>
 <?php foreach ($notifications as $notification): ?>
                 <section data-id="<?= $notification->id ?>" data-timestamp="<?= $notification->created_at->format('Y-m-d H:i:s') ?>">

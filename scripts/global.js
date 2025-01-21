@@ -144,11 +144,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const readNotifications = JSON.parse(localStorage.getItem(NOTIFICATIONS_LOCAL_STORAGE));
         const notificationId = section.getAttribute('data-id');
         if (readNotifications && readNotifications.includes(notificationId)) {
-            section.style.filter = "brightness(0.5)";
+            section.style.filter = 'brightness(0.5)';
+            section.style.display = checkboxHideRead.checked ? 'none' : '';
         } else {
-            section.style.filter = "";
+            section.style.filter = '';
+            section.style.display = '';
         }
     };
+    const checkboxHideRead = notifications.querySelector('header > label > input');
+    checkboxHideRead.addEventListener('click', () => {
+        notifications.querySelectorAll('section').forEach(e => updateSectionRead(e));
+    });
     // Setup read button
     notifications.querySelectorAll('article > section > button:first-of-type').forEach(btn => {
         updateSectionRead(btn.parentElement);
