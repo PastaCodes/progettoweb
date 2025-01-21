@@ -38,11 +38,10 @@ create table product_info(
     constraint foreign key (product, variant) references product_variant(base, code_suffix) on update cascade on delete cascade
 );
 
-create view price_range as (
-    select product, min(price) as price_min, max(price) as price_max
-        from product_info
-        group by product
-);
+create view price_range as
+select product, min(price) as price_min, max(price) as price_max
+    from product_info
+    group by product;
 
 create table bundle(
     code_name varchar(255),
@@ -50,6 +49,32 @@ create table bundle(
     multiplier float not null,
     constraint primary key (code_name)
 );
+
+create table product_in_bundle(
+    base varchar(255),
+    bundle varchar(255),
+    constraint primary key(base, bundle),
+    constraint foreign key (base) references product_base(code_name) on update cascade on delete cascade,
+    constraint foreign key (bundle) references bundle(code_name) on update cascade on delete cascade
+);
+
+create view bundle_variant as
+with product_count_in_bundle as (
+    select bundle, count(base) as product_count
+        from product_in_bundle
+        group by bundle
+),
+variant_count_in_bundle as (
+    select bundle, code_suffix, count(product_in_bundle.base) as variant_count
+        from product_in_bundle
+        join product_variant on product_variant.base = product_in_bundle.base
+        group by bundle, code_suffix
+)
+select variant_count_in_bundle.bundle, variant_count_in_bundle.code_suffix
+    from variant_count_in_bundle
+    join product_count_in_bundle on product_count_in_bundle.bundle = variant_count_in_bundle.bundle
+    where variant_count = product_count
+    group by variant_count_in_bundle.bundle, variant_count_in_bundle.code_suffix;
 
 insert into category(code_name, display_name) values
     ('bracelets', 'Bracelets'),
@@ -216,4 +241,12 @@ insert into product_info(product, variant, price) values
     ('gem_earrings', 'demon_core', 0.00);
 
 insert into bundle(code_name, display_name, multiplier) values
-    ('dragon_bundle', 'Dragon Bundle', 0.8);
+    ('dragon_bundle', 'Dragon Bundle', 0.8),
+    ('moai_bundle', 'Moai Bundle', 0.9);
+
+insert into product_in_bundle(base, bundle) values
+    ('dragon_pendant', 'dragon_bundle'),
+    ('flame_earrings', 'dragon_bundle'),
+    ('moai_pin', 'moai_bundle'),
+    ('flower_bracelet', 'moai_bundle'),
+    ('pebble_bracelet', 'moai_bundle');
