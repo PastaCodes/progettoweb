@@ -100,7 +100,43 @@ document.addEventListener('DOMContentLoaded', () => {
     largerTextToggle.addEventListener('click', updateText);
     updateText(false);
     // ===== Notification stuff =====
-    // Update notification ticker function
+    // Constants and Selectors
+    const notificationLink = document.querySelector('nav > ul :nth-child(4) > a');
+    const notificationCounterElt = notificationLink.querySelector('span');
+    const checkboxHideRead = notifications.querySelector('header > label > input');
+    const closeButton = notifications.querySelector('footer > button');
+    // Helper Functions
+    const getReadNotifications = () => JSON.parse(localStorage.getItem(NOTIFICATIONS_LOCAL_STORAGE)) || [];
+    const setReadNotifications = (notifications) => {
+        if (notifications.length > 0) {
+            localStorage.setItem(NOTIFICATIONS_LOCAL_STORAGE, JSON.stringify(notifications));
+        } else {
+            localStorage.removeItem(NOTIFICATIONS_LOCAL_STORAGE);
+        }
+    };
+    const updateSectionRead = (section) => {
+        const readNotifications = getReadNotifications();
+        const notificationId = section.getAttribute('data-id');
+        const isRead = readNotifications.includes(notificationId);
+        section.style.filter = isRead ? 'brightness(0.5)' : '';
+        section.style.display = isRead && checkboxHideRead.checked ? 'none' : '';
+    };
+    const toggleReadStatus = (notificationId, isRead) => {
+        let readNotifications = getReadNotifications();
+        if (isRead) {
+            readNotifications = readNotifications.filter(id => id !== notificationId);
+        } else {
+            readNotifications.push(notificationId);
+        }
+        setReadNotifications(readNotifications);
+        updateUnreadCounter();
+    };
+    const updateUnreadCounter = () => {
+        const totalNotifications = notifications.querySelectorAll('article > section').length;
+        const readNotifications = getReadNotifications().length;
+        const unreadCount = totalNotifications - readNotifications;
+        notificationCounterElt.innerHTML = unreadCount > 0 ? unreadCount : '';
+    };
     const updateNotificationTimestamps = () => {
         notifications.querySelectorAll('article > section').forEach(notification => {
             const currTimestamp = new Date(notification.getAttribute('data-timestamp'));
@@ -109,77 +145,42 @@ document.addEventListener('DOMContentLoaded', () => {
             timeTicker.innerHTML = timeAgo(differenceMillis);
         });
     };
-    // Add callbacks to the link
-    const notificationLink = document.querySelector('nav > ul :nth-child(4) > a');
     let notifInterval = null;
-    notificationLink.addEventListener('click', () => {
-        // Start updating notification counter
-        updateNotificationTimestamps();
-        if (!notifInterval) {
-            notifInterval = setInterval(() => {
-                updateNotificationTimestamps();
-            }, 60000);
-        }
-        // Show notification modal
-        notifications.showModal();
-    });
-    // Exit from notification modal properly
     const closeModal = () => {
-         notifications.close();
+        notifications.close();
         if (notifInterval) {
             clearInterval(notifInterval);
             notifInterval = null;
         }
+        console.log("CLOSED");
     };
-    notifications.querySelector("footer > button").addEventListener('click', () => {
-        closeModal(); 
+    // Event Listeners
+    notificationLink.addEventListener('click', () => {
+        updateNotificationTimestamps();
+        updateUnreadCounter();
+        if (!notifInterval) {
+            notifInterval = setInterval(updateNotificationTimestamps, 60000);
+        }
+        notifications.showModal();
     });
+    closeButton.addEventListener('click', closeModal);
     notifications.addEventListener('keydown', (e) => {
         if (e.key === "Escape") {
             closeModal();
         }
     });
-    // Function to edit section visibility based on it being read
-    const updateSectionRead = (section) => {
-        const readNotifications = JSON.parse(localStorage.getItem(NOTIFICATIONS_LOCAL_STORAGE));
-        const notificationId = section.getAttribute('data-id');
-        if (readNotifications && readNotifications.includes(notificationId)) {
-            section.style.filter = 'brightness(0.5)';
-            section.style.display = checkboxHideRead.checked ? 'none' : '';
-        } else {
-            section.style.filter = '';
-            section.style.display = '';
-        }
-    };
-    const checkboxHideRead = notifications.querySelector('header > label > input');
     checkboxHideRead.addEventListener('click', () => {
-        notifications.querySelectorAll('section').forEach(e => updateSectionRead(e));
+        notifications.querySelectorAll('section').forEach(updateSectionRead);
     });
-    // Setup read button
+    // Initialize Read Button Listeners
     notifications.querySelectorAll('article > section > button:first-of-type').forEach(btn => {
-        updateSectionRead(btn.parentElement);
+        const section = btn.parentElement;
+        updateSectionRead(section);
         btn.addEventListener('click', () => {
-            const readNotifications = JSON.parse(localStorage.getItem(NOTIFICATIONS_LOCAL_STORAGE));
-            const notificationId = btn.parentElement.getAttribute('data-id');
-            // If there is no notification, add a new local storage item with the id
-            if (!readNotifications) {
-                localStorage.setItem(NOTIFICATIONS_LOCAL_STORAGE, JSON.stringify([notificationId]));
-            } else {
-            // If it was not read, add it to the list
-                if (!readNotifications.includes(notificationId)) {
-                    readNotifications.push(notificationId);
-                    localStorage.setItem(NOTIFICATIONS_LOCAL_STORAGE, JSON.stringify(readNotifications));
-                } else {
-                    // Remove the element from the list if it was read
-                    const idx = readNotifications.indexOf(notificationId);
-                    readNotifications.splice(idx, 1);
-                    localStorage.setItem(NOTIFICATIONS_LOCAL_STORAGE, JSON.stringify(readNotifications));
-                    if (readNotifications.length <= 0) {
-                        localStorage.removeItem(NOTIFICATIONS_LOCAL_STORAGE);
-                    }
-                }
-            }
-            updateSectionRead(btn.parentElement);
+            const notificationId = section.getAttribute('data-id');
+            const isRead = getReadNotifications().includes(notificationId);
+            toggleReadStatus(notificationId, isRead);
+            updateSectionRead(section);
         });
     });
     // Setup erase button
@@ -189,4 +190,5 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("ERASE", notificationId);
         });
     });
+    updateUnreadCounter();
 });

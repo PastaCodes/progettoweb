@@ -118,6 +118,22 @@ img, svg {
     pointer-events: none;
 }
 
+nav > ul :nth-child(4) > a {
+    position: relative;
+}
+
+nav > ul :nth-child(4) > a > span {
+    position: absolute;
+    font-size: small;
+    font-weight: bold;
+    background-color: var(--pico-form-element-invalid-active-border-color);
+    color: var(--pico-color);
+    padding: 0 3px;
+    border-radius: 1rem;
+    top: 0;
+    right: 0;
+}
+
 #side-buttons {
     position: fixed;
     top: 10rem;
