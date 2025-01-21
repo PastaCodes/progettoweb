@@ -35,7 +35,7 @@ if (!empty($cart->entries)) {
                 </button>
                 <div role="group">
                     <button <?= $entry->quantity === 1 ? 'disabled' : ''?>>-</button>
-                    <input name="quantity" inputmode="numeric" min="1" max="99" data-unit-price="<?= number_format($entry->product->price, 2) ?>" data-base-code="<?= $entry->product->base->code_name?>"<?= $entry->product->variant ? ' data-variant-suffix="' . $entry->product->variant->code_suffix . '"' : '' ?> value="<?= $entry->quantity ?>">
+                    <input type="number" name="quantity" inputmode="numeric" min="1" max="99" data-unit-price="<?= number_format($entry->product->price, 2) ?>" data-base-code="<?= $entry->product->base->code_name?>"<?= $entry->product->variant ? ' data-variant-suffix="' . $entry->product->variant->code_suffix . '"' : '' ?> value="<?= $entry->quantity ?>">
                     <button <?= $entry->quantity === 99 ? 'disabled' : ''?>>+</button>
                 </div>
             </div>

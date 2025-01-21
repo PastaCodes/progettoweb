@@ -103,7 +103,7 @@ $accessibility = json_decode($_COOKIE['accessibility'] ?? '{}');
                     </label>
                 </fieldset>
                 <footer>
-                    <button autofocus role="button">Confirm</button>
+                    <button autofocus>Confirm</button>
                 </footer>
             </article>
         </dialog>
