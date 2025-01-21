@@ -1,4 +1,5 @@
-import { formatPrice } from './global.js';
+import { formatPrice } from '../scripts/global.js';
+import { modifyCart } from '../scripts/cart.js';
 
 // Wait for the style to be rendered
 window.addEventListener('load', () => {

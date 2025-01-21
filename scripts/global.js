@@ -8,8 +8,6 @@ export function formatPrice(number) {
     return '&euro; ' + withThousandSeparators + ',' + decimalPart;
 }
 
-window.formatPrice = formatPrice;
-
 document.addEventListener('DOMContentLoaded', () => {
     // Get document tag
     const docElt = document.documentElement;

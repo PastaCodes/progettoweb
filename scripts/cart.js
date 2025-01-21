@@ -2,7 +2,7 @@ import { createCookie, getCookie, deleteCookie } from "./cookie.js";
 
 const CART_COOKIE_NAME = 'cart';
 
-function setCart(productId, variantId, quantity) {
+export function setCart(productId, variantId, quantity) {
     if (!productId || quantity == null) {
         return;
     }
@@ -40,7 +40,7 @@ function setCart(productId, variantId, quantity) {
     }
 }
 
-function modifyCart(productId, variantId, quantity = 1) {
+export function modifyCart(productId, variantId, quantity = 1) {
     if (!productId || quantity == null) {
         return;
     }
@@ -87,11 +87,7 @@ function modifyProductInCart(cart, productId, quantity) {
     }
 }
 
-function clearCart() {
+export function clearCart() {
     // Delete the cart cookie
     deleteCookie(CART_COOKIE_NAME);
 }
-
-// ????? Why are modules like this
-window.setCart = setCart;
-window.modifyCart = modifyCart;
