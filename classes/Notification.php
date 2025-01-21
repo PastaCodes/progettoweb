@@ -5,13 +5,11 @@ class Notification {
     public string $title;
     public string $description;
     public DateTimeInterface $created_at;
-    public bool $seen;
 
-    public function __construct(string $title, string $desc, DateTimeInterface $timestamp, bool $seen) {
+    public function __construct(string $title, string $desc, DateTimeInterface $timestamp) {
         $this->title = $title;
         $this->description = $desc;
         $this->created_at = $timestamp;
-        $this->seen = $seen;
     }
 
     public static function fetch_all(): array {
@@ -23,7 +21,7 @@ class Notification {
         $notifications = [];
         foreach ($notification_result as $notification) {
             $notifications[] = new Notification($notification['title'], $notification['description'], 
-                new DateTime($notification['created_at']), $notification['is_read']);
+                new DateTime($notification['created_at']));
         }
         return $notifications;
     }
