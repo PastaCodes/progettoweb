@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const readNotifications = JSON.parse(localStorage.getItem(NOTIFICATIONS_LOCAL_STORAGE));
         const notificationId = section.getAttribute('data-id');
         if (readNotifications && readNotifications.includes(notificationId)) {
-            section.style.filter = "brightness(0.7)";
+            section.style.filter = "brightness(0.5)";
         } else {
             section.style.filter = "";
         }

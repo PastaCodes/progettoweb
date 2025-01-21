@@ -170,6 +170,7 @@ dialog label {
     background: var(--pico-background-color);
     border-radius: 1rem;
     padding: var(--pico-spacing);
+    transition: filter 0.1s ease-in;
 }
 
 #notifications > article > section > button:first-of-type {
