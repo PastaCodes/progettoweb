@@ -14,10 +14,11 @@ class Notification {
         $this->created_at = $timestamp;
     }
 
-    public static function fetch_all(): array {
+    public static function fetch_all_of(string $username): array {
         global $database;
         $notification_result = $database->find(
             table: 'notification',
+            filters: ['user' => $username],
             options: ['order_by' => ['created_at' => 'DESC']]
         );
         $notifications = [];

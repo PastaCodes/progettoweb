@@ -4,8 +4,10 @@ require_once __DIR__ . '/../' . $page->body;
 $body = ob_get_clean();
 $accessibility = json_decode($_COOKIE['accessibility'] ?? '{}');
 // Notification stuff
-require_once __DIR__ . '/../classes/Notification.php';
-$notifications = Notification::fetch_all();
+if (isset($_SESSION['username'])) {
+    require_once __DIR__ . '/../classes/Notification.php';
+    $notifications = Notification::fetch_all_of($_SESSION['username']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
