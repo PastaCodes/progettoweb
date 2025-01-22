@@ -1,9 +1,9 @@
 form {
     margin: auto;
     background: var(--pico-card-background-color);
-    border-radius: 1rem;
+    border-radius: var(--pico-border-radius);
     padding: 1rem;
-    width: 25rem;
+    width: 30rem;
     height: max-content;
 }
 

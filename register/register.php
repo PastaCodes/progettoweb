@@ -22,6 +22,7 @@ if (isset($_SESSION['username'])) {
 ?>
     <main>
         <form method="POST">
+            <h2>Register</h2>
             <fieldset>
                 <label>
                     Username <small><?= $register_error ? 'An account with that username already exists!' : ''?></small>
@@ -31,6 +32,7 @@ if (isset($_SESSION['username'])) {
                     Password <small></small>
                     <input minlength="8" maxlength="255" type="password" name="password" placeholder="Password" required="required">
                 </label>
+                <a href="login">I already have an account</a>
                 <input type="submit" value="Register">
             </fieldset>
         </form>

@@ -21,6 +21,7 @@ if (isset($_SESSION['username'])) {
 ?>
     <main>
         <form method="POST">
+            <h2>Login</h2>
             <fieldset>
                 <label>
                     Username <small><?= $login_error ? 'Invalid login details!' : ''?></small>
@@ -30,6 +31,7 @@ if (isset($_SESSION['username'])) {
                     Password <small></small>
                     <input minlength="8" maxlength="255" type="password" name="password" placeholder="Password" required="required">
                 </label>
+                <a href="register">I don't have an account</a>
                 <input type="submit" value="Login">
             </fieldset>
         </form>
