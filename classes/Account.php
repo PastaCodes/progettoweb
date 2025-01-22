@@ -19,7 +19,7 @@ class Account {
             table: 'account',
             filters: ['username' => $username]
         );
-        if (password_verify($password, $account['password_hash'])) {
+        if (isset($account['password_hash']) && password_verify($password, $account['password_hash'])) {
             return true;
         }
         return false;
