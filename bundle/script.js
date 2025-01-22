@@ -20,7 +20,6 @@ window.addEventListener('load', () => {
         radios.forEach(radio => {
             const updateVariant = (radio) => {
                 variantDisplay.innerHTML = radio.getAttribute('title');
-                // TODO: thumbnails with alts
                 let price = 0;
                 products.forEach(product => {
                     const variantsData = JSON.parse(product.getAttribute('data-variants-data'));
@@ -46,6 +45,10 @@ window.addEventListener('load', () => {
                         const noThumbnail = noThumbnailTemplate.content.cloneNode(true).firstElementChild;
                         thumbnailElement.replaceWith(noThumbnail);
                         thumbnailElement = noThumbnail;
+                    }
+                    const productVariantDisplay = product.querySelector('p:nth-last-child(2)');
+                    if (productVariantDisplay !== null) {
+                        productVariantDisplay.innerHTML = variantDisplay.innerHTML;
                     }
                 });
                 const multiplier = parseFloat(priceDisplay.getAttribute('data-multiplier'));

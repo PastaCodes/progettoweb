@@ -28,7 +28,7 @@ main > div > div p {
     margin-bottom: 0;
 }
 
-main > div > div:where(:hover, :focus, :focus-visible):not([data-hover-disabled]) {
+main > div > div:where(:hover, :focus-visible):not([data-hover-disabled]) {
     box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-primary-focus);
     outline: none;
 }
@@ -104,15 +104,15 @@ main > div > div > :last-child {
     margin-right: auto;
 }
 
-[type="radio"]:not(:where(:hover, :focus, :focus-visible)) {
+[type="radio"]:not(:where(:hover, :focus-visible)) {
     --pico-box-shadow: none !important;
 }
 
-[type="radio"]:where(:hover, :focus, :focus-visible) {
+[type="radio"]:where(:hover, :focus-visible) {
     --pico-box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-form-element-focus-color);
 }
 
-main > form > fieldset {
+main > fieldset {
     display: grid;
     grid-template-columns: 3fr 1fr;
     gap: var(--pico-spacing);
@@ -120,10 +120,10 @@ main > form > fieldset {
     margin-bottom: calc(2 * var(--pico-spacing));
 }
 
-main > form > fieldset * {
+main > fieldset * {
     margin: 0 !important;
 }
 
-main > form > fieldset select {
+main > fieldset select {
     margin-top: calc(var(--pico-spacing)* .375) !important;
 }

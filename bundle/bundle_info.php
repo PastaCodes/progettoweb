@@ -31,11 +31,14 @@ $bundle->fetch_details();
                         <img src="<?= $product->thumbnail()->file ?>" loading="lazy" alt="<?= $product->thumbnail()->alt_text ?>">
 <?php endif ?>
                         <a href="product?<?= $product->to_url_params() ?>" title="Go to product page"><?= $product->base->display_name ?> <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/link.svg#link"></use></svg></a>
+<?php if ($product->variant !== null): ?>
+                        <p><?= $product->variant->display_name ?></p>
+<?php endif ?>
                         <p><?= $product->base->short_description ?></p>
                     </div>
 <?php endforeach ?>
                 </section>
-<?php if (!empty($bundle->variants)): ?>
+<?php if (count($bundle->variants) > 1): ?>
                 <section>
                     <h2>Choose your style:</h2>
                     <p><?= $bundle->variants[$bundle->selected_suffix]->display_name ?></p>

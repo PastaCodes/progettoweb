@@ -11,6 +11,7 @@ class Bundle {
     public float|false $multiplier = false;
     public array|false $products = false; /* array of string => Product */
     public array|false $variants = false; /* array of string => ProductVariant */
+    public int|false $variants_count = false;
     private float|false $price_before_discount = false;
 
     public function __construct(string $code_name, ?string $selected_suffix = null) {
@@ -30,6 +31,47 @@ class Bundle {
 
     public function price_with_discount(): float {
         return $this->multiplier * $this->price_before_discount();
+    }
+
+    public function to_url_params(): string {
+        $url = "id=" . $this->code_name;
+        if ($this->selected_suffix !== null) {
+            $url .= "&variant=". $this->selected_suffix;
+        }
+        return $url;
+    }
+
+    private function fill_details(array $details_row) {
+        if ($this->display_name === false) {
+            $this->display_name = $details_row['bundle.display_name'];
+            $this->multiplier = $details_row['multiplier'];
+        }
+        if (!array_key_exists($details_row['product_in_bundle.base'], $this->products)) {
+            $product = Product::from($details_row['product_in_bundle.base']); // Variant may be set later
+            $product->base->display_name = $details_row['product_base.display_name'];
+            $product->base->short_description = $details_row['short_description'];
+            $this->products[$details_row['product_in_bundle.base']] = $product;
+        }
+        $product = $this->products[$details_row['product_in_bundle.base']];
+        if ($details_row['product_variant.code_suffix'] === null) {
+            $product->price = $details_row['price'];
+        } else {
+            if (!array_key_exists($details_row['bundle_variant.code_suffix'], $this->variants)) {
+                $variant = new ProductVariant($details_row['bundle_variant.code_suffix']);
+                $variant->display_name = $details_row['product_variant.display_name'];
+                $variant->color = $details_row['color'];
+                $this->variants[$details_row['bundle_variant.code_suffix']] = $variant;
+            }
+            $variant = $this->variants[$details_row['bundle_variant.code_suffix']];
+            if ($details_row['bundle_variant.code_suffix'] === $this->selected_suffix) {
+                $product->variant = $variant;
+                $variant_product = $product;
+            } else {
+                $variant_product = new Product($product->base, $variant);
+            }
+            $variant_product->price = $details_row['price'];
+            $product->base->variants[] = $variant_product;
+        }
     }
 
     public function fetch_details() {
@@ -63,42 +105,78 @@ class Bundle {
                     'on' => 'bundle.code_name = product_in_bundle.bundle',
                 ],
             ],
-            filters: ['product_in_bundle.bundle' => $this->code_name]
+            filters: ['product_in_bundle.bundle' => $this->code_name],
+            options: [
+                'order_by' => [
+                    'product_in_bundle.ordinal' => 'ASC',
+                    'product_variant.ordinal' => 'ASC'
+                ]
+            ]
         );
         $this->products = [];
         $this->variants = [];
         foreach ($details_result as $details_row) {
-            if ($this->display_name === false) {
-                $this->display_name = $details_row['bundle.display_name'];
-                $this->multiplier = $details_row['multiplier'];
-            }
-            if (!array_key_exists($details_row['product_in_bundle.base'], $this->products)) {
-                $product = Product::from($details_row['product_in_bundle.base']); // Variant may be set later
-                $product->base->display_name = $details_row['product_base.display_name'];
-                $product->base->short_description = $details_row['short_description'];
-                $this->products[$details_row['product_in_bundle.base']] = $product;
-            }
-            $product = $this->products[$details_row['product_in_bundle.base']];
-            if ($details_row['bundle_variant.code_suffix'] === null) {
-                $product->price = $details_row['price'];
-            } else {
-                if (!array_key_exists($details_row['bundle_variant.code_suffix'], $this->variants)) {
-                    $variant = new ProductVariant($details_row['bundle_variant.code_suffix']);
-                    $variant->display_name = $details_row['product_variant.display_name'];
-                    $variant->color = $details_row['color'];
-                    $this->variants[$details_row['bundle_variant.code_suffix']] = $variant;
-                }
-                $variant = $this->variants[$details_row['bundle_variant.code_suffix']];
-                if ($details_row['bundle_variant.code_suffix'] === $this->selected_suffix) {
-                    $product->variant = $variant;
-                    $variant_product = $product;
-                } else {
-                    $variant_product = new Product($product->base, $variant);
-                }
-                $variant_product->price = $details_row['price'];
-                $product->base->variants[] = $variant_product;
-            }
+            $this->fill_details($details_row);
         }
+    }
+
+    public static function fetch_bundles(): array {
+        global $database;
+        $bundles_result = $database->find(
+            table: 'product_in_bundle',
+            custom_columns: [
+                'variants_count' => 'count(bundle_variant.code_suffix)'
+            ],
+            joins: [
+                [
+                    'type' => 'LEFT',
+                    'table' => 'bundle_variant',
+                    'on' => 'bundle_variant.bundle = product_in_bundle.bundle',
+                ],
+                [
+                    'type'=> 'INNER',
+                    'table' => 'product_info',
+                    'on' => 'product_info.product = product_in_bundle.base and (product_info.variant is null or product_info.variant = bundle_variant.code_suffix)',
+                ],
+                [
+                    'type' => 'LEFT',
+                    'table' => 'product_variant',
+                    'on' => 'product_variant.base = product_in_bundle.base and product_variant.code_suffix = bundle_variant.code_suffix',
+                ],
+                [
+                    'type'=> 'INNER',
+                    'table' => 'product_base',
+                    'on' => 'product_in_bundle.base = product_base.code_name',
+                ],
+                [
+                    'type'=> 'INNER',
+                    'table' => 'bundle',
+                    'on' => 'bundle.code_name = product_in_bundle.bundle',
+                ],
+            ],
+            options: [
+                'order_by' => [
+                    'bundle.code_name' => 'ASC',
+                    'product_in_bundle.ordinal' => 'ASC',
+                    'product_variant.ordinal' => 'ASC'
+                ],
+                'group_by' => 'product_in_bundle.bundle, product_in_bundle.base'
+            ]
+        );
+        $bundles = [];
+        foreach ($bundles_result as $bundles_row) {
+            if (!array_key_exists($bundles_row['bundle.code_name'], $bundles)) {
+                $bundles[$bundles_row['bundle.code_name']] = new Bundle($bundles_row['bundle.code_name']);
+                $bundles[$bundles_row['bundle.code_name']]->variants_count = $bundles_row['variants_count'];
+                $bundles[$bundles_row['bundle.code_name']]->products = [];
+                $bundles[$bundles_row['bundle.code_name']]->variants = [];
+            }
+            if ($bundles_row['bundle_variant.code_suffix'] !== null) {
+                $bundles[$bundles_row['bundle.code_name']]->selected_suffix = $bundles_row['bundle_variant.code_suffix'];
+            }
+            $bundles[$bundles_row['bundle.code_name']]->fill_details($bundles_row);
+        }
+        return $bundles;
     }
 }
 ?>

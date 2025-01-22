@@ -3,12 +3,12 @@ create database isifitgems;
 use isifitgems;
 set time_zone = '+01:00';
 
-create table account {
+create table account (
     username varchar(255),
     password_hash varchar(255) not null,
     is_vendor boolean not null default false,
     constraint primary key (username)
-};
+);
 
 create table category (
     code_name varchar(255),
@@ -61,6 +61,7 @@ create table bundle (
 create table product_in_bundle (
     base varchar(255),
     bundle varchar(255),
+    ordinal smallint not null,
     constraint primary key (base, bundle),
     constraint foreign key (base) references product_base(code_name) on update cascade on delete cascade,
     constraint foreign key (bundle) references bundle(code_name) on update cascade on delete cascade
@@ -70,10 +71,11 @@ create view bundle_variant as
 with product_count_in_bundle as (
     select bundle, count(base) as product_count
         from product_in_bundle
+        where base in (select base from product_variant)
         group by bundle
 ),
 variant_count_in_bundle as (
-    select bundle, code_suffix, count(product_in_bundle.base) as variant_count
+    select bundle, code_suffix, product_variant.ordinal, count(product_in_bundle.base) as variant_count
         from product_in_bundle
         join product_variant on product_variant.base = product_in_bundle.base
         group by bundle, code_suffix
@@ -82,16 +84,17 @@ select variant_count_in_bundle.bundle, variant_count_in_bundle.code_suffix
     from variant_count_in_bundle
     join product_count_in_bundle on product_count_in_bundle.bundle = variant_count_in_bundle.bundle
     where variant_count = product_count
-    group by variant_count_in_bundle.bundle, variant_count_in_bundle.code_suffix;
+    group by variant_count_in_bundle.bundle, variant_count_in_bundle.code_suffix
+    order by ordinal;
 
 create table notification (
     id int(11) not null auto_increment,
     title varchar(255) not null,
     content varchar(255) not null,
     created_at datetime not null default current_timestamp(),
-    user varchar(255) not null,
+    username varchar(255) not null,
     constraint primary key (id),
-    constraint foreign key (user) references account(username) on update cascade on delete cascade
+    constraint foreign key (username) references account(username) on update cascade on delete cascade
 );
 
 insert into category (code_name, display_name) values
@@ -259,17 +262,26 @@ insert into product_info (product, variant, price) values
     ('gem_earrings', 'demon_core', 0.00);
 
 insert into bundle (code_name, display_name, multiplier) values
+    ('suspicious_bundle', 'Suspicious Bundle', 0.9),
     ('dragon_bundle', 'Dragon Bundle', 0.8),
-    ('moai_bundle', 'Moai Bundle', 0.9);
+    ('moai_bundle', 'Moai Bundle', 0.9),
+    ('goth_bundle', 'Goth Bundle', 0.7),
+    ('goth_bundle_plus', 'Goth Bundle+', 0.7);
 
-insert into product_in_bundle (base, bundle) values
-    ('dragon_pendant', 'dragon_bundle'),
-    ('flame_earrings', 'dragon_bundle'),
-    ('moai_pin', 'moai_bundle'),
-    ('flower_bracelet', 'moai_bundle'),
-    ('pebble_bracelet', 'moai_bundle');
-
-insert into notification (id, title, content, created_at) values
-    (1, 'No products in stock!', 'The product "moai_pin" has gone out of stock. Make sure to restock it as soon as possible!', '2025-01-21 21:59:32'),
-    (2, 'You died.', 'Not sure how, but you died. Must be your unlucky day mate.', '2025-01-19 12:32:21'),
-    (3, 'Cart updated.', 'You have added "sus" to your cart.', '2025-01-21 22:02:23');
+insert into product_in_bundle (base, bundle, ordinal) values
+    ('impostor_pin', 'suspicious_bundle', 0),
+    ('colorful_string_bracelet', 'suspicious_bundle', 1),
+    ('colorful_ring', 'suspicious_bundle', 2),
+    ('moai_pin', 'moai_bundle', 0),
+    ('flower_bracelet', 'moai_bundle', 1),
+    ('pebble_bracelet', 'moai_bundle', 2),
+    ('dragon_pendant', 'dragon_bundle', 0),
+    ('flame_earrings', 'dragon_bundle', 1),
+    ('raven_pendant', 'goth_bundle', 0),
+    ('choker', 'goth_bundle', 1),
+    ('dagger_earrings', 'goth_bundle', 2),
+    ('simple_ring', 'goth_bundle_plus', 0),
+    ('raven_pendant', 'goth_bundle_plus', 1),
+    ('choker', 'goth_bundle_plus', 2),
+    ('barbed_wire_bracelet', 'goth_bundle_plus', 3),
+    ('dagger_earrings', 'goth_bundle_plus', 3);
