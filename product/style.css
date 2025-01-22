@@ -4,7 +4,7 @@
     --radio-spacing: 0.5rem;
 }
 
-main > :not(h1):first-child {
+main > section > :first-child {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -16,19 +16,19 @@ main > :not(h1):first-child {
     margin-bottom: var(--pico-spacing);
 }
 
-main > div:first-child > svg {
+main > section > div:first-child > svg {
     width: 6rem;
     height: 6rem;
     color: var(--pico-muted-color);
     margin-bottom: var(--spacing-small);
 }
 
-main > div:first-child > p {
+main > section > div:first-child > p {
     color: var(--pico-muted-color);
     margin-bottom: 0;
 }
 
-main > div:nth-child(2) {
+main > section > div:nth-child(2) {
     display: flex;
     flex-direction: row;
     gap: var(--radio-spacing);

@@ -16,30 +16,32 @@ $product->fetch_all_details();
             </div>
         </template>
         <main>
+            <section>
 <?php if ($product->thumbnail() === null): ?>
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
-                    <use href="assets/nothing.svg#nothing"></use>
-                </svg>
-                <p>No image available</p>
-            </div>
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                        <use href="assets/nothing.svg#nothing"></use>
+                    </svg>
+                    <p>No image available</p>
+                </div>
 <?php else: ?>
-            <img src="<?= $product->thumbnail()->file ?>" loading="lazy" alt="<?= $product->thumbnail()->alt_text ?>">
+                <img src="<?= $product->thumbnail()->file ?>" loading="lazy" alt="<?= $product->thumbnail()->alt_text ?>">
 <?php endif ?>
 <?php if (!empty($product->base->variants)): ?>
-            <div>
+                <div>
 <?php foreach ($product->base->variants as $variant): ?>
-                <input type="radio" name="variant" <?= $variant->to_radio_attributes(selected_suffix: $product->variant->code_suffix, include_price: true) ?>>
+                    <input type="radio" name="variant" <?= $variant->to_radio_attributes(selected_suffix: $product->variant->code_suffix, include_price: true) ?>>
 <?php endforeach ?>
-            </div>
+                </div>
 <?php endif ?>
-            <h1><?= $product->base->display_name ?></h1>
-            <p><?= $product->base->short_description ?></p>
+                <h1><?= $product->base->display_name ?></h1>
+                <p><?= $product->base->short_description ?></p>
 <?php if ($product->variant !== null): ?>
-            <p><?= $product->variant->display_name ?></p>
+                <p><?= $product->variant->display_name ?></p>
 <?php endif ?>
-            <p><?= format_price($product->price) ?></p>
+                <p><?= format_price($product->price) ?></p>
 <?php if ($product->base->is_standalone): ?>
-            <button data-product-name="<?= $product->base->code_name ?>"<?php if ($product->variant !== null): ?> data-variant-suffix="<?= $product->variant->code_suffix ?>"<?php endif ?>>Add to cart</button>
+                <button data-product-name="<?= $product->base->code_name ?>"<?php if ($product->variant !== null): ?> data-variant-suffix="<?= $product->variant->code_suffix ?>"<?php endif ?>>Add to cart</button>
 <?php endif ?>
+            </section>
         </main>

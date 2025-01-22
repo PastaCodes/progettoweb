@@ -24,7 +24,7 @@ window.addEventListener('load', () => {
         return input.value = input.lastValidValue;
     };
     // For each product within the cart
-    document.querySelectorAll('main > div').forEach(cartProductSection => {
+    document.querySelectorAll('main > section > div').forEach(cartProductSection => {
         // Get product data
         const inputProductQty = cartProductSection.querySelector('input');
         const productBaseCode = inputProductQty.getAttribute('data-base-code');

@@ -2,7 +2,7 @@
     --thumbnail-size: 14rem;
 }
 
-main > section:first-of-type > div {
+main > section > section:first-of-type > div {
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: max-content auto;
@@ -14,7 +14,7 @@ main > section:first-of-type > div {
     margin-bottom: var(--pico-spacing);
 }
 
-main > section:first-of-type > div > :first-child {
+main > section > section:first-of-type > div > :first-child {
     width: var(--thumbnail-size);
     height: var(--thumbnail-size);
     border-radius: var(--pico-border-radius);
@@ -26,31 +26,31 @@ main > section:first-of-type > div > :first-child {
     user-select: none;
 }
 
-main > section:first-of-type > div > div:first-child {
+main > section > section:first-of-type > div > div:first-child {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-main > section:first-of-type > div > div:first-child > svg {
+main > section > section:first-of-type > div > div:first-child > svg {
     width: 6rem;
     height: 6rem;
     color: var(--pico-muted-color);
     margin-bottom: var(--spacing-small);
 }
 
-main > section:first-of-type > div > div:first-child > p {
+main > section > section:first-of-type > div > div:first-child > p {
     color: var(--pico-muted-color);
 }
 
-main > section:first-of-type > div p, main > section:first-of-type > div a {
+main > section > section:first-of-type > div p, main > section:first-of-type > div a {
     margin-bottom: 0;
     width: fit-content;
     height: fit-content;
 }
 
-main > section:first-of-type > div > a {
+main > section > section:first-of-type > div > a {
     font-weight: bold;
     grid-row: 1;
     grid-column: 2;
@@ -58,11 +58,11 @@ main > section:first-of-type > div > a {
     color: var(--pico-primary-inverted);
 }
 
-main > section:nth-of-type(2) {
+main > section > section:nth-of-type(2) {
     margin-bottom: var(--pico-spacing);
 }
 
-main > section:nth-of-type(2) > p {
+main > section > section:nth-of-type(2) > p {
     margin-bottom: var(--spacing-small);
 }
 

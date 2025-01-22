@@ -104,7 +104,7 @@ $notifications = Notification::fetch_all();
         <dialog id="accessibility">
             <article>
                 <header>
-                    <h3>Accessibility options</h3>
+                    <h1>Accessibility options</h1>
                 </header>
                 <fieldset>
                     <legend>Filters</legend>

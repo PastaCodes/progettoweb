@@ -9,36 +9,11 @@ window.addEventListener('load', () => {
     if (addToCartBtn) {
         addToCartBtn.addEventListener('click', () => { }); // TODO
     }
-    const products = document.querySelectorAll('main > section:first-of-type > div');
-    const variantDisplay = document.querySelector('main > section:nth-of-type(2) > p');
-    const priceDisplay = document.querySelector('main > p');
-    const radiosSection = document.querySelector('main > section:nth-of-type(2) > div');
+    const products = document.querySelectorAll('main > section > section:first-of-type > div');
+    const variantDisplay = document.querySelector('main > section > section:nth-of-type(2) > p');
+    const priceDisplay = document.querySelector('main > section > p');
+    const radiosSection = document.querySelector('main > section > section:nth-of-type(2) > div');
     if (radiosSection) {
-        /*
-        let thumbnailElement = document.querySelector('main > :not(h1):first-child');
-        const displayThumbnail = (activeRadio) => {
-            const isImage = thumbnailElement instanceof HTMLImageElement;
-            const thumbnailFile = activeRadio.getAttribute('data-thumbnail-file');
-            const thumbnailAltText = activeRadio.getAttribute('data-thumbnail-alt');
-            if (thumbnailFile && !isImage) {
-                // Replace the 'no thumbnail' elements with a new img
-                const img = document.createElement('img');
-                thumbnailElement.replaceWith(img);
-                thumbnailElement = img;
-            }
-            if (thumbnailFile) {
-                // Reuse the already present img to avoid flashes
-                thumbnailElement.src = thumbnailFile;
-                thumbnailElement.alt = thumbnailAltText;
-                thumbnailElement.loading = 'eager';
-            } else if (isImage) {
-                // Replace the img with the 'no thumbnail' elements
-                const noThumbnail = noThumbnailTemplate.content.cloneNode(true).firstElementChild;
-                thumbnailElement.replaceWith(noThumbnail);
-                thumbnailElement = noThumbnail;
-            }
-        }
-            */
         const radios = Array.from(radiosSection.children);
         // When hovering over a radio button, the associated thumbnail is displayed
         // Otherwise the one associated with the checked button is displayed

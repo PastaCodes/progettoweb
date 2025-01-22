@@ -11,9 +11,11 @@
         <title>"<?= $subject ?>" Mock email</title>
     </head>
     <body>
-        <h1><?= $subject ?></h1>
-        <h2>From: noreply@isifitgems.it</h2>
-        <h2>To: mario.rossi@gmail.com</h2>
-        <iframe src="data:text/html;base64,<?= base64_encode($contents) ?>" width="700" height="1000"></iframe>
+        <section>
+            <h1><?= $subject ?></h1>
+            <p>From: noreply@isifitgems.it</p>
+            <p>To: mario.rossi@gmail.com</p>
+            <iframe src="data:text/html;base64,<?= base64_encode($contents) ?>" width="700" height="1000"></iframe>
+        </section>
     </body>
 </html>
