@@ -31,6 +31,9 @@ class Database {
      * Executes a SELECT query and returns multiple rows.
      *
      * @param string $table The name of the table to query.
+     * @param array $custom_columns An array of custom tables clauses.
+     * - 'column_name' => 'query for column'
+     * Example: ['id_count' => 'COUNT(id)']
      * @param array $joins An array of JOIN clauses. Each element should be an associative array with keys:
      * - 'type' => The type of join (INNER, LEFT, RIGHT, etc.).
      * - 'table' => The name of the table to join.
@@ -45,16 +48,19 @@ class Database {
      * - 'offset' => int (offsets the starting point of the query)
      * - 'distinct' => bool (selects distinct rows)
      * - 'order_by' => array (specifies sorting, e.g., ['column' => 'ASC'])
+     * - 'group_by' => string (specifies a group by clause)
      * @return array An array of associative arrays representing the rows.
      */
-    public function find(string $table, array $joins = [], array $filters = [], array $options = []): array {
+    public function find(string $table, array $custom_columns = [], array $joins = [], array $filters = [], array $options = []): array {
         // Create the sql query
         $sql = sprintf(
-            "SELECT %s * FROM %s %s %s %s %s",
+            "SELECT %s * %s FROM %s %s %s %s %s %s",
             $options['distinct'] ?? false ? 'DISTINCT' : '',
+            $this->build_custom_columns($custom_columns),
             $table,
             $this->build_join_clause($joins),
             $this->build_where_clause($filters),
+            $this->build_group_by_clause($options['group_by'] ?? ''),
             $this->build_order_by_clause($options['order_by'] ?? []),
             isset($options['limit']) ? 'LIMIT ' . intval($options['limit']) : '',
             isset($options['offset']) ? 'OFFSET ' . intval($options['offset']) : ''
@@ -71,13 +77,14 @@ class Database {
      * Executes a SELECT query and returns a single row.
      *
      * @param string $table The name of the table to query.
+     * @param array $custom_columns An array to add aggregative functions to the query (see `find` method for structure). 
      * @param array $joins An array of JOIN clauses (see `find` method for structure).
      * @param array $filters An associative array of conditions for the WHERE clause.
      * @param array $options Additional options for the query (see `find` method).
      * @return array|null An associative array representing the row, or null if no rows match.
      */
-    public function find_one(string $table, array $joins = [], array $filters = [], array $options = []): ?array {
-        $result = $this->find($table, $joins, $filters, array_merge($options, ['limit' => 1]));
+    public function find_one(string $table, array $custom_columns = [], array $joins = [], array $filters = [], array $options = []): ?array {
+        $result = $this->find($table, $custom_columns, $joins, $filters, array_merge($options, ['limit' => 1]));
         return $result[0] ?? null;
     }
 
@@ -186,6 +193,29 @@ class Database {
     }
 
     /**
+     * Builds a part of the SELECT statement,
+     * used to add custom columns like COUNT or AVG to the select query.
+     *
+     * @param array $custom_columns An associative array of columns.
+     * @return string The extra columns for the database.
+     */
+    private function build_custom_columns(array $custom_columns): string {
+        if (empty($custom_columns)) {
+            return '';
+        }
+        $custom_select = [];
+        foreach ($custom_columns as $column_name => $query) {
+            // Ensure that the query is valid and properly formatted
+            if (is_string($query) && !empty($query)) {
+                $custom_select[] = "$query AS $column_name";
+            } else {
+                die("Invalid custom column query for '$column_name'");
+            }
+        }
+        return ', ' . implode(', ', $custom_select);
+    }
+
+    /**
      * Builds the WHERE clause for a query from a filter array, implementing oparators 
      * and other type specific clauses.
      *
@@ -244,6 +274,19 @@ class Database {
             }
             die('Join must specify either \'on\' or \'using\'.');
         }, $joins));
+    }
+
+    /**
+     * Builds the GROUP BY clause for a query from an options array.
+     *
+     * @param string $group_by The group by query.
+     * @return string The GROUP BY clause, or an empty string if no sorting is specified.
+     */
+    private function build_group_by_clause(string $group_by): string {
+        if (empty($group_by)) {
+            return '';
+        }
+        return 'GROUP BY ' . $group_by;
     }
 
     /**
