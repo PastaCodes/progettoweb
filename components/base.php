@@ -67,6 +67,13 @@ if (isset($_SESSION['username'])) {
                     <li>
                         <a href="cart">Your cart <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/cart.svg#cart"></use></svg></a>
                     </li>
+                    <li>
+<?php if (isset($_SESSION['username'])): ?>
+                        <a href="">Logout</a>
+<?php else: ?>
+                        <a href="login">Login</a>
+<?php endif ?>
+                    </li>
                 </ul>
             </nav>
         </header>

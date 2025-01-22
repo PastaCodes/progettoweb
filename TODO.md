@@ -1,3 +1,4 @@
 - "Also available in the ??? bundle"
 - Add bundles to cart
-- style notifications modal
+- Style notifications modal
+- Add logout functionality
