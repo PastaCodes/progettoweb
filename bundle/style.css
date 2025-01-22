@@ -42,6 +42,7 @@ main > section > section:first-of-type > div > div:first-child > svg {
 
 main > section > section:first-of-type > div > div:first-child > p {
     color: var(--pico-muted-color);
+    margin-bottom: 0;
 }
 
 main > section > section:first-of-type > div p, main > section > section:first-of-type > div a {
