@@ -105,7 +105,7 @@ $notifications = Notification::fetch_all();
                 <section data-id="<?= $notification->id ?>" data-timestamp="<?= $notification->created_at->format('Y-m-d H:i:s') ?>">
                     <h4><?= $notification->title ?></h4>
                     <p>1s ago</p>
-                    <p><?= $notification->description ?></p>
+                    <p><?= $notification->content ?></p>
                     <button>R</button>
                     <button>D</button>
                 </section>

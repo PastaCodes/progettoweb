@@ -1,5 +1,4 @@
 import { formatPrice } from '../scripts/util.js';
-import { formatPrice } from '../scripts./scripts/global.js';
 import { modifyCart } from '../scripts/cart.js';
 
 // Wait for the style to be rendered

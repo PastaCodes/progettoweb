@@ -4,13 +4,13 @@ require_once __DIR__ . '/Database.php';
 class Notification {
     public int $id;
     public string $title;
-    public string $description;
+    public string $content;
     public DateTimeInterface $created_at;
 
-    public function __construct(int $id, string $title, string $desc, DateTimeInterface $timestamp) {
+    public function __construct(int $id, string $title, string $content, DateTimeInterface $timestamp) {
         $this->id = $id;
         $this->title = $title;
-        $this->description = $desc;
+        $this->content = $content;
         $this->created_at = $timestamp;
     }
 
@@ -22,7 +22,7 @@ class Notification {
         );
         $notifications = [];
         foreach ($notification_result as $notification) {
-            $notifications[] = new Notification($notification['id'], $notification['title'], $notification['description'], 
+            $notifications[] = new Notification($notification['id'], $notification['title'], $notification['content'],
                 new DateTime($notification['created_at']));
         }
         return $notifications;
