@@ -269,7 +269,3 @@ insert into product_in_bundle (base, bundle) values
     ('flower_bracelet', 'moai_bundle'),
     ('pebble_bracelet', 'moai_bundle');
 
-insert into notification (id, title, content, created_at) values
-    (1, 'No products in stock!', 'The product "moai_pin" has gone out of stock. Make sure to restock it as soon as possible!', '2025-01-21 21:59:32'),
-    (2, 'You died.', 'Not sure how, but you died. Must be your unlucky day mate.', '2025-01-19 12:32:21'),
-    (3, 'Cart updated.', 'You have added "sus" to your cart.', '2025-01-21 22:02:23');
