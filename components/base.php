@@ -56,7 +56,7 @@ if (isset($_SESSION['username'])) {
                         <a href="shop">Our products</a>
                     </li>
                     <li>
-                        <a href="">Bundles</a>
+                        <a href="bundles">Bundles</a>
                     </li>
                     <li>
                         <a href="">Support</a>
@@ -123,7 +123,7 @@ if (isset($_SESSION['username'])) {
         <dialog id="accessibility">
             <article>
                 <header>
-                    <h1>Accessibility options</h1>
+                    <h2>Accessibility options</h2>
                 </header>
                 <fieldset>
                     <legend>Filters</legend>

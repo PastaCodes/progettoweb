@@ -1,6 +1,20 @@
-// const radioTransitionRuleIndex = document.styleSheets[0].insertRule('[type="radio"] { transition: none; }');
 // Wait for the style to be rendered
 window.addEventListener('load', () => {
+    const searchInput = document.querySelector('main > fieldset input');
+    const categorySelect = document.querySelector('main > fieldset select');
+    const search = () => {
+        const url = new URL(window.location.href);
+        url.search = '';
+        if (searchInput.value) {
+            url.searchParams.set('search', searchInput.value);
+        }
+        if (categorySelect.value) {
+            url.searchParams.set('category', categorySelect.value);
+        }
+        window.location.href = url.toString();
+    };
+    searchInput.addEventListener('change', search);
+    categorySelect.addEventListener('change', search);
     // Retrieve the elements to be used when no thumbnail is available
     const noThumbnailTemplate = document.getElementById('no-thumbnail');
     document.querySelectorAll('main > div > div').forEach(article => {

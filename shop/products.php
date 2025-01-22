@@ -3,15 +3,7 @@ require_once '../classes/Product.php';
 require_once '../classes/ProductVariant.php';
 require_once '../util/format.php';
 
-$filter_search = null;
-$filter_category = null;
-if (isset($_GET['search'])) {
-    $filter_search = $_GET['search'];
-}
-if (isset($_GET['category'])) {
-    $filter_category = $_GET['category'];
-}
-$products = Product::fetch_products($filter_search, $filter_category);
+$products = Product::fetch_products($_GET['search'] ?? null, $_GET['category'] ?? null);
 $categories = $database->find(table: 'category');
 ?>
         <template id="no-thumbnail">
@@ -23,20 +15,18 @@ $categories = $database->find(table: 'category');
             </div>
         </template>
         <main>
-            <form action="shop" method="GET">
-                <fieldset>
-                    <input type="search" name="search" placeholder="Search"<?= $filter_search ? ' value=' . $filter_search . '' : '' ?>>
-                    <label>
-                        Category
-                        <select name="category" onchange="document.querySelector('main > form').submit()">
-                            <option value=""<?= !$filter_category ? ' selected="selected"' : '' ?>>Any</option>
+            <fieldset>
+                <input type="search" name="search" placeholder="Search"<?php if (isset($_GET['search'])): ?> value="<?= $_GET['search'] ?>"<?php endif ?>>
+                <label>
+                    Category
+                    <select name="category">
+                        <option value=""<?php if (!isset($_GET['category'])): ?> selected="selected"<?php endif ?>>Any</option>
 <?php foreach ($categories as $category): ?>
-                            <option value="<?= $category['display_name'] ?>"<?= $filter_category && $filter_category == $category['display_name'] ? ' selected="selected"' : '' ?>><?= $category['display_name'] ?></option>
+                        <option value="<?= $category['display_name'] ?>"<?php if ($category['display_name'] == ($_GET['category'] ?? null)): ?> selected="selected"<?php endif ?>><?= $category['display_name'] ?></option>
 <?php endforeach ?>
-                        </select>
-                    </label>
-                </fieldset>
-            </form>
+                    </select>
+                </label>
+            </fieldset>
             <div>
 <?php foreach ($products as $product): ?>
                 <div data-product="<?= $product->base->code_name ?>" data-link="product?<?= $product->to_url_params() ?>" tabindex="0">

@@ -6,7 +6,7 @@ main > section > section:first-of-type > div {
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: max-content auto;
-    grid-template-rows: max-content 1fr;
+    grid-template-rows: max-content max-content 1fr;
     padding: var(--pico-spacing);
     border-radius: var(--pico-border-radius);
     background: var(--pico-card-background-color);
@@ -42,10 +42,10 @@ main > section > section:first-of-type > div > div:first-child > svg {
 
 main > section > section:first-of-type > div > div:first-child > p {
     color: var(--pico-muted-color);
+    margin-bottom: 0;
 }
 
-main > section > section:first-of-type > div p, main > section:first-of-type > div a {
-    margin-bottom: 0;
+main > section > section:first-of-type > div p, main > section > section:first-of-type > div a {
     width: fit-content;
     height: fit-content;
 }
@@ -54,8 +54,13 @@ main > section > section:first-of-type > div > a {
     font-weight: bold;
     grid-row: 1;
     grid-column: 2;
-    margin-bottom: var(--spacing-small);
+    margin-bottom: var(--pico-spacing);
     color: var(--pico-primary-inverted);
+}
+
+main > section > section:first-of-type > div > p:last-of-type {
+    grid-row: 3;
+    grid-column: 2;
 }
 
 main > section > section:nth-of-type(2) {
