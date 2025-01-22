@@ -1,11 +1,22 @@
 <?php
-// TODO: Handle register
+require_once '../classes/Account.php';
+
+$username = $_POST['username'] ?? null;
+$password = $_POST['password'] ?? null;
+$register_error = false;
+if ($username) {
+    $register_error = true;
+}
+if ($username && $password && !Account::check_exists($username)) {
+    $register_error = false;
+    // TODO: Create the account, start the session and redirect to store?
+}
 ?>
     <main>
         <form method="POST">
             <fieldset>
                 <label>
-                    Username <small></small>
+                    Username <small><?= $register_error ? 'An account with that username already exists!' : ''?></small>
                     <input minlength="1" maxlength="255" type="text" name="username" placeholder="Username" required="required">
                 </label>
                 <label>
