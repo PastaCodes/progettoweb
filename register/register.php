@@ -1,5 +1,8 @@
+<?php
+// TODO: Handle register
+?>
     <main>
-        <form action="login" method="POST">
+        <form method="POST">
             <fieldset>
                 <label>
                     Username <small></small>

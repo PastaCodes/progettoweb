@@ -1,5 +1,8 @@
+<?php
+// TODO: Handle login
+?>
     <main>
-        <form action="" method="POST">
+        <form method="POST">
             <fieldset>
                 <label>
                     Username <small></small>

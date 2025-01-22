@@ -24,7 +24,7 @@ export function setupForm(formElement, usernameInput, passwordInput) {
             return;
         }
         // Redirect
-        window.location.href = formElement.action;
+        ev.target.submit();
     });
 }
 
@@ -65,5 +65,5 @@ function checkPassword(passwordElement) {
     if (!/[@#$%^&+=!]/.test(passwordElement.value)) {
         return "Password must contain at least one special character (@#$%^&+=!).";
     }
-    return "Password does not meet the required criteria.";
+    return "Password contains an invalid character.";
 }
