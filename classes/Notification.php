@@ -18,7 +18,7 @@ class Notification {
         global $database;
         $notification_result = $database->find(
             table: 'notification',
-            filters: ['user' => $username],
+            filters: ['username' => $username],
             options: ['order_by' => ['created_at' => 'DESC']]
         );
         $notifications = [];
