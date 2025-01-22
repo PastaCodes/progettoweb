@@ -1,0 +1,4 @@
+small {
+    color: var(--pico-form-element-invalid-border-color);
+    float: right;
+}
