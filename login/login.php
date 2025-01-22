@@ -9,8 +9,15 @@ if ($username) {
 }
 if ($username && $password && Account::check_login($username, $password)) {
     $login_error = false;
-    // TODO: Log into the account, start the session and redirect to store?
+    // Login to account
+    $_SESSION['username'] = $username;
 }
+// Redirect if username in session
+if (isset($_SESSION['username'])) {
+    header('Location: ../shop');
+    exit();
+}
+
 ?>
     <main>
         <form method="POST">

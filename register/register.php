@@ -9,8 +9,16 @@ if ($username) {
 }
 if ($username && $password && !Account::check_exists($username)) {
     $register_error = false;
-    // TODO: Create the account, start the session and redirect to store?
+    // Create the account and add it to current session
+    Account::add_to_db($username, $password); 
+    $_SESSION['username'] = $username;
 }
+// Redirect if username in session
+if (isset($_SESSION['username'])) {
+    header('Location: ../shop');
+    exit();
+}
+
 ?>
     <main>
         <form method="POST">
