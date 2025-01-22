@@ -54,7 +54,7 @@ class Database {
     public function find(string $table, array $custom_columns = [], array $joins = [], array $filters = [], array $options = []): array {
         // Create the sql query
         $sql = sprintf(
-            "SELECT %s %s * FROM %s %s %s %s %s %s",
+            "SELECT %s * %s FROM %s %s %s %s %s %s",
             $options['distinct'] ?? false ? 'DISTINCT' : '',
             $this->build_custom_columns($custom_columns),
             $table,
@@ -212,7 +212,7 @@ class Database {
                 die("Invalid custom column query for '$column_name'");
             }
         }
-        return implode(', ', $custom_select) . ', ';
+        return ', ' . implode(', ', $custom_select);
     }
 
     /**
