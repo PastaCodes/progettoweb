@@ -48,14 +48,28 @@ $notifications = Notification::fetch_all();
                 </svg>
                 <h1>IsiFitGems</h1>
             </a>
-            <nav><ul>
-                <li><a href="shop">Our products</a></li>
-                <li><a href="">Bundles</a></li>
-                <li><a href="">Support</a></li>
-                <li><a href="javascript:void(0)">Notifications <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/notifications.svg#notifications"></use></svg></a></li>
-                <li><a href="">Your orders <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/orders.svg#orders"></use></svg></a></li>
-                <li><a href="cart">Your cart <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/cart.svg#cart"></use></svg></a></li>
-            </ul></nav>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="shop">Our products</a>
+                    </li>
+                    <li>
+                        <a href="">Bundles</a>
+                    </li>
+                    <li>
+                        <a href="">Support</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)">Notifications <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/notifications.svg#notifications"></use></svg><span><span></a>
+                    </li>
+                    <li>
+                        <a href="">Your orders <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/orders.svg#orders"></use></svg></a>
+                    </li>
+                    <li>
+                        <a href="cart">Your cart <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/cart.svg#cart"></use></svg></a>
+                    </li>
+                </ul>
+            </nav>
         </header>
 <?php endif ?>
         <div id="side-buttons">

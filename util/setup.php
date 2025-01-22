@@ -11,6 +11,7 @@ const SETTINGS = [
 ];
 define('DOCUMENT_ROOT', $_SERVER['DOCUMENT_ROOT'] . (SETTINGS['hosted-locally'] ? '/IsiFitGems/' : '/'));
 $page = new Page();
+$page->scripts = [Script::external('scripts/global.js', 'module')];
 $page->stylesheets = ['style/pico.classless.min.css', 'style/global.css'];
 $page->scripts = [Script::external('scripts/global.js', 'module')];
 $page->prefetch = [];
