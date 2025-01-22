@@ -10,11 +10,9 @@ export function setupForm(formElement, usernameInput, passwordInput) {
         input.parentElement.querySelector('small').innerHTML = err;
     };
     // Check errors on change
-    checkErr(checkUser, usernameInput);
     usernameInput.addEventListener('input', ev => {
         checkErr(checkUser, ev.target);
     });
-    checkErr(checkPassword, passwordInput);
     passwordInput.addEventListener('input', ev => {
         checkErr(checkPassword, ev.target);
     });
