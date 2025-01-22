@@ -43,7 +43,7 @@ function checkUser(usernameElement) {
 }
 
 function checkPassword(passwordElement) {
-    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!])[A-Za-z\d@#$%^&+=!]+$/;
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%,._-^&+=!])[A-Za-z\d@#$%,._-^&+=!]+$/;
     if (passwordElement.value.length < parseInt(passwordElement.minLength)) {
         return "Password must be at least 8 characters long.";
     }
@@ -63,7 +63,7 @@ function checkPassword(passwordElement) {
         return "Password must contain at least one number.";
     }
     if (!/[@#$%^&+=!]/.test(passwordElement.value)) {
-        return "Password must contain at least one special character (@#$%^&+=!).";
+        return "Password must contain at least one special character (@#$%,._-^&+=!).";
     }
     return "Password contains an invalid character.";
 }
