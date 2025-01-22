@@ -45,16 +45,18 @@ class Database {
      * - 'offset' => int (offsets the starting point of the query)
      * - 'distinct' => bool (selects distinct rows)
      * - 'order_by' => array (specifies sorting, e.g., ['column' => 'ASC'])
+     * - 'group_by' => string (specifies a group by clause)
      * @return array An array of associative arrays representing the rows.
      */
     public function find(string $table, array $joins = [], array $filters = [], array $options = []): array {
         // Create the sql query
         $sql = sprintf(
-            "SELECT %s * FROM %s %s %s %s %s",
+            "SELECT %s * FROM %s %s %s %s %s %s",
             $options['distinct'] ?? false ? 'DISTINCT' : '',
             $table,
             $this->build_join_clause($joins),
             $this->build_where_clause($filters),
+            $this->build_group_by_clause($options['group_by'] ?? ''),
             $this->build_order_by_clause($options['order_by'] ?? []),
             isset($options['limit']) ? 'LIMIT ' . intval($options['limit']) : '',
             isset($options['offset']) ? 'OFFSET ' . intval($options['offset']) : ''
@@ -244,6 +246,19 @@ class Database {
             }
             die('Join must specify either \'on\' or \'using\'.');
         }, $joins));
+    }
+
+    /**
+     * Builds the GROUP BY clause for a query from an options array.
+     *
+     * @param string $group_by The group by query.
+     * @return string The GROUP BY clause, or an empty string if no sorting is specified.
+     */
+    private function build_group_by_clause(string $group_by): string {
+        if (empty($group_by)) {
+            return '';
+        }
+        return 'GROUP BY ' . $group_by;
     }
 
     /**
