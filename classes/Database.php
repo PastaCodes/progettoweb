@@ -113,11 +113,11 @@ class Database {
      * Updates rows in the specified table.
      *
      * @param string $table The name of the table to update.
-     * @param array $filters An associative array of conditions for the WHERE clause.
      * @param array $data An associative array of column-value pairs to update.
+     * @param array $filters An associative array of conditions for the WHERE clause.
      * @return int The number of affected rows.
      */
-    public function update(string $table, array $filters = [], array $data): int {
+    public function update(string $table, array $data, array $filters = []): int {
         // Use the data keys to create a series of "column = ?, ..." components of the query
         $set_clause = implode(', ', array_map(fn($key) => "$key = ?", array_keys($data)));
         // Create the base query

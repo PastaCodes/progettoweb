@@ -70,7 +70,9 @@ class Bundle {
                 $variant_product = new Product($product->base, $variant);
             }
             $variant_product->price = $details_row['price'];
-            $product->base->variants[] = $variant_product;
+            if (is_array($product->base->variants)) {
+                $product->base->variants[] = $variant_product;
+            }
         }
     }
 

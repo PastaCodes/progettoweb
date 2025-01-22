@@ -103,7 +103,9 @@ class Product {
             }
             $variant_product->variant->display_name = $products_row['product_variant.display_name'];
             $variant_product->variant->color = $products_row['color'];
-            $product->base->variants[] = $variant_product;
+            if (is_array($product->base->variants)) {
+                $product->base->variants[] = $variant_product;
+            }
         }
         return $products;
     }
@@ -142,7 +144,9 @@ class Product {
                 if ($variant_product->variant !== null) {
                     $variant_product->variant->display_name = $details_row['product_variant.display_name'];
                     $variant_product->variant->color = $details_row['color'];
-                    $this->base->variants[] = $variant_product;
+                    if (is_array($this->base->variants)) {
+                        $this->base->variants[] = $variant_product;
+                    }
                 }
                 $variant_product->price = $details_row['price'];
             }
