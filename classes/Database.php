@@ -209,10 +209,10 @@ class Database {
             if (is_string($query) && !empty($query)) {
                 $custom_select[] = "$query AS $column_name";
             } else {
-                throw new Exception("Invalid custom column query for '$column_name'");
+                die("Invalid custom column query for '$column_name'");
             }
         }
-        return implode(', ', $custom_select);
+        return implode(', ', $custom_select) . ', ';
     }
 
     /**
