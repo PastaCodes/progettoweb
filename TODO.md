@@ -1,0 +1,4 @@
+- "Also available in the ??? bundle"
+- Add bundles to cart
+- move require_once db.php to classes that use it
+- style notifications modal
