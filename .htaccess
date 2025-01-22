@@ -5,3 +5,36 @@ RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 RewriteCond %{REQUEST_URI} \.([pP][hH][pP])$
 RewriteRule . - [L,R=404]
+# Error Reporting Configuration
+php_value display_errors 1
+php_value display_startup_errors 1
+php_value error_reporting 32767
+# Session Configuration
+php_value session.gc_maxlifetime 1440
+php_value session.cookie_lifetime 1440
+php_value session.cookie_secure 1
+php_value session.cookie_httponly 1
+php_value session.cookie_samesite Strict
+php_value session.use_trans_sid 0
+php_value session.hash_function sha256
+# File Upload and POST Configuration
+php_value upload_max_filesize 10M
+php_value post_max_size 12M
+php_value max_input_time 300
+# Execution and Resource Limits
+php_value max_execution_time 300
+php_value memory_limit 256M
+php_value output_buffering 4096
+php_value zlib.output_compression 1
+# Localization and Charset Configuration
+php_value date.timezone Europe/Rome
+php_value default_charset UTF-8
+# Security Hardening
+php_value expose_php 0
+php_value allow_url_fopen 0
+php_value disable_functions exec,passthru,shell_exec,system
+php_value session.use_strict_mode 1
+php_value realpath_cache_size 4096K
+php_value realpath_cache_ttl 600
+php_value default_socket_timeout 60
+
