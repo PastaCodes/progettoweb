@@ -3,6 +3,13 @@ create database isifitgems;
 use isifitgems;
 set time_zone = '+01:00';
 
+create table account {
+    username varchar(255),
+    password_hash varchar(255) not null,
+    is_vendor boolean not null default false,
+    constraint primary key (username)
+};
+
 create table category (
     code_name varchar(255),
     display_name varchar(255) not null,
@@ -82,7 +89,9 @@ create table notification (
     title varchar(255) not null,
     content varchar(255) not null,
     created_at datetime not null default current_timestamp(),
-    constraint primary key (id)
+    user varchar(255) not null,
+    constraint primary key (id),
+    constraint foreign key (user) references account(username) on update cascade on delete cascade
 );
 
 insert into category (code_name, display_name) values
