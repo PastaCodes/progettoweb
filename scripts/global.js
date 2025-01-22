@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateText(false);
     // ===== Notification stuff =====
     // Constants and Selectors
-    const notificationLink = document.querySelector('nav > ul :nth-child(4) > a');
+    const notificationLink = document.querySelector('#side-buttons > button:nth-child(2)');
     const notificationCounterElt = notificationLink.querySelector('span');
     const checkboxHideRead = notifications.querySelector('header > label > input');
     const closeButton = notifications.querySelector('footer > button');
@@ -163,13 +163,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     // Event Listeners
-    notificationLink.addEventListener('click', () => {
+    notificationLink.addEventListener('click', ev => {
+        ev.preventDefault();
         updateNotificationTimestamps();
         updateUnreadCounter();
         if (!notifInterval) {
             notifInterval = setInterval(updateNotificationTimestamps, 60000);
         }
         notifications.showModal();
+        return false;
     });
     closeButton.addEventListener('click', closeModal);
     notifications.addEventListener('keydown', (e) => {

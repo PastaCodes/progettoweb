@@ -60,9 +60,6 @@ $notifications = Notification::fetch_all();
                         <a href="">Support</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)">Notifications <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/notifications.svg#notifications"></use></svg><span><span></a>
-                    </li>
-                    <li>
                         <a href="">Your orders <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/orders.svg#orders"></use></svg></a>
                     </li>
                     <li>
@@ -77,6 +74,12 @@ $notifications = Notification::fetch_all();
                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
                     <use href="assets/lightmode.svg#lightmode"></use>
                 </svg>
+            </button>
+            <button title="Show notifications">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                    <use href="assets/notifications.svg#notifications"></use>
+                </svg>
+                <span></span>
             </button>
             <button title="Accessibility options">
                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
