@@ -1,5 +1,4 @@
 <?php
-require_once '../util/db.php';
 require_once '../util/format.php';
 require_once '../classes/Cart.php';
 

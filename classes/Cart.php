@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../util/db.php';
 require_once __DIR__ . '/CartEntry.php';
 require_once __DIR__ . '/Product.php';
 
