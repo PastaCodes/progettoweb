@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll("button[data-show]").forEach(showVariantButton => {
         const dataShow = showVariantButton.getAttribute('data-show');
         showVariantButton.addEventListener('click', () => {
+            showVariantButton.innerHTML = showVariantButton.innerHTML === 'V' ? '^' : 'V';
             document.querySelectorAll(`tr[data-parent=${dataShow}]`).forEach(elt => {
                 elt.style.display = elt.style.display === 'none' ? '' : 'none';
             });

@@ -2,7 +2,6 @@
 require_once '../classes/Bundle.php';
 
 $bundles = Bundle::fetch_bundles();
-print_r($bundles);
 
 /* TODO:
  * Add the other bundle parameters
