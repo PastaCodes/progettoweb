@@ -38,18 +38,18 @@ create table product_variant (
 
 create table product_info (
     id int auto_increment,
-    product varchar(255) not null,
+    base varchar(255) not null,
     variant varchar(255) null,
     price decimal(10, 2) not null,
     constraint primary key (id),
-    constraint foreign key (product) references product_base(code_name) on update cascade on delete cascade,
-    constraint foreign key (product, variant) references product_variant(base, code_suffix) on update cascade on delete cascade
+    constraint foreign key (base) references product_base(code_name) on update cascade on delete cascade,
+    constraint foreign key (base, variant) references product_variant(base, code_suffix) on update cascade on delete cascade
 );
 
 create view price_range as
-select product, min(price) as price_min, max(price) as price_max
+select base, min(price) as price_min, max(price) as price_max
     from product_info
-    group by product;
+    group by base;
 
 create table bundle (
     code_name varchar(255),
@@ -86,6 +86,18 @@ select variant_count_in_bundle.bundle, variant_count_in_bundle.code_suffix
     where variant_count = product_count
     group by variant_count_in_bundle.bundle, variant_count_in_bundle.code_suffix
     order by ordinal;
+
+create view bundle_price as
+with bundle_price_before_discount as (
+	select bundle.code_name, bundle_variant.code_suffix, sum(price) as price_before_discount, multiplier
+		from bundle
+		join product_in_bundle on product_in_bundle.bundle = bundle.code_name
+		left join bundle_variant on bundle_variant.bundle = bundle.code_name
+		join product_info on product_info.base = product_in_bundle.base and (product_info.variant is null or product_info.variant = bundle_variant.code_suffix)
+		group by bundle.code_name, bundle_variant.code_suffix
+)
+select code_name, code_suffix as variant, price_before_discount, round(multiplier * price_before_discount, 2) as price_with_discount
+	from bundle_price_before_discount;
 
 create table notification (
     id int(11) not null auto_increment,
@@ -190,7 +202,7 @@ insert into product_variant (base, code_suffix, ordinal, display_name, color) va
     ('gem_earrings', 'obsidian', 1, 'Obsidian', '1C1020'),
     ('gem_earrings', 'demon_core', 2, 'Demon Core', '808080');
 
-insert into product_info (product, variant, price) values
+insert into product_info (base, variant, price) values
     ('choker', null, 1.00),
     ('dagger_earrings', null, 1.00),
     ('flower_bracelet', null, 1.00),

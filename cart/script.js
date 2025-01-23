@@ -1,5 +1,5 @@
 import { formatPrice } from '../scripts/util.js';
-import { setCart } from '../scripts/cart.js';
+import { setQuantityInCart } from '../scripts/cart.js';
 
 // Wait for the style to be rendered
 window.addEventListener('load', () => {
@@ -24,14 +24,13 @@ window.addEventListener('load', () => {
         return input.value = input.lastValidValue;
     };
     // For each product within the cart
-    document.querySelectorAll('main > section > div').forEach(cartProductSection => {
+    let cartProductSections = Array.from(document.querySelectorAll('main > section > div'));
+    cartProductSections.forEach(cartProductSection => {
         // Get product data
         const inputProductQty = cartProductSection.querySelector('input');
-        const productBaseCode = inputProductQty.getAttribute('data-base-code');
-        const productVariantSuffix = inputProductQty.getAttribute('data-variant-suffix');
         // Get price related stuff
         const fullCartProductPriceElt = cartProductSection.querySelector('p:nth-last-of-type(2)');
-        const productUnitPrice = parseFloat(inputProductQty.getAttribute('data-unit-price'));
+        const productUnitPrice = parseFloat(cartProductSection.getAttribute('data-unit-price'));
         // Get buttons
         const btnDelete = cartProductSection.querySelector('button:nth-last-of-type(1)');
         const btnDecrement = cartProductSection.querySelector('button:first-child');
@@ -54,7 +53,7 @@ window.addEventListener('load', () => {
         const updateProductData = (newValue) => {
             const actualValue = setInputValue(inputProductQty, newValue);
             updatePrice(actualValue);
-            setCart(productBaseCode, productVariantSuffix, actualValue);
+            setQuantityInCart(cartProductSections.indexOf(cartProductSection), actualValue);
             updateIncDecButtons(actualValue); 
         };
         // Setup listeners
@@ -82,16 +81,15 @@ window.addEventListener('load', () => {
         });
         // Delete button
         btnDelete.addEventListener('click', () => {
+            const index = cartProductSections.indexOf(cartProductSection);
             // Set product quantity to 0
-            setCart(productBaseCode, productVariantSuffix, 0);
+            setQuantityInCart(index, 0);
+            cartProductSections.splice(index, 1);
             // Disable all buttons
             inputProductQty.disabled = true;
             btnDelete.disabled = true;
             btnDecrement.disabled = true;
             btnIncrement.disabled = true;
-            // Bandaid fix as no animation can be done with auto height
-            const eltHeight = cartProductSection.getBoundingClientRect().height;
-            cartProductSection.style.setProperty('--element-height', `${eltHeight}px`);
             // Little animation for fun
             cartProductSection.style.animation = 'product-remove 0.4s ease-in-out';
             // Remove the element from the html after the animation

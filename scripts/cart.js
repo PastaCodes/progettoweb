@@ -2,6 +2,68 @@ import { createCookie, getCookie, deleteCookie } from "./cookie.js";
 
 const CART_COOKIE_NAME = 'cart';
 
+function readCart() {
+    return JSON.parse(getCookie(CART_COOKIE_NAME) || '[]');
+}
+
+function writeCart(cart) {
+    if (cart.length > 0) {
+        createCookie(CART_COOKIE_NAME, JSON.stringify(cart), 30 * 24 * 60 * 60 * 1000);
+    } else {
+        deleteCookie(CART_COOKIE_NAME);
+    }
+}
+
+function addEntryToCart(newEntry, comparator) {
+    let cart = readCart();    
+    const previousEntryIndex = cart.findIndex(comparator);
+    if (previousEntryIndex !== -1) {
+        const previousEntry = cart.splice(previousEntryIndex, 1);
+        newEntry.quantity = (previousEntry['quantity'] || 1) + 1;
+    }
+    cart.push(newEntry);
+    writeCart(cart);
+}
+
+// Adds the product as the latest entry to the cart.
+// If the product was already present, the previous entry is removed and its quantity is added to the new one.
+export function addProductToCart(base, variant) {
+    let newEntry = { type: 'product', base };
+    if (variant !== null) {
+        newEntry.variant = variant;
+    }
+    addEntryToCart(newEntry,
+        entry => entry['type'] === 'product' && entry['base'] === base && entry['variant'] === variant
+    );
+}
+
+// Adds the bundle as the latest entry to the cart.
+// If the bundle was already present, the previous entry is removed and its quantity is added to the new one.
+export function addBundleToCart(name, variant) {
+    let newEntry = { type: 'bundle', name };
+    if (variant !== null) {
+        newEntry.variant = variant;
+    }
+    addEntryToCart(newEntry,
+        entry => entry['type'] === 'bundle' && entry['name'] === name && entry['variant'] === variant
+    );
+}
+
+// Set the quantity for the entry at the given index.
+export function setQuantityInCart(index, newQuantity) {
+    let cart = readCart();
+    if (newQuantity === 0) {
+        cart.splice(index, 1);
+    } else if (newQuantity === 1) {
+        delete cart[index].quantity;
+    } else {
+        cart[index].quantity = newQuantity;
+    }
+    writeCart(cart);
+}
+
+// OLD:
+
 export function setCart(productId, variantId, quantity) {
     if (!productId || quantity == null) {
         return;

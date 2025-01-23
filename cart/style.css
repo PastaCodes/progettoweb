@@ -46,7 +46,7 @@ main > section > div > div:first-child > p {
     color: var(--pico-muted-color);
 }
 
-main > section > div p, main > div a {
+main > section > div p, main > section > div a {
     margin-bottom: 0;
     width: fit-content;
     height: fit-content;

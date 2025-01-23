@@ -1,13 +1,17 @@
 import { formatPrice } from '../scripts/util.js';
+import { addBundleToCart } from '../scripts/cart.js';
 
 // Wait for the style to be rendered
 window.addEventListener('load', () => {
     // Retrieve the elements to be used when no thumbnail is available
     const noThumbnailTemplate = document.getElementById('no-thumbnail');
     // Cart stuff
-    const addToCartBtn = document.querySelector('main > button');
+    const addToCartBtn = document.querySelector('main > section > button');
     if (addToCartBtn) {
-        addToCartBtn.addEventListener('click', () => { }); // TODO
+        addToCartBtn.addEventListener('click', () => addBundleToCart(
+            addToCartBtn.getAttribute('data-bundle-name'),
+            addToCartBtn.getAttribute('data-variant-suffix')
+        ));
     }
     const products = document.querySelectorAll('main > section > section:first-of-type > div');
     const variantDisplay = document.querySelector('main > section > section:nth-of-type(2) > p');
@@ -20,11 +24,9 @@ window.addEventListener('load', () => {
         radios.forEach(radio => {
             const updateVariant = (radio) => {
                 variantDisplay.innerHTML = radio.getAttribute('title');
-                let price = 0;
                 products.forEach(product => {
                     const variantsData = JSON.parse(product.getAttribute('data-variants-data'));
                     const variantData = variantsData[radio.getAttribute('data-variant-suffix')];
-                    price += variantData['price'];
                     let thumbnailElement = product.querySelector(':first-child');
                     const isImage = thumbnailElement instanceof HTMLImageElement;
                     const thumbnailFile = variantData['thumbnail_file'];
@@ -51,8 +53,8 @@ window.addEventListener('load', () => {
                         productVariantDisplay.innerHTML = variantDisplay.innerHTML;
                     }
                 });
-                const multiplier = parseFloat(priceDisplay.getAttribute('data-multiplier'));
-                priceDisplay.innerHTML = '<del>' + formatPrice(price) + '</del> ' + formatPrice(multiplier * price);
+                priceDisplay.innerHTML = '<del>' + formatPrice(parseFloat(radio.getAttribute('data-price-before'))) +
+                    '</del> <ins>' + formatPrice(parseFloat(radio.getAttribute('data-price'))) + '</ins>';
             }
             radio.addEventListener('click', () => {
                 const variant = radio.getAttribute('data-variant-suffix');

@@ -1,5 +1,5 @@
 import { formatPrice } from '../scripts/util.js';
-import { modifyCart } from '../scripts/cart.js';
+import { addProductToCart } from '../scripts/cart.js';
 
 // Wait for the style to be rendered
 window.addEventListener('load', () => {
@@ -8,12 +8,10 @@ window.addEventListener('load', () => {
     // Cart stuff
     const addToCartBtn = document.querySelector('main > section > button');
     if (addToCartBtn) {
-        addToCartBtn.addEventListener('click', () => {
-            modifyCart(
-                addToCartBtn.getAttribute('data-product-name'),
-                addToCartBtn.getAttribute('data-variant-suffix')
-            );
-        });
+        addToCartBtn.addEventListener('click', () => addProductToCart(
+            addToCartBtn.getAttribute('data-product-name'),
+            addToCartBtn.getAttribute('data-variant-suffix')
+        ));
     }
     const variantDisplay = document.querySelector('main > section > p:nth-last-of-type(2)');
     const priceDisplay = document.querySelector('main > section > p:last-of-type');

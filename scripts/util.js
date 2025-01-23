@@ -5,5 +5,3 @@ export function formatPrice(number) {
     const withThousandSeparators = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     return '&euro; ' + withThousandSeparators + ',' + decimalPart;
 }
-
-

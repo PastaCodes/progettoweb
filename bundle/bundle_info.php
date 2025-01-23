@@ -41,7 +41,7 @@ $bundle->fetch_details();
 <?php if (count($bundle->variants) > 1): ?>
                 <section>
                     <h2>Choose your style:</h2>
-                    <p><?= $bundle->variants[$bundle->selected_suffix]->display_name ?></p>
+                    <p><?= $bundle->variants[$bundle->selected_suffix]->variant->display_name ?></p>
                     <div>
 <?php foreach ($bundle->variants as $variant): ?>
                         <input type="radio" name="variant" <?= $variant->to_radio_attributes($bundle->selected_suffix) ?>>
@@ -49,7 +49,7 @@ $bundle->fetch_details();
                     </div>
                 </section>
 <?php endif ?>
-                <p data-multiplier="<?= number_format($bundle->multiplier, 4) ?>"><del><?= format_price($bundle->price_before_discount()) ?></del> <?= format_price($bundle->price_with_discount()) ?></p>
+                <p><del><?= format_price($bundle->price_before_discount) ?></del> <ins><?= format_price($bundle->price_with_discount) ?></ins></p>
                 <button data-bundle-name="<?= $bundle->code_name ?>"<?php if ($bundle->selected_suffix !== null): ?> data-variant-suffix="<?= $bundle->selected_suffix ?>"<?php endif ?>>Add to cart</button>
             </section>
         </main>

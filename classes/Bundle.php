@@ -8,29 +8,15 @@ class Bundle {
     public string $code_name;
     public ?string $selected_suffix;
     public string|false $display_name = false;
-    public float|false $multiplier = false;
     public array|false $products = false; /* array of string => Product */
-    public array|false $variants = false; /* array of string => ProductVariant */
+    public array|false $variants = false; /* array of string => BundleVariant */
     public int|false $variants_count = false;
-    private float|false $price_before_discount = false;
+    public float|null|false $price_before_discount = false;
+    public float|null|false $price_with_discount = false;
 
     public function __construct(string $code_name, ?string $selected_suffix = null) {
         $this->code_name = $code_name;
         $this->selected_suffix = $selected_suffix;
-    }
-
-    public function price_before_discount(): float {
-        if ($this->price_before_discount === false) {
-            $this->price_before_discount = 0;
-            foreach ($this->products as $product) {
-                $this->price_before_discount += $product->price;
-            }
-        }
-        return $this->price_before_discount;
-    }
-
-    public function price_with_discount(): float {
-        return $this->multiplier * $this->price_before_discount();
     }
 
     public function to_url_params(): string {
@@ -44,7 +30,10 @@ class Bundle {
     private function fill_details(array $details_row) {
         if ($this->display_name === false) {
             $this->display_name = $details_row['bundle.display_name'];
-            $this->multiplier = $details_row['multiplier'];
+        }
+        if ($details_row['bundle_variant.code_suffix'] === $this->selected_suffix) {
+            $this->price_before_discount = $details_row['price_before_discount'] ?? false;
+            $this->price_with_discount = $details_row['price_with_discount'] ?? false;
         }
         if (!array_key_exists($details_row['product_in_bundle.base'], $this->products)) {
             $product = Product::from($details_row['product_in_bundle.base']); // Variant may be set later
@@ -54,22 +43,25 @@ class Bundle {
         }
         $product = $this->products[$details_row['product_in_bundle.base']];
         if ($details_row['product_variant.code_suffix'] === null) {
-            $product->price = $details_row['price'];
+            $product->price = $details_row['price'] ?? false;
         } else {
             if (!array_key_exists($details_row['bundle_variant.code_suffix'], $this->variants)) {
                 $variant = new ProductVariant($details_row['bundle_variant.code_suffix']);
                 $variant->display_name = $details_row['product_variant.display_name'];
                 $variant->color = $details_row['color'];
-                $this->variants[$details_row['bundle_variant.code_suffix']] = $variant;
+                $bundle_variant = new BundleVariant($variant);
+                $bundle_variant->price_before_discount = $details_row['price_before_discount'] ?? false;
+                $bundle_variant->price_with_discount = $details_row['price_with_discount'] ?? false;
+                $this->variants[$details_row['bundle_variant.code_suffix']] = $bundle_variant;
             }
-            $variant = $this->variants[$details_row['bundle_variant.code_suffix']];
+            $variant = $this->variants[$details_row['bundle_variant.code_suffix']]->variant;
             if ($details_row['bundle_variant.code_suffix'] === $this->selected_suffix) {
                 $product->variant = $variant;
                 $variant_product = $product;
             } else {
                 $variant_product = new Product($product->base, $variant);
             }
-            $variant_product->price = $details_row['price'];
+            $variant_product->price = $details_row['price'] ?? false;
             $product->base->variants[] = $variant_product;
         }
     }
@@ -85,9 +77,9 @@ class Bundle {
                     'on' => 'bundle_variant.bundle = product_in_bundle.bundle',
                 ],
                 [
-                    'type'=> 'INNER',
-                    'table' => 'product_info',
-                    'on' => 'product_info.product = product_in_bundle.base and (product_info.variant is null or product_info.variant = bundle_variant.code_suffix)',
+                    'type'=> 'LEFT',
+                    'table' => 'bundle_price',
+                    'on' => 'bundle_price.code_name = product_in_bundle.bundle and (bundle_price.variant is null or bundle_price.variant = bundle_variant.code_suffix)',
                 ],
                 [
                     'type' => 'LEFT',
@@ -134,11 +126,6 @@ class Bundle {
                     'on' => 'bundle_variant.bundle = product_in_bundle.bundle',
                 ],
                 [
-                    'type'=> 'INNER',
-                    'table' => 'product_info',
-                    'on' => 'product_info.product = product_in_bundle.base and (product_info.variant is null or product_info.variant = bundle_variant.code_suffix)',
-                ],
-                [
                     'type' => 'LEFT',
                     'table' => 'product_variant',
                     'on' => 'product_variant.base = product_in_bundle.base and product_variant.code_suffix = bundle_variant.code_suffix',
@@ -152,7 +139,7 @@ class Bundle {
                     'type'=> 'INNER',
                     'table' => 'bundle',
                     'on' => 'bundle.code_name = product_in_bundle.bundle',
-                ],
+                ]
             ],
             options: [
                 'order_by' => [
@@ -177,6 +164,22 @@ class Bundle {
             $bundles[$bundles_row['bundle.code_name']]->fill_details($bundles_row);
         }
         return $bundles;
+    }
+}
+
+class BundleVariant {
+    public ProductVariant $variant;
+    public float|false $price_before_discount = false;
+    public float|false $price_with_discount = false;
+
+    public function __construct(ProductVariant $variant) {
+        $this->variant = $variant;
+    }
+
+    public function to_radio_attributes(?string $selected_suffix): string {
+        return $this->variant->to_radio_attributes($selected_suffix) .
+            ' data-price-before="' . number_format($this->price_before_discount, 2) .
+            '" data-price="' . number_format($this->price_with_discount, 2) . '"';
     }
 }
 ?>

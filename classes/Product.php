@@ -75,12 +75,12 @@ class Product {
                 [
                     'type' => 'INNER',
                     'table' => 'price_range',
-                    'on' => 'product = code_name',
+                    'on' => 'price_range.base = code_name',
                 ],
                 [
                     'type' => 'LEFT',
                     'table' => 'product_variant',
-                    'on' => 'base = code_name',
+                    'on' => 'product_variant.base = code_name',
                 ]
             ],
             filters: $filters,
@@ -116,12 +116,12 @@ class Product {
                 [
                     'type' => 'INNER',
                     'table' => 'product_info',
-                    'on' => 'product = code_name',
+                    'on' => 'product_info.base = code_name',
                 ],
                 [
                     'type' => 'LEFT',
                     'table' => 'product_variant',
-                    'on' => 'base = code_name AND (code_suffix is null or variant = code_suffix)',
+                    'on' => 'product_variant.base = code_name AND (code_suffix is null or variant = code_suffix)',
                 ]
             ],
             filters: ['code_name' => $this->base->code_name],
@@ -165,23 +165,6 @@ class Product {
             return $array[$this->base->code_name];
         }
         return $array[$this->base->code_name][$this->variant->code_suffix];
-    }
-
-    /**
-     * @param array $array inner values should not be arrays
-     * @param callable $consumer should take a Product and a value
-     */
-    public static function array_iterate(array|stdClass $array, callable $consumer) {
-        foreach ($array as $base_code_name => $entry) {
-            $base = new ProductBase($base_code_name);
-            if (is_array($entry) || is_object($entry)) {
-                foreach ($entry as $variant_code_suffix => $value) {
-                    $consumer(new Product($base, new ProductVariant($variant_code_suffix)), $value);
-                }
-            } else {
-                $consumer(new Product($base), $entry);
-            }
-        }
     }
 }
 ?>
