@@ -24,12 +24,17 @@ if (!empty($cart->entries)) {
 <?php else: ?>
                         <img src="<?= $entry->product->thumbnail()->file ?>" loading="lazy" alt="<?= $entry->product->thumbnail()->alt_text ?>">
 <?php endif ?>
-<?php else: ?>
-                        <div>Piedoni</div>
+<?php else: /* BundleEntry */ ?>
+                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                            <use href="assets/bundle.svg#bundle"></use>
+                        </svg>
 <?php endif ?>
                         <a <?= $entry->to_link_attributes() ?>><?= $entry->display_name() ?> <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/link.svg#link"></use></svg></a>
 <?php if ($entry->variant_display_name() !== null): ?>
                         <p><?= $entry->variant_display_name() ?></p>
+<?php endif ?>
+<?php if ($entry instanceof BundleEntry): ?>
+                        <p>Includes: <?= implode(', ', array_map(fn($product) => $product->base->display_name, $entry->bundle->products)) ?>.</p>
 <?php endif ?>
                         <p><?= format_price($entry->entry_price()) ?></p>
                         <p><?= format_price($entry->unit_price()) ?>/pc</p>

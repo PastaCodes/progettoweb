@@ -3,6 +3,10 @@
     --radio-spacing: 0.5rem;
 }
 
+main {
+    margin-top: 0 !important;
+}
+
 main > ul {
     display: grid;
     justify-content: center;

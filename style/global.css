@@ -120,7 +120,8 @@ body > header > nav > ul > li:not(:first-child, :nth-child(2), :nth-child(5))::b
 body > main {
     flex-grow: 1;
     padding-top: 0;
-    margin-bottom: 2rem;
+    margin-top: var(--pico-spacing);
+    margin-bottom: calc(2 * var(--pico-spacing));
 }
 
 a:not(header h1 a) > svg {

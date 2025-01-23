@@ -1,5 +1,3 @@
-- "Also available in the ??? bundle"
-- Add bundles to cart
 - Style notifications modal
 - Add to cart button feedback
 - Style the product info page
@@ -8,6 +6,9 @@
 - Text when nothing to show is present (searching for products, cart, orders)
 - Landing page
 - VENDOR PAGE(S)
-- Add remaining product images (maybe)
 - Mobile "first"
 - Mockup
+
+Maybe:
+- Add remaining product images
+- "Also available in the ??? bundle"

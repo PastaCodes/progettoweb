@@ -20,7 +20,7 @@ class Cart {
             if ($entry instanceof ProductEntry) {
                 $product_entries[] = $entry->product->base->code_name;
             } else { /* BundleEntry */
-                $bundle_entries[] = $entry->bundle->code_name;
+                $bundle_entries[$entry->bundle->code_name] = $entry->bundle->selected_suffix;
             }
         }
         if (!empty($product_entries)) {
@@ -57,13 +57,47 @@ class Cart {
                         'table' => 'bundle_price',
                         'on' => 'bundle_price.code_name = bundle.code_name',
                     ],
-                    
+                    [
+                        'type' => 'INNER',
+                        'table' => 'product_in_bundle',
+                        'on' => 'product_in_bundle.bundle = bundle.code_name'
+                    ],
+                    [
+                        'type' => 'INNER',
+                        'table' => 'product_base',
+                        'on' => 'product_base.code_name = product_in_bundle.base'
+                    ],
+                    [
+                        'type' => 'LEFT',
+                        'table' => 'product_variant',
+                        'on' => 'product_variant.base = product_in_bundle.base and product_variant.code_suffix = bundle_price.variant'
+                    ],
                 ],
-                filters: ['bundle.code_name' => $bundle_entries]
+                filters: ['bundle.code_name' => array_keys($bundle_entries)],
+                options: [
+                    'order_by' => [
+                        'product_in_bundle.ordinal' => 'ASC',
+                    ]
+                ],
             );
-            $bundle_details = [];
+            $bundle_display_names = [];
+            $bundle_variant_display_names = [];
+            $bundle_prices = [];
+            $bundle_products = [];
             foreach ($bundles_result as $bundle_row) {
-                $bundle_details[$bundle_row['bundle.code_name']] = $bundle_row;
+                if (!array_key_exists($bundle_row['bundle.code_name'], $bundle_display_names)) {
+                    $bundle_display_names[$bundle_row['bundle.code_name']] = $bundle_row['bundle.display_name'];
+                    $bundle_prices[$bundle_row['bundle.code_name']] = $bundle_row['price_with_discount'];
+                    $bundle_products[$bundle_row['bundle.code_name']] = [];
+                }
+                if ($bundle_row['variant'] === $bundle_entries[$bundle_row['bundle.code_name']]) {
+                    if (!array_key_exists($bundle_row['bundle.code_name'], $bundle_variant_display_names)) {
+                        $bundle_variant_display_names[$bundle_row['bundle.code_name']] = $bundle_row['product_variant.display_name'];
+                    }
+                    $product = new ProductBase($bundle_row['product_base.code_name']);
+                    $product->display_name = $bundle_row['product_base.display_name'];
+                    $bundle_products[$bundle_row['bundle.code_name']][] = $product;
+                }
             }
         }
         // Fill in details
@@ -76,16 +110,19 @@ class Cart {
                     $entry->product->variant->display_name = $product_row['product_variant.display_name'];
                 }
             } else { /* BundleEntry */
-                $bundle_row = $bundle_details[$entry->bundle->code_name];
-                $entry->bundle->display_name = $bundle_row['display_name'];
-                $entry->bundle->price_with_discount = $bundle_row['price_with_discount'];
-                if ($entry->bundle->variants === false) {
+                $entry->bundle->display_name = $bundle_display_names[$entry->bundle->code_name];
+                $entry->bundle->price_with_discount = $bundle_prices[$entry->bundle->code_name];
+                $variant = null;
+                if ($entry->bundle->selected_suffix !== null) {
+                    $variant = new ProductVariant($entry->bundle->selected_suffix);
+                    $variant->display_name = $bundle_variant_display_names[$entry->bundle->code_name];
+                    $entry->bundle->variants = [$variant->code_suffix => new BundleVariant($variant)];
+                } else {
                     $entry->bundle->variants = [];
-                    if ($entry->bundle->selected_suffix !== null) {
-                        $variant = new ProductVariant($entry->bundle->selected_suffix);
-                        $variant->display_name = $variant->code_suffix; // TODO
-                        $entry->bundle->variants[$variant->code_suffix] = new BundleVariant($variant);
-                    }
+                }
+                $entry->bundle->products = [];
+                foreach ($bundle_products[$entry->bundle->code_name] as $bundle_product) {
+                    $entry->bundle->products[] = new Product($bundle_product, $variant);
                 }
             }
         }

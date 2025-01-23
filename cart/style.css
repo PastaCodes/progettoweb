@@ -5,8 +5,8 @@
 main > section > ul > li {
     display: grid;
     grid-auto-flow: column;
-    grid-template-columns: max-content auto max-content max-content;
-    grid-template-rows: max-content 1fr max-content;
+    grid-template-columns: max-content auto min-content min-content;
+    grid-template-rows: max-content max-content 1fr max-content;
     padding: var(--pico-spacing);
     border-radius: var(--pico-border-radius);
     background: var(--pico-card-background-color);
@@ -47,6 +47,14 @@ main > section > ul > li > figure > figcaption {
     padding: 0;
 }
 
+main > section > ul > li > svg {
+    width: 6rem !important;
+    height: 6rem !important;
+    margin: 2rem !important;
+    margin-right: 4rem !important;
+    color: var(--pico-muted-color);
+}
+
 main > section > ul > li p, main > section > ul > li a {
     margin-bottom: 0;
     width: fit-content;
@@ -56,23 +64,29 @@ main > section > ul > li p, main > section > ul > li a {
 main > section > ul > li > a {
     font-weight: bold;
     grid-row: 1;
-    grid-column: 2;
+    grid-column: 2 / 4;
     color: var(--pico-primary-inverted);
 }
 
 main > section > ul > li > p:nth-child(3) {
     grid-row: 2;
-    grid-column: 2;
+    grid-column: 2 / 4;
+}
+
+main > section > ul > li > p:nth-of-type(2):nth-last-of-type(3) {
+    grid-row: 3;
+    grid-column: 2 / 4;
+    margin-top: var(--spacing-small);
 }
 
 main > section > ul > li > button {
-    grid-row: 3;
+    grid-row: 4;
     grid-column: 3;
     margin-right: var(--pico-spacing);
 }
 
-fieldset {
-    grid-row: 3;
+main > section > ul > li > fieldset {
+    grid-row: 4;
     grid-column: 4;
     float: left;
     width: fit-content;
@@ -88,7 +102,7 @@ main > section > ul > li > button, main > section > ul > li > fieldset > button 
     justify-content: center;
 }
 
-fieldset input {
+main > section > ul > li > fieldset input {
     padding: 0 !important;
     width: 2.4rem !important;
     height: 2rem !important;

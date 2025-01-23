@@ -30,8 +30,6 @@ abstract class CartEntry {
         }
         die;
     }
-
-    abstract public function fill_details(array|stdClass $details_row);
 }
 
 class ProductEntry extends CartEntry {
@@ -56,14 +54,6 @@ class ProductEntry extends CartEntry {
 
     public function to_link_attributes() : string {
         return 'href="product?' . $this->product->to_url_params() . '" title="Go to product page"';
-    }
-
-    public function fill_details(array|stdClass $details_row) {
-        $this->product->base->display_name = $details_row['product_base.display_name'];
-        $this->product->price = $details_row['price'];
-        if ($this->product->variant !== null) {
-            $this->product->variant->display_name = $details_row['product_variant.display_name'];
-        }
     }
 }
 
@@ -92,15 +82,6 @@ class BundleEntry extends CartEntry {
 
     public function to_link_attributes() : string {
         return 'href="bundle?' . $this->bundle->to_url_params() . '" title="Go to bundle page"';
-    }
-
-    public function fill_details(array|stdClass $details_row) {
-        $this->bundle->display_name = $details_row['bundle.display_name'];
-        $this->bundle->display_name = $details_row['bundle.display_name'];
-        $this->product->price = $details_row['price'];
-        if ($this->product->variant !== null) {
-            $this->product->variant->display_name = $details_row['product_variant.display_name'];
-        }
     }
 }
 ?>
