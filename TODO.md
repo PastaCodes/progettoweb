@@ -1,6 +1,7 @@
 - "Also available in the ??? bundle"
 - Add bundles to cart
 - Style notifications modal
+- Add to cart button feedback
 - Style the login form and buttons
 - Style the product info page
 - Checkout

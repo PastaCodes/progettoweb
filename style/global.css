@@ -119,11 +119,16 @@ img, svg {
 }
 
 #side-buttons > button:nth-child(2) {
+    --counter-content: "";
+    --counter-visibility: hidden;
+    --counter-animation: bubble-appear 0.5s ease-in-out forwards;
     position: relative;
 }
 
-#side-buttons > button:nth-child(2) > span {
-    display: none;
+#side-buttons > button:nth-child(2)::after {
+    content: var(--counter-content);
+    visibility: var(--counter-visibility);
+    animation: var(--counter-animation);
     position: absolute;
     font-size: small;
     font-weight: bold;
@@ -134,7 +139,6 @@ img, svg {
     top: 0.3rem;
     right: 0.3rem;
     min-width: 1rem;
-    animation: bubble-appear 0.5s ease-in-out forwards;
     text-align: center;
     white-space: nowrap;
 }
