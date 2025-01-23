@@ -1,9 +1,6 @@
 <?php
 declare(strict_types = 1);
 
-ini_set('session.cookie_secure', 1); // Forces secure cookie transmission
-ini_set('session.cookie_httponly', 1); // Prevents access to session cookies via JavaScript
-
 if (!isset($_SESSION['username'])) {
     session_start();
 }
