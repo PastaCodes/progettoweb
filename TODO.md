@@ -7,7 +7,7 @@
 - Your orders
 - Text when nothing to show is present (searching for products, cart, orders)
 - Landing page
-- VENDOR PAGE(S)
+- Vendor pages: (complete product and bundle pages, make order page)
 - Add remaining product images (maybe)
 - Mobile "first"
 - Mockup

@@ -26,6 +26,7 @@ $categories = Category::fetch_all();
     <main>
         <form>
             <h2>Add new product</h2>
+            <!-- TODO: make form to add new products/variants -->
         </form>
         <table>
             <thead>
