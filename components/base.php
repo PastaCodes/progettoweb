@@ -60,7 +60,7 @@ if (isset($_SESSION['username'])) {
                         <a href="bundles">Bundles</a>
                     </li>
                     <li>
-                        <a href="">Support</a>
+                        <a>Support</a>
                     </li>
                     <li>
                         <a href="">Your orders <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/orders.svg#orders"></use></svg></a>

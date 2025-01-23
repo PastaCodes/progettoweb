@@ -2,3 +2,12 @@
 - Add bundles to cart
 - Style notifications modal
 - Add logout functionality
+- Style the login form and buttons
+- Style the product info page
+- Checkout
+- Your orders
+- Text when nothing to show is present (searching for products, cart, orders)
+- Landing page
+- Add remaining product images (maybe)
+- Mobile "first"
+- Mockup

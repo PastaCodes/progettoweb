@@ -93,6 +93,7 @@ class Product {
                 $product->base->display_name = $products_row['product_base.display_name'];
                 $product->base->price_min = $products_row['price_min'];
                 $product->base->price_max = $products_row['price_max'];
+                $product->base->variants = [];
                 $variant_product = $product;
             } else {
                 $product = $products[$products_row['code_name']];
@@ -103,9 +104,7 @@ class Product {
             }
             $variant_product->variant->display_name = $products_row['product_variant.display_name'];
             $variant_product->variant->color = $products_row['color'];
-            if (is_array($product->base->variants)) {
-                $product->base->variants[] = $variant_product;
-            }
+            $product->base->variants[] = $variant_product;
         }
         return $products;
     }
@@ -134,6 +133,7 @@ class Product {
                 $this->base->display_name = $details_row['product_base.display_name'];
                 $this->base->short_description = $details_row['short_description'];
                 $this->base->is_standalone = $details_row['standalone'];
+                $this->base->variants = [];
             }
             if ($details_row['code_suffix'] === $this->variant?->code_suffix) {
                 $variant_product = $this;
@@ -144,9 +144,7 @@ class Product {
                 if ($variant_product->variant !== null) {
                     $variant_product->variant->display_name = $details_row['product_variant.display_name'];
                     $variant_product->variant->color = $details_row['color'];
-                    if (is_array($this->base->variants)) {
-                        $this->base->variants[] = $variant_product;
-                    }
+                    $this->base->variants[] = $variant_product;
                 }
                 $variant_product->price = $details_row['price'];
             }
