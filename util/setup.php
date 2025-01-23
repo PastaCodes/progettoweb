@@ -1,8 +1,15 @@
 <?php
 declare(strict_types = 1);
 
+// Handle session
 if (!isset($_SESSION['username'])) {
     session_start();
+}
+// Handle logout
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header('Location: ../login');
+    exit();
 }
 
 require_once __DIR__ . '/../classes/Page.php';
