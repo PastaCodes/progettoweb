@@ -20,7 +20,7 @@ $products = Product::fetch_products();
 $categories = Category::fetch_all();
 
 /* TODO:
- * Add current data to category, short_description and is_standalone (also price for variant)
+ * Add current data to category, short_description and is_standalone (also price and ordinal for variant)
  */
 ?>
     <main>
@@ -84,13 +84,13 @@ $categories = Category::fetch_all();
                         <input form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" minlength="1" maxlength="255" type="text" name="variant_display_name" value="<?= $variant->variant->display_name ?>" placeholder="Display name" required="required">
                     </td>
                     <td>
-                        #<?= $variant->variant->color ?>
+                        <input form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="color" name="variant_color" value="#<?= $variant->variant->color?>">
                     </td>
                     <td>
-                        0
+                        <input form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" min="1" type="number" name="variant_ordinal" value="0" required="required">
                     </td>
                     <td>
-                        0.0 &euro;
+                        <input form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" min="0.01" step="0.01" type="number" name="variant_price" value="0.00" required="required">
                     </td>
                     <td></td>
                     <td>
