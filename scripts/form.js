@@ -25,7 +25,7 @@ export function setupForm(formElement, usernameInput, passwordInput, isLogin = f
     formElement.addEventListener('submit', ev => {
         // Prevent redirect to check data first
         ev.preventDefault();
-        if (checkUser(usernameInput) || (isLogin || checkPassword(passwordInput))) {
+        if (checkUser(usernameInput) && (!isLogin || checkPassword(passwordInput))) {
             return;
         }
         // Redirect
