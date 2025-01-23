@@ -104,7 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (notifications) {
         // Constants and Selectors
         const notificationLink = document.querySelector('#side-buttons > button:nth-child(2)');
-        const notificationCounterElt = notificationLink.querySelector('span');
         const checkboxHideRead = notifications.querySelector('header > label > input');
         const closeButton = notifications.querySelector('footer > button');
         // Helper Functions
@@ -122,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const isRead = readNotifications.includes(notificationId);
             readBtn.innerHTML = isRead ? 'U' : 'R';
             section.style.filter = isRead ? 'brightness(0.5)' : '';
-            section.style.display = isRead && checkboxHideRead.checked ? '' : 'initial';
+            section.style.visibility = isRead && checkboxHideRead.checked ? 'hidden' : 'visible';
         };
         const toggleReadStatus = (notificationId, isRead) => {
             let readNotifications = getReadNotifications();
@@ -138,20 +137,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const totalNotifications = notifications.querySelectorAll('article > section').length;
             const readNotifications = getReadNotifications().length;
             const unreadCount = totalNotifications - readNotifications;
-            notificationCounterElt.innerHTML = unreadCount > 0 ? unreadCount : '';
+            notificationLink.style.setProperty('--counter-content', unreadCount > 0 ? `"${unreadCount}"` : '""');
             if (unreadCount > 0) {
-                notificationCounterElt.style.display = '';
-                notificationCounterElt.style.animation = '';
+                notificationLink.style.setProperty('--counter-visibility', 'visible');
+                notificationLink.style.setProperty('--counter-animation', '');
             } else {
-                notificationCounterElt.style.display = 'none';
-                notificationCounterElt.style.animation = 'none';
-                void notificationCounterElt.offsetWidth;
+                notificationLink.style.setProperty('--counter-visibility', 'hidden');
+                notificationLink.style.setProperty('--counter-animation', 'none');
             }
         };
         const updateNotificationTimestamps = () => {
             notifications.querySelectorAll('article > section').forEach(notification => {
                 const currTimestamp = new Date(notification.getAttribute('data-timestamp'));
-                const timeTicker = notification.querySelector("p:first-of-type");
+                const timeTicker = notification.querySelector('p:first-of-type');
                 const differenceMillis = Date.now() - currTimestamp;
                 timeTicker.innerHTML = timeAgo(differenceMillis);
             });
@@ -176,8 +174,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return false;
         });
         closeButton.addEventListener('click', closeModal);
-        notifications.addEventListener('keydown', (e) => {
-            if (e.key === "Escape") {
+        notifications.addEventListener('keydown', ev => {
+            if (ev.key === 'Escape') {
                 closeModal();
             }
         });
@@ -199,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
         notifications.querySelectorAll('article > section > button:last-of-type').forEach(btn => {
             btn.addEventListener('click', () => {
                 const notificationId = btn.parentElement.getAttribute('data-id');
-                console.log("ERASE", notificationId);
+                console.log('ERASE', notificationId);
             });
         });
         updateUnreadCounter();

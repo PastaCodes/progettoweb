@@ -70,9 +70,9 @@ if (isset($_SESSION['username'])) {
                     </li>
                     <li>
 <?php if (isset($_SESSION['username'])): ?>
-                        <a href="">Logout</a>
+                        <a href="">Logout <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/account.svg#account"></use></svg></a>
 <?php else: ?>
-                        <a href="login">Login</a>
+                        <a href="login">Login <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/account.svg#account"></use></svg></a>
 <?php endif ?>
                     </li>
                 </ul>
@@ -85,11 +85,10 @@ if (isset($_SESSION['username'])) {
                     <use href="assets/lightmode.svg#lightmode"></use>
                 </svg>
             </button>
-            <button title="Show notifications"<?php if ($notifications === null): ?> disabled="disabled"<?php endif ?>>
+            <button <?php if ($notifications === null): ?>title="Login to see your notifications" disabled="disabled"<?php else: ?>title="Show notifications"<?php endif ?>>
                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
                     <use href="assets/notifications.svg#notifications"></use>
                 </svg>
-                <span></span>
             </button>
             <button title="Accessibility options">
                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
