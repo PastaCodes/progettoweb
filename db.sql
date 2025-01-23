@@ -301,3 +301,6 @@ insert into product_in_bundle (base, bundle, ordinal) values
     ('barbed_wire_bracelet', 'goth_bundle_plus', 3),
     ('dagger_earrings', 'goth_bundle_plus', 3);
 
+insert into notification (title, content, username) values
+    ('Dummy title', 'This is a dummy notification.', 'Vendor'),
+    ('Example', 'This is an example of a notification with a longer text content. It should be helpful in seeing how the layout works.', 'Vendor');

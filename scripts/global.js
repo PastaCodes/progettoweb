@@ -6,7 +6,7 @@ function timeAgo(ms) {
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
     if (seconds < 60) {
-        return `less than a minute ago`;
+        return `Moments ago`;
     } else if (minutes < 60) {
         return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
     } else if (hours < 24) {
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== Colortheme switch =====
     // Get document tag
     const docElt = document.documentElement;
-    const btn = document.querySelector('#side-buttons > :first-child');
+    const btn = document.querySelector('body > ul > li:first-child > button');
     const use = btn.querySelector('svg > use');
     // Function to switch the theme of the page
     const switchTheme = (themeStr) => {
@@ -62,7 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
             createCookie(ACCESSIBILITY_COOKIE_NAME, JSON.stringify(accessibility), 30 * 24 * 60 * 60 * 1000);
         }
     };
-    const accessibilityButton = document.querySelector('#side-buttons > :last-child');
+    const accessibility = document.querySelector('dialog:last-of-type')
+    const accessibilityButton = document.querySelector('body > ul > li:last-child > button');
     accessibilityButton.addEventListener('click', () => accessibility.showModal());
     accessibility.querySelector('footer > button').addEventListener('click', () => accessibility.close());
     const highContrastToggle = accessibility.querySelector('[name="high-contrast"]');
@@ -100,11 +101,11 @@ document.addEventListener('DOMContentLoaded', () => {
     largerTextToggle.addEventListener('click', updateText);
     updateText(false);
     // ===== Notification stuff =====
-    const notifications = document.querySelector('#notifications');
+    const notifications = document.querySelector('dialog:nth-last-of-type(2)');
     if (notifications) {
         // Constants and Selectors
-        const notificationLink = document.querySelector('#side-buttons > button:nth-child(2)');
-        const checkboxHideRead = notifications.querySelector('header > label > input');
+        const notificationLink = document.querySelector('body > ul > li:nth-child(2) > button');
+        const checkboxHideRead = notifications.querySelector('label > input');
         const closeButton = notifications.querySelector('footer > button');
         // Helper Functions
         const getReadNotifications = () => JSON.parse(localStorage.getItem(NOTIFICATIONS_LOCAL_STORAGE)) || [];
@@ -119,9 +120,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const readNotifications = getReadNotifications();
             const notificationId = section.getAttribute('data-id');
             const isRead = readNotifications.includes(notificationId);
-            readBtn.innerHTML = isRead ? 'U' : 'R';
+            readBtn.querySelector('use').setAttribute('href', isRead ? 'assets/read.svg#read' : 'assets/unread.svg#unread');
+            readBtn.title = isRead ? 'Mark as unread' : 'Mark as read';
             section.style.filter = isRead ? 'brightness(0.5)' : '';
-            section.style.visibility = isRead && checkboxHideRead.checked ? 'hidden' : 'visible';
+            section.style.display = isRead && checkboxHideRead.checked ? 'none' : '';
         };
         const toggleReadStatus = (notificationId, isRead) => {
             let readNotifications = getReadNotifications();
@@ -134,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateUnreadCounter();
         };
         const updateUnreadCounter = () => {
-            const totalNotifications = notifications.querySelectorAll('article > section').length;
+            const totalNotifications = notifications.querySelectorAll('article > ul > li').length;
             const readNotifications = getReadNotifications().length;
             const unreadCount = totalNotifications - readNotifications;
             notificationLink.style.setProperty('--counter-content', unreadCount > 0 ? `"${unreadCount}"` : '""');
@@ -147,9 +149,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
         const updateNotificationTimestamps = () => {
-            notifications.querySelectorAll('article > section').forEach(notification => {
+            notifications.querySelectorAll('article > ul > li').forEach(notification => {
                 const currTimestamp = new Date(notification.getAttribute('data-timestamp'));
-                const timeTicker = notification.querySelector('p:first-of-type');
+                const timeTicker = notification.querySelector('p:last-of-type');
                 const differenceMillis = Date.now() - currTimestamp;
                 timeTicker.innerHTML = timeAgo(differenceMillis);
             });
@@ -180,10 +182,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         checkboxHideRead.addEventListener('click', () => {
-            notifications.querySelectorAll('section').forEach(s => updateSectionRead(s, s.querySelector('button:first-of-type')));
+            notifications.querySelectorAll('ul > li').forEach(s => updateSectionRead(s, s.querySelector('button:first-of-type')));
         });
         // Initialize Read Button Listeners
-        notifications.querySelectorAll('article > section > button:first-of-type').forEach(btn => {
+        notifications.querySelectorAll('article > ul > li > button:first-of-type').forEach(btn => {
             const section = btn.parentElement;
             updateSectionRead(section, btn);
             btn.addEventListener('click', () => {
@@ -194,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
         // Setup erase button
-        notifications.querySelectorAll('article > section > button:last-of-type').forEach(btn => {
+        notifications.querySelectorAll('article > ul > li > button:last-of-type').forEach(btn => {
             btn.addEventListener('click', () => {
                 const notificationId = btn.parentElement.getAttribute('data-id');
                 console.log('ERASE', notificationId);

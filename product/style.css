@@ -16,19 +16,19 @@ main > section > :first-child {
     margin-bottom: var(--pico-spacing);
 }
 
-main > section > div:first-child > svg {
+main > section > figure > svg {
     width: 6rem;
     height: 6rem;
     color: var(--pico-muted-color);
     margin-bottom: var(--spacing-small);
 }
 
-main > section > div:first-child > p {
+main > section > figure > figcaption {
     color: var(--pico-muted-color);
     margin-bottom: 0;
 }
 
-main > section > div:nth-child(2) {
+main > section > fieldset {
     display: flex;
     flex-direction: row;
     gap: var(--radio-spacing);
@@ -42,7 +42,7 @@ main > section > div:nth-child(2) {
     outline: 0.05rem solid var(--pico-muted-color);
     outline-offset: -0.05rem;
     flex: 0 0 auto;
-    background-color: color-mix(in oklab, var(--radio-color) 90%, #000);
+    background-color: color-mix(in oklab, var(--radio-color) 90%, black);
     margin: 0;
 }
 

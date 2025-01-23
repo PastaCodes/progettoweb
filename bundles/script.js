@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('main > section > div').forEach(article => {
+    document.querySelectorAll('main > section > ul > li').forEach(article => {
         article.primingPointers = new Map();
         article.addEventListener('pointerdown', ev => {
             article.primingPointers.set(ev.pointerId, [ev.clientX, ev.clientY]);

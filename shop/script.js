@@ -16,9 +16,9 @@ window.addEventListener('load', () => {
     searchInput.addEventListener('change', search);
     categorySelect.addEventListener('change', search);
     // Retrieve the elements to be used when no thumbnail is available
-    const noThumbnailTemplate = document.getElementById('no-thumbnail');
-    document.querySelectorAll('main > div > div').forEach(article => {
-        const radiosSection = article.querySelector('div:nth-child(2)');
+    const noThumbnailTemplate = document.querySelector('template');
+    document.querySelectorAll('main > ul > li').forEach(article => {
+        const radiosSection = article.querySelector('fieldset');
         article.deadzonePointers = new Set();
         article.primingPointers = new Map();
         article.addEventListener('pointerdown', ev => {

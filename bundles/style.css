@@ -2,13 +2,13 @@
     --thumbnail-size: 14rem;
 }
 
-main > section {
+main > section > ul {
     display: flex;
     flex-direction: column;
     gap: var(--pico-spacing);
 }
 
-main > section > div {
+main > section > ul > li {
     display: flex;
     flex-wrap: wrap;
     gap: var(--pico-spacing);
@@ -21,24 +21,24 @@ main > section > div {
     user-select: none;
 }
 
-main > section > div:where(:hover, :focus-visible):not([data-hover-disabled]) {
+main > section > ul > li:where(:hover, :focus-visible):not([data-hover-disabled]) {
     box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-primary-focus);
     outline: none;
 }
 
-main > section > div > p:first-child {
+main > section > ul > li > p:first-child {
     flex-basis: 100%;
     margin-bottom: 0;
     font-size: 120%;
     font-weight: bold;
 }
 
-main > section > div > p:last-child {
+main > section > ul > li > p:last-child {
     flex-basis: 100%;
     margin-bottom: 0;
 }
 
-main > section > div > :not(p) {
+main > section > ul > li > :not(p) {
     grid-row: 2;
     width: var(--thumbnail-size);
     height: var(--thumbnail-size);
@@ -46,22 +46,22 @@ main > section > div > :not(p) {
     overflow: hidden;
 }
 
-main > section > div > div {
+main > section > ul > li > figure {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-main > section > div > div > svg {
+main > section > ul > li > figure > svg {
     width: 6rem;
     height: 6rem;
     color: var(--pico-muted-color);
     margin-bottom: var(--spacing-small);
 }
 
-main > section > div > div > p {
+main > section > ul > li > figure > figcaption {
     font-size: 87.5%;
     color: var(--pico-muted-color);
-    margin-bottom: 0;
+    padding: 0;
 }

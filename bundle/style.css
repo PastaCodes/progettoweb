@@ -2,7 +2,7 @@
     --thumbnail-size: 14rem;
 }
 
-main > section > section:first-of-type > div {
+main > section > section:first-of-type > ul > li {
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: max-content auto;
@@ -14,7 +14,7 @@ main > section > section:first-of-type > div {
     margin-bottom: var(--pico-spacing);
 }
 
-main > section > section:first-of-type > div > :first-child {
+main > section > section:first-of-type > ul > li > :first-child {
     width: var(--thumbnail-size);
     height: var(--thumbnail-size);
     border-radius: var(--pico-border-radius);
@@ -26,31 +26,31 @@ main > section > section:first-of-type > div > :first-child {
     user-select: none;
 }
 
-main > section > section:first-of-type > div > div:first-child {
+main > section > section:first-of-type > ul > li > figure {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-main > section > section:first-of-type > div > div:first-child > svg {
+main > section > section:first-of-type > ul > li > figure > svg {
     width: 6rem;
     height: 6rem;
     color: var(--pico-muted-color);
     margin-bottom: var(--spacing-small);
 }
 
-main > section > section:first-of-type > div > div:first-child > p {
+main > section > section:first-of-type > ul > li > figure > figcaption {
     color: var(--pico-muted-color);
-    margin-bottom: 0;
+    padding: 0;
 }
 
-main > section > section:first-of-type > div p, main > section > section:first-of-type > div a {
+main > section > section:first-of-type > ul > li p, main > section > section:first-of-type > ul > li a {
     width: fit-content;
     height: fit-content;
 }
 
-main > section > section:first-of-type > div > a {
+main > section > section:first-of-type > ul > li > a {
     font-weight: bold;
     grid-row: 1;
     grid-column: 2;
@@ -58,7 +58,7 @@ main > section > section:first-of-type > div > a {
     color: var(--pico-primary-inverted);
 }
 
-main > section > section:first-of-type > div > p:last-of-type {
+main > section > section:first-of-type > ul > li > p:last-of-type {
     grid-row: 3;
     grid-column: 2;
 }
@@ -77,7 +77,7 @@ main > section > section:nth-of-type(2) > p {
     outline: 0.05rem solid var(--pico-muted-color);
     outline-offset: -0.05rem;
     flex: 0 0 auto;
-    background-color: color-mix(in oklab, var(--radio-color) 90%, #000);
+    background-color: color-mix(in oklab, var(--radio-color) 90%, black);
     margin: 0;
 }
 

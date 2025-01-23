@@ -4,7 +4,7 @@ import { addBundleToCart } from '../scripts/cart.js';
 // Wait for the style to be rendered
 window.addEventListener('load', () => {
     // Retrieve the elements to be used when no thumbnail is available
-    const noThumbnailTemplate = document.getElementById('no-thumbnail');
+    const noThumbnailTemplate = document.querySelector('template');
     // Cart stuff
     const addToCartBtn = document.querySelector('main > section > button');
     if (addToCartBtn) {
@@ -13,10 +13,10 @@ window.addEventListener('load', () => {
             addToCartBtn.getAttribute('data-variant-suffix')
         ));
     }
-    const products = document.querySelectorAll('main > section > section:first-of-type > div');
+    const products = document.querySelectorAll('main > section > section:first-of-type > ul > li');
     const variantDisplay = document.querySelector('main > section > section:nth-of-type(2) > p');
     const priceDisplay = document.querySelector('main > section > p');
-    const radiosSection = document.querySelector('main > section > section:nth-of-type(2) > div');
+    const radiosSection = document.querySelector('main > section > section:nth-of-type(2) > fieldset');
     if (radiosSection) {
         const radios = Array.from(radiosSection.children);
         // When hovering over a radio button, the associated thumbnail is displayed

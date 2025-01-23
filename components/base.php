@@ -45,14 +45,18 @@ if (isset($_SESSION['username'])) {
     <body>
 <?php if ($page->has_navbar): ?>
         <header>
-            <a href="">
-                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="IsiFitGems logo">
-                    <use href="assets/isi.svg#isi"></use>
-                </svg>
-                <h1>IsiFitGems</h1>
-            </a>
             <nav>
                 <ul>
+                    <li>
+                        <a href="">
+                            <h1>
+                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="IsiFitGems logo">
+                                    <use href="assets/isi.svg#isi"></use>
+                                </svg>
+                                IsiFitGems
+                            </h1>
+                        </a>
+                    </li>
                     <li>
                         <a href="shop">Our products</a>
                     </li>
@@ -91,57 +95,85 @@ if (isset($_SESSION['username'])) {
             </nav>
         </header>
 <?php endif ?>
-        <div id="side-buttons">
-            <button title="Switch to dark theme">
-                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
-                    <use href="assets/lightmode.svg#lightmode"></use>
-                </svg>
-            </button>
-            <button <?php if ($notifications === null): ?>title="Login to see your notifications" disabled="disabled"<?php else: ?>title="Show notifications"<?php endif ?>>
-                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
-                    <use href="assets/notifications.svg#notifications"></use>
-                </svg>
-            </button>
-            <button title="Accessibility options">
-                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
-                    <use href="assets/accessibility.svg#accessibility"></use>
-                </svg>
-            </button>
-        </div>
+        <ul>
+            <li>
+                <button title="Switch to dark theme">
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                        <use href="assets/lightmode.svg#lightmode"></use>
+                    </svg>
+                </button>
+            </li>
+            <li>
+                <button <?php if ($notifications === null): ?>title="Login to see your notifications" disabled="disabled"<?php else: ?>title="Show notifications"<?php endif ?>>
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                        <use href="assets/notifications.svg#notifications"></use>
+                    </svg>
+                </button>
+            </li>
+            <li>
+                <button title="Accessibility options">
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                        <use href="assets/accessibility.svg#accessibility"></use>
+                    </svg>
+                </button>
+            </li>
+        </ul>
 <?= $body ?>
 <?php if ($page->has_feet): ?>
         <footer>
-            <a>Terms and Conditions</a>
-            <a>Privacy Policy</a>
-            <p>&copy; 2025 IsiFitGems s.r.l.</p>
+            <ul>
+                <li>
+                    <a>Terms and Conditions</a>
+                </li>
+                <li>
+                    <a>Privacy Policy</a>
+                </li>
+                <li>
+                    &copy; 2025 IsiFitGems s.r.l.
+                </li>
+            </ul>
         </footer>
 <?php endif ?>
 <?php if ($notifications !== null): ?>
-        <dialog id="notifications">
+        <dialog>
             <article>
                 <header>
-                    <h3>Notifications</h3>
-                    <label>
-                        Hide seen
-                        <input name="hide-seen" type="checkbox" role="switch">
-                    </label>
+                    <h2>Notifications</h2>
                 </header>
+                <label>
+                    Unread only
+                    <input name="hide-seen" type="checkbox">
+                </label>
+<?php if (empty($notifications)): ?>
+                <p>You have no new notifications</p>
+<?php else: ?>
+                <ul>
 <?php foreach ($notifications as $notification): ?>
-                <section data-id="<?= $notification->id ?>" data-timestamp="<?= $notification->created_at->format('Y-m-d H:i:s') ?>">
-                    <h4><?= $notification->title ?></h4>
-                    <p>1s ago</p>
-                    <p><?= $notification->content ?></p>
-                    <button>R</button>
-                    <button>D</button>
-                </section>
+                    <li data-id="<?= $notification->id ?>" data-timestamp="<?= $notification->created_at->format('Y-m-d H:i:s') ?>">
+                        <h3><?= $notification->title ?></h3>
+                        <p><?= $notification->content ?></p>
+                        <p>Moments ago</p>
+                        <button title="Mark as read">
+                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                                <use href="assets/unread.svg#unread"></use>
+                            </svg>
+                        </button>
+                        <button title="Delete">
+                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                                <use href="assets/remove.svg#remove"></use>
+                            </svg>
+                        </button>
+                    </li>
 <?php endforeach ?>
+                </ul>
+<?php endif ?>
                 <footer>
                     <button>Close</button>
                 </footer>
             </article>
         </dialog>
 <?php endif ?>
-        <dialog id="accessibility">
+        <dialog>
             <article>
                 <header>
                     <h2>Accessibility options</h2>

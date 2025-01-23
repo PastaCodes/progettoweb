@@ -18,7 +18,7 @@ require_once __DIR__ . '/files.php';
 
 const SETTINGS = [
     'hosted-locally' => true,
-    'theme-color' => '#FFFFFF' // TODO
+    'theme-color' => '#0172AD'
 ];
 define('DOCUMENT_ROOT', $_SERVER['DOCUMENT_ROOT'] . (SETTINGS['hosted-locally'] ? '/IsiFitGems/' : '/'));
 $page = new Page();
