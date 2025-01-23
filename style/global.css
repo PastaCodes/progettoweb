@@ -70,25 +70,24 @@ body > header > nav > ul > li:first-child {
     margin-right: var(--pico-spacing);
 }
 
-body > header > nav > ul > li:first-child > h1 {
-    display: block;
+body > header > nav > ul > li:first-child > a {
     text-decoration: none;
+    display: block;
     border-radius: var(--pico-border-radius);
     font-size: 200%;
-    margin-bottom: 0;
 }
 
-body > header > nav > ul > li:first-child > h1 > a {
-    color: var(--pico-primary-inverted);
-    text-decoration: none;
+body > header > nav > ul > li:first-child > a > h1 {
+    color: var(--pico-color);
     text-underline-offset: 0;
     display: flex;
     padding: 0;
     gap: var(--pico-spacing);
     align-items: center;
+    margin-bottom: 0;
 }
 
-body > header > nav > ul > li:first-child > h1 > a > svg {
+body > header > nav > ul > li:first-child > a > h1 > svg {
     width: 2em;
     height: 2em;
 }

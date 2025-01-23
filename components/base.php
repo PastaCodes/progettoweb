@@ -48,14 +48,14 @@ if (isset($_SESSION['username'])) {
             <nav>
                 <ul>
                     <li>
-                        <h1>
-                            <a href="">
+                        <a href="">
+                            <h1>
                                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="IsiFitGems logo">
                                     <use href="assets/isi.svg#isi"></use>
                                 </svg>
                                 IsiFitGems
-                            </a>
-                        </h1>
+                            </h1>
+                        </a>
                     </li>
                     <li>
                         <a href="shop">Our products</a>
