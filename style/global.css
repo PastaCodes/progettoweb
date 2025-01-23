@@ -123,6 +123,7 @@ img, svg {
 }
 
 #side-buttons > button:nth-child(2) > span {
+    display: none;
     position: absolute;
     font-size: small;
     font-weight: bold;

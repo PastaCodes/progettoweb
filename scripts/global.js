@@ -100,105 +100,108 @@ document.addEventListener('DOMContentLoaded', () => {
     largerTextToggle.addEventListener('click', updateText);
     updateText(false);
     // ===== Notification stuff =====
-    // Constants and Selectors
-    const notificationLink = document.querySelector('#side-buttons > button:nth-child(2)');
-    const notificationCounterElt = notificationLink.querySelector('span');
-    const checkboxHideRead = notifications.querySelector('header > label > input');
-    const closeButton = notifications.querySelector('footer > button');
-    // Helper Functions
-    const getReadNotifications = () => JSON.parse(localStorage.getItem(NOTIFICATIONS_LOCAL_STORAGE)) || [];
-    const setReadNotifications = (notifications) => {
-        if (notifications.length > 0) {
-            localStorage.setItem(NOTIFICATIONS_LOCAL_STORAGE, JSON.stringify(notifications));
-        } else {
-            localStorage.removeItem(NOTIFICATIONS_LOCAL_STORAGE);
-        }
-    };
-    const updateSectionRead = (section, readBtn) => {
-        const readNotifications = getReadNotifications();
-        const notificationId = section.getAttribute('data-id');
-        const isRead = readNotifications.includes(notificationId);
-        readBtn.innerHTML = isRead ? 'U' : 'R';
-        section.style.filter = isRead ? 'brightness(0.5)' : '';
-        section.style.display = isRead && checkboxHideRead.checked ? 'none' : '';
-    };
-    const toggleReadStatus = (notificationId, isRead) => {
-        let readNotifications = getReadNotifications();
-        if (isRead) {
-            readNotifications = readNotifications.filter(id => id !== notificationId);
-        } else {
-            readNotifications.push(notificationId);
-        }
-        setReadNotifications(readNotifications);
-        updateUnreadCounter();
-    };
-    const updateUnreadCounter = () => {
-        const totalNotifications = notifications.querySelectorAll('article > section').length;
-        const readNotifications = getReadNotifications().length;
-        const unreadCount = totalNotifications - readNotifications;
-        notificationCounterElt.innerHTML = unreadCount > 0 ? unreadCount : '';
-        if (unreadCount > 0) {
-            notificationCounterElt.style.display = '';
-            notificationCounterElt.style.animation = '';
-        } else {
-            notificationCounterElt.style.display = 'none';
-            notificationCounterElt.style.animation = 'none';
-            void notificationCounterElt.offsetWidth;
-        }
-    };
-    const updateNotificationTimestamps = () => {
-        notifications.querySelectorAll('article > section').forEach(notification => {
-            const currTimestamp = new Date(notification.getAttribute('data-timestamp'));
-            const timeTicker = notification.querySelector("p:first-of-type");
-            const differenceMillis = Date.now() - currTimestamp;
-            timeTicker.innerHTML = timeAgo(differenceMillis);
-        });
-    };
-    let notifInterval = null;
-    const closeModal = () => {
-        notifications.close();
-        if (notifInterval) {
-            clearInterval(notifInterval);
-            notifInterval = null;
-        }
-    };
-    // Event Listeners
-    notificationLink.addEventListener('click', ev => {
-        ev.preventDefault();
-        updateNotificationTimestamps();
-        updateUnreadCounter();
-        if (!notifInterval) {
-            notifInterval = setInterval(updateNotificationTimestamps, 60000);
-        }
-        notifications.showModal();
-        return false;
-    });
-    closeButton.addEventListener('click', closeModal);
-    notifications.addEventListener('keydown', (e) => {
-        if (e.key === "Escape") {
-            closeModal();
-        }
-    });
-    checkboxHideRead.addEventListener('click', () => {
-        notifications.querySelectorAll('section').forEach(s => updateSectionRead(s, s.querySelector('button:first-of-type')));
-    });
-    // Initialize Read Button Listeners
-    notifications.querySelectorAll('article > section > button:first-of-type').forEach(btn => {
-        const section = btn.parentElement;
-        updateSectionRead(section, btn);
-        btn.addEventListener('click', () => {
+    const notifications = document.querySelector('#notifications');
+    if (notifications !== null) {
+        // Constants and Selectors
+        const notificationLink = document.querySelector('#side-buttons > button:nth-child(2)');
+        const notificationCounterElt = notificationLink.querySelector('span');
+        const checkboxHideRead = notifications.querySelector('header > label > input');
+        const closeButton = notifications.querySelector('footer > button');
+        // Helper Functions
+        const getReadNotifications = () => JSON.parse(localStorage.getItem(NOTIFICATIONS_LOCAL_STORAGE)) || [];
+        const setReadNotifications = (notifications) => {
+            if (notifications.length > 0) {
+                localStorage.setItem(NOTIFICATIONS_LOCAL_STORAGE, JSON.stringify(notifications));
+            } else {
+                localStorage.removeItem(NOTIFICATIONS_LOCAL_STORAGE);
+            }
+        };
+        const updateSectionRead = (section, readBtn) => {
+            const readNotifications = getReadNotifications();
             const notificationId = section.getAttribute('data-id');
-            const isRead = getReadNotifications().includes(notificationId);
-            toggleReadStatus(notificationId, isRead);
+            const isRead = readNotifications.includes(notificationId);
+            readBtn.innerHTML = isRead ? 'U' : 'R';
+            section.style.filter = isRead ? 'brightness(0.5)' : '';
+            section.style.display = isRead && checkboxHideRead.checked ? '' : 'initial';
+        };
+        const toggleReadStatus = (notificationId, isRead) => {
+            let readNotifications = getReadNotifications();
+            if (isRead) {
+                readNotifications = readNotifications.filter(id => id !== notificationId);
+            } else {
+                readNotifications.push(notificationId);
+            }
+            setReadNotifications(readNotifications);
+            updateUnreadCounter();
+        };
+        const updateUnreadCounter = () => {
+            const totalNotifications = notifications.querySelectorAll('article > section').length;
+            const readNotifications = getReadNotifications().length;
+            const unreadCount = totalNotifications - readNotifications;
+            notificationCounterElt.innerHTML = unreadCount > 0 ? unreadCount : '';
+            if (unreadCount > 0) {
+                notificationCounterElt.style.display = '';
+                notificationCounterElt.style.animation = '';
+            } else {
+                notificationCounterElt.style.display = 'none';
+                notificationCounterElt.style.animation = 'none';
+                void notificationCounterElt.offsetWidth;
+            }
+        };
+        const updateNotificationTimestamps = () => {
+            notifications.querySelectorAll('article > section').forEach(notification => {
+                const currTimestamp = new Date(notification.getAttribute('data-timestamp'));
+                const timeTicker = notification.querySelector("p:first-of-type");
+                const differenceMillis = Date.now() - currTimestamp;
+                timeTicker.innerHTML = timeAgo(differenceMillis);
+            });
+        };
+        let notifInterval = null;
+        const closeModal = () => {
+            notifications.close();
+            if (notifInterval) {
+                clearInterval(notifInterval);
+                notifInterval = null;
+            }
+        };
+        // Event Listeners
+        notificationLink.addEventListener('click', ev => {
+            ev.preventDefault();
+            updateNotificationTimestamps();
+            updateUnreadCounter();
+            if (!notifInterval) {
+                notifInterval = setInterval(updateNotificationTimestamps, 60000);
+            }
+            notifications.showModal();
+            return false;
+        });
+        closeButton.addEventListener('click', closeModal);
+        notifications.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") {
+                closeModal();
+            }
+        });
+        checkboxHideRead.addEventListener('click', () => {
+            notifications.querySelectorAll('section').forEach(s => updateSectionRead(s, s.querySelector('button:first-of-type')));
+        });
+        // Initialize Read Button Listeners
+        notifications.querySelectorAll('article > section > button:first-of-type').forEach(btn => {
+            const section = btn.parentElement;
             updateSectionRead(section, btn);
+            btn.addEventListener('click', () => {
+                const notificationId = section.getAttribute('data-id');
+                const isRead = getReadNotifications().includes(notificationId);
+                toggleReadStatus(notificationId, isRead);
+                updateSectionRead(section, btn);
+            });
         });
-    });
-    // Setup erase button
-    notifications.querySelectorAll('article > section > button:last-of-type').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const notificationId = btn.parentElement.getAttribute('data-id');
-            console.log("ERASE", notificationId);
+        // Setup erase button
+        notifications.querySelectorAll('article > section > button:last-of-type').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const notificationId = btn.parentElement.getAttribute('data-id');
+                console.log("ERASE", notificationId);
+            });
         });
-    });
-    updateUnreadCounter();
+        updateUnreadCounter();
+    }
 });

@@ -4,6 +4,7 @@ require_once __DIR__ . '/../' . $page->body;
 $body = ob_get_clean();
 $accessibility = json_decode($_COOKIE['accessibility'] ?? '{}');
 // Notification stuff
+$notifications = null;
 if (isset($_SESSION['username'])) {
     require_once __DIR__ . '/../classes/Notification.php';
     $notifications = Notification::fetch_all_of($_SESSION['username']);
@@ -84,7 +85,7 @@ if (isset($_SESSION['username'])) {
                     <use href="assets/lightmode.svg#lightmode"></use>
                 </svg>
             </button>
-            <button title="Show notifications">
+            <button title="Show notifications"<?php if ($notifications === null): ?> disabled="disabled"<?php endif ?>>
                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
                     <use href="assets/notifications.svg#notifications"></use>
                 </svg>
@@ -104,6 +105,7 @@ if (isset($_SESSION['username'])) {
             <p>&copy; 2025 IsiFitGems s.r.l.</p>
         </footer>
 <?php endif ?>
+<?php if ($notifications !== null): ?>
         <dialog id="notifications">
             <article>
                 <header>
@@ -127,6 +129,7 @@ if (isset($_SESSION['username'])) {
                 </footer>
             </article>
         </dialog>
+<?php endif ?>
         <dialog id="accessibility">
             <article>
                 <header>

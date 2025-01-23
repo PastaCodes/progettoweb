@@ -39,6 +39,7 @@ class Bundle {
             $product = Product::from($details_row['product_in_bundle.base']); // Variant may be set later
             $product->base->display_name = $details_row['product_base.display_name'];
             $product->base->short_description = $details_row['short_description'];
+            $product->base->variants = [];
             $this->products[$details_row['product_in_bundle.base']] = $product;
         }
         $product = $this->products[$details_row['product_in_bundle.base']];

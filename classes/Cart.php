@@ -80,9 +80,8 @@ class Cart {
                 $entry->bundle->display_name = $bundle_row['display_name'];
                 $entry->bundle->price_with_discount = $bundle_row['price_with_discount'];
                 if ($entry->bundle->variants === false) {
-                    if ($entry->bundle->selected_suffix === null) {
-                        $entry->bundle->variants = [];
-                    } else {
+                    $entry->bundle->variants = [];
+                    if ($entry->bundle->selected_suffix !== null) {
                         $variant = new ProductVariant($entry->bundle->selected_suffix);
                         $variant->display_name = $variant->code_suffix; // TODO
                         $entry->bundle->variants[$variant->code_suffix] = new BundleVariant($variant);
