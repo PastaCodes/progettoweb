@@ -7,6 +7,14 @@ form {
     height: max-content;
 }
 
+form fieldset > input {
+    margin-bottom: 0 !important;
+}
+
+form p {
+    text-align: center;
+}
+
 small {
     color: var(--pico-form-element-invalid-border-color);
     float: right;

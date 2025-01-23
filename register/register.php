@@ -32,7 +32,7 @@ if (isset($_SESSION['username'])) {
                     Password <small></small>
                     <input minlength="8" maxlength="255" type="password" name="password" autocomplete="new-password" placeholder="Password" required="required">
                 </label>
-                <a href="login">I already have an account</a>
+                <p><a href="login">I already have an account</a></p>
                 <input type="submit" value="Register">
             </fieldset>
         </form>

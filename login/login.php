@@ -17,7 +17,6 @@ if (isset($_SESSION['username'])) {
     header('Location: ../shop');
     exit();
 }
-
 ?>
     <main>
         <form method="POST">
@@ -31,7 +30,7 @@ if (isset($_SESSION['username'])) {
                     Password <small></small>
                     <input minlength="8" maxlength="255" type="password" name="password" autocomplete="current-password" placeholder="Password" required="required">
                 </label>
-                <a href="register">I don't have an account</a>
+                <p><a href="register">I don't have an account</a> &ndash; <a>I forgot my password</a></p>
                 <input type="submit" value="Login">
             </fieldset>
         </form>
