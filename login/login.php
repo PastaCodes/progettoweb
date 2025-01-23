@@ -28,7 +28,7 @@ if (isset($_SESSION['username'])) {
                 </label>
                 <label>
                     Password <small></small>
-                    <input minlength="8" maxlength="255" type="password" name="password" autocomplete="current-password" placeholder="Password" required="required">
+                    <input minlength="1" maxlength="255" type="password" name="password" autocomplete="current-password" placeholder="Password" required="required">
                 </label>
                 <p><a href="register">I don't have an account</a> &ndash; <a>I forgot my password</a></p>
                 <input type="submit" value="Login">
