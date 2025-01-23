@@ -43,7 +43,7 @@ function checkUser(usernameElement) {
 }
 
 function checkPassword(passwordElement) {
-    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%,._-^&+=!])[A-Za-z\d@#$%,._-^&+=!]+$/;
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%,._\-^&+=!])[A-Za-z\d@#$%,._\-^&+=!]+$/;
     if (passwordElement.value.length < parseInt(passwordElement.minLength)) {
         return "Password must be at least 8 characters long.";
     }
