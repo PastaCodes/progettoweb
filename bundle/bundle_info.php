@@ -5,48 +5,50 @@ require_once '../util/format.php';
 $bundle = new Bundle($_GET['id'], $_GET['variant'] ?? null);
 $bundle->fetch_details();
 ?>
-        <template id="no-thumbnail">
-            <div>
+        <template>
+            <figure>
                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
                     <use href="assets/nothing.svg#nothing"></use>
                 </svg>
-                <p>No image available</p>
-            </div>
+                <figcaption>No image available</figcaption>
+            </figure>
         </template>
         <main>
             <section>
                 <h1><?= $bundle->display_name ?></h1>
                 <section>
                     <h2>Included products:</h2>
+                    <ul>
 <?php foreach ($bundle->products as $product): ?>
-                    <div data-variants-data="<?= htmlspecialchars($product->to_variants_data(), ENT_QUOTES, 'UTF-8') ?>">
+                        <li data-variants-data="<?= htmlspecialchars($product->to_variants_data(), ENT_QUOTES, 'UTF-8') ?>">
 <?php if ($product->thumbnail() === null): ?>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
-                                <use href="assets/nothing.svg#nothing"></use>
-                            </svg>
-                            <p>No image available</p>
-                        </div>
+                            <figure>
+                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                                    <use href="assets/nothing.svg#nothing"></use>
+                                </svg>
+                                <figcaption>No image available</figcaption>
+                            </figure>
 <?php else: ?>
-                        <img src="<?= $product->thumbnail()->file ?>" loading="lazy" alt="<?= $product->thumbnail()->alt_text ?>">
+                            <img src="<?= $product->thumbnail()->file ?>" loading="lazy" alt="<?= $product->thumbnail()->alt_text ?>">
 <?php endif ?>
-                        <a href="product?<?= $product->to_url_params() ?>" title="Go to product page"><?= $product->base->display_name ?> <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/link.svg#link"></use></svg></a>
+                            <a href="product?<?= $product->to_url_params() ?>" title="Go to product page"><?= $product->base->display_name ?> <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/link.svg#link"></use></svg></a>
 <?php if ($product->variant !== null): ?>
-                        <p><?= $product->variant->display_name ?></p>
+                            <p><?= $product->variant->display_name ?></p>
 <?php endif ?>
-                        <p><?= $product->base->short_description ?></p>
-                    </div>
+                            <p><?= $product->base->short_description ?></p>
+                        </li>
 <?php endforeach ?>
+                    </ul>
                 </section>
 <?php if (count($bundle->variants) > 1): ?>
                 <section>
                     <h2>Choose your style:</h2>
                     <p><?= $bundle->variants[$bundle->selected_suffix]->variant->display_name ?></p>
-                    <div>
+                    <fieldset>
 <?php foreach ($bundle->variants as $variant): ?>
                         <input type="radio" name="variant" <?= $variant->to_radio_attributes($bundle->selected_suffix) ?>>
 <?php endforeach ?>
-                    </div>
+                    </fieldset>
                 </section>
 <?php endif ?>
                 <p><del><?= format_price($bundle->price_before_discount) ?></del> <ins><?= format_price($bundle->price_with_discount) ?></ins></p>

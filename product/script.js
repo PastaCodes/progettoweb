@@ -4,7 +4,7 @@ import { addProductToCart } from '../scripts/cart.js';
 // Wait for the style to be rendered
 window.addEventListener('load', () => {
     // Retrieve the elements to be used when no thumbnail is available
-    const noThumbnailTemplate = document.getElementById('no-thumbnail');
+    const noThumbnailTemplate = document.querySelector('template');
     // Cart stuff
     const addToCartBtn = document.querySelector('main > section > button');
     if (addToCartBtn) {
@@ -15,7 +15,7 @@ window.addEventListener('load', () => {
     }
     const variantDisplay = document.querySelector('main > section > p:nth-last-of-type(2)');
     const priceDisplay = document.querySelector('main > section > p:last-of-type');
-    const radiosSection = document.querySelector('main > section > div:nth-child(2)');
+    const radiosSection = document.querySelector('main > section > fieldset');
     if (radiosSection) {
         let thumbnailElement = document.querySelector('main > section > :first-child');
         const displayThumbnail = (activeRadio) => {

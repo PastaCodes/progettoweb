@@ -45,14 +45,18 @@ if (isset($_SESSION['username'])) {
     <body>
 <?php if ($page->has_navbar): ?>
         <header>
-            <a href="">
-                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="IsiFitGems logo">
-                    <use href="assets/isi.svg#isi"></use>
-                </svg>
-                <h1>IsiFitGems</h1>
-            </a>
             <nav>
                 <ul>
+                    <li>
+                        <h1>
+                            <a href="">
+                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="IsiFitGems logo">
+                                    <use href="assets/isi.svg#isi"></use>
+                                </svg>
+                                IsiFitGems
+                            </a>
+                        </h1>
+                    </li>
                     <li>
                         <a href="shop">Our products</a>
                     </li>
@@ -79,33 +83,47 @@ if (isset($_SESSION['username'])) {
             </nav>
         </header>
 <?php endif ?>
-        <div id="side-buttons">
-            <button title="Switch to dark theme">
-                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
-                    <use href="assets/lightmode.svg#lightmode"></use>
-                </svg>
-            </button>
-            <button <?php if ($notifications === null): ?>title="Login to see your notifications" disabled="disabled"<?php else: ?>title="Show notifications"<?php endif ?>>
-                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
-                    <use href="assets/notifications.svg#notifications"></use>
-                </svg>
-            </button>
-            <button title="Accessibility options">
-                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
-                    <use href="assets/accessibility.svg#accessibility"></use>
-                </svg>
-            </button>
-        </div>
+        <ul>
+            <li>
+                <button title="Switch to dark theme">
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                        <use href="assets/lightmode.svg#lightmode"></use>
+                    </svg>
+                </button>
+            </li>
+            <li>
+                <button <?php if ($notifications === null): ?>title="Login to see your notifications" disabled="disabled"<?php else: ?>title="Show notifications"<?php endif ?>>
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                        <use href="assets/notifications.svg#notifications"></use>
+                    </svg>
+                </button>
+            </li>
+            <li>
+                <button title="Accessibility options">
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                        <use href="assets/accessibility.svg#accessibility"></use>
+                    </svg>
+                </button>
+            </li>
+        </ul>
 <?= $body ?>
 <?php if ($page->has_feet): ?>
         <footer>
-            <a>Terms and Conditions</a>
-            <a>Privacy Policy</a>
-            <p>&copy; 2025 IsiFitGems s.r.l.</p>
+            <ul>
+                <li>
+                    <a>Terms and Conditions</a>
+                </li>
+                <li>
+                    <a>Privacy Policy</a>
+                </li>
+                <li>
+                    &copy; 2025 IsiFitGems s.r.l.
+                </li>
+            </ul>
         </footer>
 <?php endif ?>
 <?php if ($notifications !== null): ?>
-        <dialog id="notifications">
+        <dialog>
             <article>
                 <header>
                     <h3>Notifications</h3>
@@ -129,7 +147,7 @@ if (isset($_SESSION['username'])) {
             </article>
         </dialog>
 <?php endif ?>
-        <dialog id="accessibility">
+        <dialog>
             <article>
                 <header>
                     <h2>Accessibility options</h2>

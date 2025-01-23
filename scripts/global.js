@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== Colortheme switch =====
     // Get document tag
     const docElt = document.documentElement;
-    const btn = document.querySelector('#side-buttons > :first-child');
+    const btn = document.querySelector('body > ul > li:first-child > button');
     const use = btn.querySelector('svg > use');
     // Function to switch the theme of the page
     const switchTheme = (themeStr) => {
@@ -62,7 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
             createCookie(ACCESSIBILITY_COOKIE_NAME, JSON.stringify(accessibility), 30 * 24 * 60 * 60 * 1000);
         }
     };
-    const accessibilityButton = document.querySelector('#side-buttons > :last-child');
+    const accessibility = document.querySelector('dialog:last-of-type')
+    const accessibilityButton = document.querySelector('body > ul > li:last-child > button');
     accessibilityButton.addEventListener('click', () => accessibility.showModal());
     accessibility.querySelector('footer > button').addEventListener('click', () => accessibility.close());
     const highContrastToggle = accessibility.querySelector('[name="high-contrast"]');
@@ -100,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     largerTextToggle.addEventListener('click', updateText);
     updateText(false);
     // ===== Notification stuff =====
-    const notifications = document.querySelector('#notifications');
+    const notifications = document.querySelector('dialog:nth-last-of-type(2)');
     if (notifications) {
         // Constants and Selectors
         const notificationLink = document.querySelector('#side-buttons > button:nth-child(2)');

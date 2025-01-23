@@ -24,7 +24,7 @@ window.addEventListener('load', () => {
         return input.value = input.lastValidValue;
     };
     // For each product within the cart
-    let cartProductSections = Array.from(document.querySelectorAll('main > section > div'));
+    let cartProductSections = Array.from(document.querySelectorAll('main > section > ul > li'));
     cartProductSections.forEach(cartProductSection => {
         // Get product data
         const inputProductQty = cartProductSection.querySelector('input');
