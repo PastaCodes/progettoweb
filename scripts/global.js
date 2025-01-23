@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateUnreadCounter();
         };
         const updateUnreadCounter = () => {
-            const totalNotifications = notifications.querySelectorAll('article > section').length;
+            const totalNotifications = notifications.querySelectorAll('article > ul > li').length;
             const readNotifications = getReadNotifications().length;
             const unreadCount = totalNotifications - readNotifications;
             notificationLink.style.setProperty('--counter-content', unreadCount > 0 ? `"${unreadCount}"` : '""');
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
         const updateNotificationTimestamps = () => {
-            notifications.querySelectorAll('article > section').forEach(notification => {
+            notifications.querySelectorAll('article > ul > li').forEach(notification => {
                 const currTimestamp = new Date(notification.getAttribute('data-timestamp'));
                 const timeTicker = notification.querySelector('p:last-of-type');
                 const differenceMillis = Date.now() - currTimestamp;
@@ -182,10 +182,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         checkboxHideRead.addEventListener('click', () => {
-            notifications.querySelectorAll('section').forEach(s => updateSectionRead(s, s.querySelector('button:first-of-type')));
+            notifications.querySelectorAll('ul > li').forEach(s => updateSectionRead(s, s.querySelector('button:first-of-type')));
         });
         // Initialize Read Button Listeners
-        notifications.querySelectorAll('article > section > button:first-of-type').forEach(btn => {
+        notifications.querySelectorAll('article > ul > li > button:first-of-type').forEach(btn => {
             const section = btn.parentElement;
             updateSectionRead(section, btn);
             btn.addEventListener('click', () => {
@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
         // Setup erase button
-        notifications.querySelectorAll('article > section > button:last-of-type').forEach(btn => {
+        notifications.querySelectorAll('article > ul > li > button:last-of-type').forEach(btn => {
             btn.addEventListener('click', () => {
                 const notificationId = btn.parentElement.getAttribute('data-id');
                 console.log('ERASE', notificationId);

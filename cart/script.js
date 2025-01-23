@@ -93,7 +93,12 @@ window.addEventListener('load', () => {
             // Little animation for fun
             cartProductSection.style.animation = 'product-remove 0.4s ease-in-out';
             // Remove the element from the html after the animation
-            cartProductSection.addEventListener('animationend', () => cartProductSection.remove());
+            cartProductSection.addEventListener('animationend', () => {
+                cartProductSection.remove();
+                if (cartProductSections.length === 0) {
+                    document.querySelector('main > section > ul').outerHTML = document.querySelector('template').innerHTML;
+                }
+            });
         });
         // Decrement product quantity
         btnDecrement.addEventListener('click', () => {

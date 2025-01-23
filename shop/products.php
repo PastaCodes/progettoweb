@@ -27,6 +27,9 @@ $categories = $database->find(table: 'category');
                     </select>
                 </label>
             </fieldset>
+<?php if (empty($products)): ?>
+            <p>No results</p>
+<?php else: ?>
             <ul>
 <?php foreach ($products as $product): ?>
                 <li data-product="<?= $product->base->code_name ?>" data-link="product?<?= $product->to_url_params() ?>" tabindex="0">
@@ -52,4 +55,5 @@ $categories = $database->find(table: 'category');
                 </li>
 <?php endforeach ?>
             </ul>
+<?php endif ?>
         </main>

@@ -7,9 +7,15 @@ if (!empty($cart->entries)) {
     $cart->fetch_details();
 }
 ?>
+        <template>
+            <p>There are no items in your cart. <a href="shop">Continue shopping.</a></p>
+        </template>
         <main>
             <section>
                 <h1>Your cart</h1>
+<?php if (empty($cart->entries)): ?>
+                <p>There are no items in your cart. <a href="shop">Continue shopping.</a></p>
+<?php else: ?>
                 <ul>
 <?php foreach ($cart->entries as $entry): ?>
                     <li data-unit-price="<?= number_format($entry->unit_price(), 2) ?>">
@@ -51,5 +57,6 @@ if (!empty($cart->entries)) {
                     </li>
 <?php endforeach ?>
                 </ul>
+<?php endif ?>
             </section>
         </main>

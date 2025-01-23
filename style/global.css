@@ -228,7 +228,13 @@ dialog:nth-last-of-type(2) > article > label > input {
     margin-inline-end: 0.2em;
 }
 
-dialog:nth-last-of-type(2) > article > section {
+dialog:nth-last-of-type(2) > article > p {
+    margin: 2rem;
+    text-align: center;
+    color: var(--pico-muted-color);
+}
+
+dialog:nth-last-of-type(2) > article > ul > li {
     display: grid;
     grid-template-columns: auto min-content min-content;
     grid-template-rows: max-content auto max-content;
@@ -237,45 +243,46 @@ dialog:nth-last-of-type(2) > article > section {
     border-radius: var(--pico-border-radius);
     padding: var(--pico-spacing);
     transition: filter 0.1s ease-in;
+    margin-bottom: var(--pico-spacing);
 }
 
-dialog:nth-last-of-type(2) > article > section * {
+dialog:nth-last-of-type(2) > article > ul > li * {
     margin-bottom: 0;
 }
 
-dialog:nth-last-of-type(2) > article > section > button {
+dialog:nth-last-of-type(2) > article > ul > li > button {
     width: 2rem;
     height: 2rem;
     padding: 0;
 }
 
-dialog:nth-last-of-type(2) > article > section > button > svg {
+dialog:nth-last-of-type(2) > article > ul > li > button > svg {
     margin: auto;
 }
 
-dialog:nth-last-of-type(2) > article > section > button:first-of-type {
+dialog:nth-last-of-type(2) > article > ul > li > button:first-of-type {
     grid-row: 1;
     grid-column: 2;
 }
 
-dialog:nth-last-of-type(2) > article > section > button:last-of-type {
+dialog:nth-last-of-type(2) > article > ul > li > button:last-of-type {
     grid-row: 1;
     grid-column: 3;
 }
 
-dialog:nth-last-of-type(2) > article > section > h3 {
+dialog:nth-last-of-type(2) > article > ul > li > h3 {
     grid-row: 1;
     grid-column: 1;
     font-size: 120%;
     padding-top: 0.2rem;
 }
 
-dialog:nth-last-of-type(2) > article > section > p:first-of-type {
+dialog:nth-last-of-type(2) > article > ul > li > p:first-of-type {
     grid-row: 2;
     grid-column: 1 / 4;
 }
 
-dialog:nth-last-of-type(2) > article > section > p:last-of-type {
+dialog:nth-last-of-type(2) > article > ul > li > p:last-of-type {
     grid-row: 3;
     grid-column: 1 / 4;
     text-align: right;

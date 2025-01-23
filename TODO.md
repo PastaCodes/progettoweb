@@ -1,8 +1,7 @@
 - Add to cart button feedback
 - Style the product info page
-- Text when nothing to show is present (searching for products, cart, notifications, orders)
 - Checkout
-- Your orders
+- Your orders (remember text when no orders are present!)
 - Landing page
 - VENDOR PAGE(S)
 - Mobile "first"
