@@ -19,6 +19,14 @@ body > main, body > header, body > footer {
     contain: layout;
 }
 
+ul {
+    padding: 0;
+}
+
+ul li {
+    margin-bottom: 0;
+}
+
 ul li::before, ul li::marker {
     content: none;
 }
@@ -75,6 +83,7 @@ body > header > nav > ul > li:first-child > a {
     display: block;
     border-radius: var(--pico-border-radius);
     font-size: 200%;
+    margin: 0;
 }
 
 body > header > nav > ul > li:first-child > a > h1 {
