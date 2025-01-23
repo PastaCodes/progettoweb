@@ -70,7 +70,7 @@ if (isset($_SESSION['username'])) {
                     </li>
                     <li>
 <?php if (isset($_SESSION['username'])): ?>
-                        <a href="">Logout</a>
+                        <a href="<?= $_SERVER['REQUEST_URI'] ?>?logout=true">Logout</a>
 <?php else: ?>
                         <a href="login">Login</a>
 <?php endif ?>

@@ -2,7 +2,6 @@
 - Add bundles to cart
 - Style notifications modal
 - Stile forms better
-- Add logout functionality
 - Style the login form and buttons
 - Style the product info page
 - Checkout
