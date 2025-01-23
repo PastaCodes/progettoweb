@@ -12,6 +12,7 @@ if ($username && $password && !Account::check_exists($username)) {
     // Create the account and add it to current session
     Account::add_to_db($username, $password); 
     $_SESSION['username'] = $username;
+    $_SESSION['vendor'] = false; // Reigster is only for normal users
 }
 // Redirect if username in session
 if (isset($_SESSION['username'])) {

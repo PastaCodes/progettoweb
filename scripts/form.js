@@ -1,5 +1,10 @@
-export function setupForm(formElement, usernameInput, passwordInput) {
+export function setupForm(formElement, usernameInput, passwordInput, isLogin = false) {
     const checkErr = (errFun, input) => {
+        if (isLogin) {
+            input.setAttribute('aria-invalid', false);
+            input.parentElement.querySelector('small').innerHTML = '';
+            return;
+        }
         const err = errFun(input);
         if (!err) {
             input.setAttribute('aria-invalid', false);
@@ -20,7 +25,7 @@ export function setupForm(formElement, usernameInput, passwordInput) {
     formElement.addEventListener('submit', ev => {
         // Prevent redirect to check data first
         ev.preventDefault();
-        if (checkUser(usernameInput) || checkPassword(passwordInput)) {
+        if (checkUser(usernameInput) && (!isLogin || checkPassword(passwordInput))) {
             return;
         }
         // Redirect

@@ -4,13 +4,15 @@ require_once '../classes/Account.php';
 $username = $_POST['username'] ?? null;
 $password = $_POST['password'] ?? null;
 $login_error = false;
-if ($username) {
+if ($username && $password) {
     $login_error = true;
-}
-if ($username && $password && Account::check_login($username, $password)) {
-    $login_error = false;
-    // Login to account
-    $_SESSION['username'] = $username;
+    $is_vendor = Account::check_login($username, $password);
+    if ($is_vendor !== null) {
+        $login_error = false;
+        // Login to account
+        $_SESSION['username'] = $username;
+        $_SESSION['vendor'] = $is_vendor;
+    }
 }
 // Redirect if username in session
 if (isset($_SESSION['username'])) {
@@ -28,7 +30,7 @@ if (isset($_SESSION['username'])) {
                 </label>
                 <label>
                     Password <small></small>
-                    <input minlength="8" maxlength="255" type="password" name="password" autocomplete="current-password" placeholder="Password" required="required">
+                    <input minlength="1" maxlength="255" type="password" name="password" autocomplete="current-password" placeholder="Password" required="required">
                 </label>
                 <p><a href="register">I don't have an account</a> &ndash; <a>I forgot my password</a></p>
                 <input type="submit" value="Login">

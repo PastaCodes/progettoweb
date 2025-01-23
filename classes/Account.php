@@ -13,16 +13,16 @@ class Account {
         );
     }
     
-    public static function check_login(string $username, string $password): bool {
+    public static function check_login(string $username, string $password): ?bool {
         global $database;
         $account = $database->find_one(
             table: 'account',
             filters: ['username' => $username]
         );
         if (isset($account['password_hash']) && password_verify($password, $account['password_hash'])) {
-            return true;
+            return $account['is_vendor'] === 0 ? false : true;
         }
-        return false;
+        return null;
     }
 
     public static function check_exists(string $username): bool {
