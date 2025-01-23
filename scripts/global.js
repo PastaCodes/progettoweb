@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const notifications = document.querySelector('dialog:nth-last-of-type(2)');
     if (notifications) {
         // Constants and Selectors
-        const notificationLink = document.querySelector('#side-buttons > button:nth-child(2)');
+        const notificationLink = document.querySelector('body > ul > li:nth-child(2) > button');
         const checkboxHideRead = notifications.querySelector('header > label > input');
         const closeButton = notifications.querySelector('footer > button');
         // Helper Functions
