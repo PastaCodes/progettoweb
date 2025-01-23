@@ -109,6 +109,9 @@ create table notification (
     constraint foreign key (username) references account(username) on update cascade on delete cascade
 );
 
+insert into account(username, password_hash, is_vendor) values 
+    ('Vendor', '$2y$10$d.wSTHXbqliWN3rHnXY6LeodHpP0ClE55diZpFPqW6mpHubcLgHG2', 1); -- Vendor account, Password: Vend0r!!!
+
 insert into category (code_name, display_name) values
     ('bracelets', 'Bracelets'),
     ('earrings', 'Earrings'),
