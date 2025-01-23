@@ -2,12 +2,25 @@
 require_once '../classes/Category.php';
 require_once '../classes/Product.php';
 
+$button_action = null;
+if (isset($_POST['button_action'])) {
+    $button_action = $_POST['button_action'];
+}
+if ($button_action == 'update_product') {
+    // TODO: Update the product 
+} else if ($button_action == 'delete_product') {
+    // TODO: Delete the product 
+} else if ($button_action == 'update_variant') {
+    // TODO: Update the variant
+} else if ($button_action == 'delete_variant') {
+    // TODO: Delete the variant
+}
+
 $products = Product::fetch_products();
 $categories = Category::fetch_all();
 
 /* TODO:
  * Add current data to category, short_description and is_standalone (also price for variant)
- * Add functionality
  */
 ?>
     <main>
@@ -53,11 +66,11 @@ $categories = Category::fetch_all();
 <?php endif ?>
                     </td>
                     <td>
-                        <input form="<?= $product->base->code_name ?>" type="submit" value="Upd">
+                        <button form="<?= $product->base->code_name ?>" type="submit" name="button_action" value="update_product">Upd</button>
                     </td>
                     <td>
                         <form id="<?= $product->base->code_name ?>" action="vendor_products" method="POST">
-                            <input type="submit" value="Del">
+                            <button form="<?= $product->base->code_name ?>" type="submit" name="button_action" value="delete_product">Del</button>
                         </form>
                     </td>
                 </tr>
@@ -80,11 +93,11 @@ $categories = Category::fetch_all();
                     </td>
                     <td></td>
                     <td>
-                        <input form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="submit" value="Upd">
+                        <button form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="submit" name="button_action" value="update_variant">Upd</button>
                     </td>
                     <td>
                         <form id="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" action="vendor_products" method="POST">
-                            <input type="submit" value="Del">
+                            <button form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="submit" name="button_action" value="delete_variant">Del</button>
                         </form>
                     </td>
                 </tr>
