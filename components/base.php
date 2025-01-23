@@ -126,19 +126,27 @@ if (isset($_SESSION['username'])) {
         <dialog>
             <article>
                 <header>
-                    <h3>Notifications</h3>
-                    <label>
-                        Hide seen
-                        <input name="hide-seen" type="checkbox" role="switch">
-                    </label>
+                    <h2>Notifications</h2>
                 </header>
+                <label>
+                    Unread only
+                    <input name="hide-seen" type="checkbox">
+                </label>
 <?php foreach ($notifications as $notification): ?>
                 <section data-id="<?= $notification->id ?>" data-timestamp="<?= $notification->created_at->format('Y-m-d H:i:s') ?>">
-                    <h4><?= $notification->title ?></h4>
-                    <p>1s ago</p>
+                    <h3><?= $notification->title ?></h3>
                     <p><?= $notification->content ?></p>
-                    <button>R</button>
-                    <button>D</button>
+                    <p>Moments ago</p>
+                    <button title="Mark as read">
+                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                            <use href="assets/unread.svg#unread"></use>
+                        </svg>
+                    </button>
+                    <button title="Delete">
+                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                            <use href="assets/remove.svg#remove"></use>
+                        </svg>
+                    </button>
                 </section>
 <?php endforeach ?>
                 <footer>

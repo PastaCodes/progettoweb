@@ -6,7 +6,7 @@ function timeAgo(ms) {
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
     if (seconds < 60) {
-        return `less than a minute ago`;
+        return `Moments ago`;
     } else if (minutes < 60) {
         return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
     } else if (hours < 24) {
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (notifications) {
         // Constants and Selectors
         const notificationLink = document.querySelector('body > ul > li:nth-child(2) > button');
-        const checkboxHideRead = notifications.querySelector('header > label > input');
+        const checkboxHideRead = notifications.querySelector('label > input');
         const closeButton = notifications.querySelector('footer > button');
         // Helper Functions
         const getReadNotifications = () => JSON.parse(localStorage.getItem(NOTIFICATIONS_LOCAL_STORAGE)) || [];
@@ -120,9 +120,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const readNotifications = getReadNotifications();
             const notificationId = section.getAttribute('data-id');
             const isRead = readNotifications.includes(notificationId);
-            readBtn.innerHTML = isRead ? 'U' : 'R';
+            readBtn.querySelector('use').setAttribute('href', isRead ? 'assets/read.svg#read' : 'assets/unread.svg#unread');
+            readBtn.title = isRead ? 'Mark as unread' : 'Mark as read';
             section.style.filter = isRead ? 'brightness(0.5)' : '';
-            section.style.visibility = isRead && checkboxHideRead.checked ? 'hidden' : 'visible';
+            section.style.display = isRead && checkboxHideRead.checked ? 'none' : '';
         };
         const toggleReadStatus = (notificationId, isRead) => {
             let readNotifications = getReadNotifications();
@@ -150,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const updateNotificationTimestamps = () => {
             notifications.querySelectorAll('article > section').forEach(notification => {
                 const currTimestamp = new Date(notification.getAttribute('data-timestamp'));
-                const timeTicker = notification.querySelector('p:first-of-type');
+                const timeTicker = notification.querySelector('p:last-of-type');
                 const differenceMillis = Date.now() - currTimestamp;
                 timeTicker.innerHTML = timeAgo(differenceMillis);
             });
