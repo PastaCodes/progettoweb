@@ -6,8 +6,7 @@ $products = Product::fetch_products();
 $categories = Category::fetch_all();
 
 /* TODO:
- * Add variants as submenu or modal of row to edit variant data?
- * Add current data to category, short_description and is_standalone
+ * Add current data to category, short_description and is_standalone (also price for variant)
  * Add functionality
  */
 ?>
@@ -23,7 +22,7 @@ $categories = Category::fetch_all();
                     <th scope="col">category</th>
                     <th scope="col">short_description</th>
                     <th scope="col">is_standalone</th>
-                    <th scope="col" colspan="2">actions</th>
+                    <th scope="col" colspan="3">actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -49,6 +48,11 @@ $categories = Category::fetch_all();
                         <input form="<?= $product->base->code_name ?>" type="checkbox" name="is_standalone">
                     </td>
                     <td>
+<?php if ($product->base->variants): ?>
+                        <button data-show="<?= $product->base->code_name ?>">Variants</button>
+<?php endif ?>
+                    </td>
+                    <td>
                         <input form="<?= $product->base->code_name ?>" type="submit" value="Upd">
                     </td>
                     <td>
@@ -57,6 +61,34 @@ $categories = Category::fetch_all();
                         </form>
                     </td>
                 </tr>
+<?php foreach ($product->base->variants as $variant): ?>
+                <tr data-parent="<?= $product->base->code_name ?>">
+                    <td>
+                        <input form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" minlength="1" maxlength="255" type="text" name="variant_code_name" value="<?= $variant->variant->code_suffix ?>" placeholder="Variant id" required="required">
+                    </td>
+                    <td>
+                        <input form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" minlength="1" maxlength="255" type="text" name="variant_display_name" value="<?= $variant->variant->display_name ?>" placeholder="Display name" required="required">
+                    </td>
+                    <td>
+                        #<?= $variant->variant->color ?>
+                    </td>
+                    <td>
+                        0
+                    </td>
+                    <td>
+                        0.0 &euro;
+                    </td>
+                    <td></td>
+                    <td>
+                        <input form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="submit" value="Upd">
+                    </td>
+                    <td>
+                        <form id="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" action="vendor_products" method="POST">
+                            <input type="submit" value="Del">
+                        </form>
+                    </td>
+                </tr>
+<?php endforeach ?>
 <?php endforeach ?>
             </tbody>
         </table>
