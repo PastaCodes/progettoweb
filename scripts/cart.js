@@ -21,7 +21,7 @@ function addEntryToCart(newEntry, comparator) {
         const previousEntry = cart.splice(previousEntryIndex, 1);
         newEntry.quantity = (previousEntry['quantity'] || 1) + 1;
     }
-    cart.push(newEntry);
+    cart.unshift(newEntry); // Add as first element
     writeCart(cart);
 }
 
