@@ -1,10 +1,11 @@
 <?php
+require_once '../classes/Category.php';
 require_once '../classes/Product.php';
 require_once '../classes/ProductVariant.php';
 require_once '../util/format.php';
 
 $products = Product::fetch_products($_GET['search'] ?? null, $_GET['category'] ?? null);
-$categories = $database->find(table: 'category');
+$categories = Category::fetch_all();
 ?>
         <template id="no-thumbnail">
             <div>
