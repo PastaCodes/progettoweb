@@ -26,11 +26,11 @@ if (isset($_SESSION['username'])) {
             <fieldset>
                 <label>
                     Username <small><?= $register_error ? 'An account with that username already exists!' : ''?></small>
-                    <input minlength="1" maxlength="255" type="text" name="username" placeholder="Username" required="required">
+                    <input minlength="1" maxlength="255" type="text" name="username" autocomplete="username" placeholder="Username" required="required">
                 </label>
                 <label>
                     Password <small></small>
-                    <input minlength="8" maxlength="255" type="password" name="password" placeholder="Password" required="required">
+                    <input minlength="8" maxlength="255" type="password" name="password" autocomplete="new-password" placeholder="Password" required="required">
                 </label>
                 <a href="login">I already have an account</a>
                 <input type="submit" value="Register">

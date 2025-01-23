@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateText(false);
     // ===== Notification stuff =====
     const notifications = document.querySelector('#notifications');
-    if (notifications !== null) {
+    if (notifications) {
         // Constants and Selectors
         const notificationLink = document.querySelector('#side-buttons > button:nth-child(2)');
         const notificationCounterElt = notificationLink.querySelector('span');

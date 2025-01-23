@@ -1,4 +1,5 @@
 - "Also available in the ??? bundle"
 - Add bundles to cart
 - Style notifications modal
+- Stile forms better
 - Add logout functionality
