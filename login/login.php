@@ -4,13 +4,15 @@ require_once '../classes/Account.php';
 $username = $_POST['username'] ?? null;
 $password = $_POST['password'] ?? null;
 $login_error = false;
-if ($username) {
+if ($username && $password) {
     $login_error = true;
-}
-if ($username && $password && Account::check_login($username, $password)) {
-    $login_error = false;
-    // Login to account
-    $_SESSION['username'] = $username;
+    $is_vendor = Account::check_login($username, $password);
+    if ($is_vendor !== null) {
+        $login_error = false;
+        // Login to account
+        $_SESSION['username'] = $username;
+        $_SESSION['vendor'] = $is_vendor;
+    }
 }
 // Redirect if username in session
 if (isset($_SESSION['username'])) {
