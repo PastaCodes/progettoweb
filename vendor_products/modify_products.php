@@ -1,19 +1,18 @@
 <?php
 require_once '../classes/Category.php';
-require_once '../classes/Product.php';
 
 $button_action = null;
-if (isset($_GET['button_action'])) {
-    $button_action = $_GET['button_action'];
+if (isset($_POST['button_action'])) {
+    $button_action = $_POST['button_action'];
 }
 if ($button_action == 'update_product') {
     // Get the data from the form
-    $product_id = $_GET['base_code_name'];
-    $display_name = $_GET['base_display_name'];
-    $category = $_GET['category'];
-    $short_description = $_GET['short_description'];
+    $product_id = $_POST['base_code_name'];
+    $display_name = $_POST['base_display_name'];
+    $category = $_POST['category'];
+    $short_description = $_POST['short_description'];
     // Ensure the boolean is an integer
-    $is_standalone = ($_GET['is_standalone'] ?? 0) ? 1 : 0;
+    $is_standalone = ($_POST['is_standalone'] ?? 0) ? 1 : 0;
     // Update that table's entry
     $database->update(
         table: 'product_base',
@@ -28,7 +27,7 @@ if ($button_action == 'update_product') {
     );
 } else if ($button_action == 'delete_product') {
     // Quick and easy query to delete a product from the db
-    $product_id = $_GET['base_code_name'];
+    $product_id = $_POST['base_code_name'];
     $database->delete(
         table: 'product_base',
         filters: ['code_name' => $product_id]
@@ -37,11 +36,11 @@ if ($button_action == 'update_product') {
     // Get the data from the form
     
     // FIXME: Currently broken query, as it also needs the product_base_id
-    $variant_id = $_GET['variant_code_name'];
-    $display_name = $_GET['variant_display_name'];
-    $color = substr($_GET['variant_color'], 1);
-    $ordinal = $_GET['variant_ordinal'];
-    $price = $_GET['variant_price'];
+    $variant_id = $_POST['variant_code_name'];
+    $display_name = $_POST['variant_display_name'];
+    $color = substr($_POST['variant_color'], 1);
+    $ordinal = $_POST['variant_ordinal'];
+    $price = $_POST['variant_price'];
     // Update that table's entry
     $database->update(
         table: 'product_variant',
@@ -63,7 +62,7 @@ if ($button_action == 'update_product') {
     // Quick and easy query to delete a product from the db
     
     // FIXME: Currently broken query, as it also needs the product_base_id
-    $variant_id = $_GET['variant_code_name'];
+    $variant_id = $_POST['variant_code_name'];
     $database->delete(
         table: 'product_variant',
         filters: ['code_suffix' => $variant_id]
@@ -102,7 +101,7 @@ $categories = Category::fetch_all();
                     <td>
                         <select form="<?= $product->base->code_name ?>" name="category">
 <?php foreach ($categories as $category): ?>
-                            <option value="<?= $category['display_name'] ?>"<?php if ($category['display_name'] == ($_GET['category'] ?? null)): ?> selected="selected"<?php endif ?>><?= $category['display_name'] ?></option>
+                            <option value="<?= $category['display_name'] ?>"<?php if ($category['display_name'] == ($_POST['category'] ?? null)): ?> selected="selected"<?php endif ?>><?= $category['display_name'] ?></option>
 <?php endforeach ?>
                         </select>
                     </td>
@@ -118,11 +117,11 @@ $categories = Category::fetch_all();
 <?php endif ?>
                     </td>
                     <td>
-                        <button form="<?= $product->base->code_name ?>" type="submit" name="button_action" value="update_product">Upd</button>
+                        <button form="<?= $product->base->code_name ?>" type="submit" name="button_action" value="update_product">Update</button>
                     </td>
                     <td>
-                        <form id="<?= $product->base->code_name ?>" action="vendor_products" method="GET">
-                            <button form="<?= $product->base->code_name ?>" type="submit" name="button_action" value="delete_product">Del</button>
+                        <form id="<?= $product->base->code_name ?>" action="vendor_products" method="POST">
+                            <button form="<?= $product->base->code_name ?>" type="submit" name="button_action" value="delete_product">Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -145,11 +144,11 @@ $categories = Category::fetch_all();
                     </td>
                     <td></td>
                     <td>
-                        <button form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="submit" name="button_action" value="update_variant">Upd</button>
+                        <button form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="submit" name="button_action" value="update_variant">Update</button>
                     </td>
                     <td>
-                        <form id="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" action="vendor_products" method="GET">
-                            <button form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="submit" name="button_action" value="delete_variant">Del</button>
+                        <form id="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" action="vendor_products" method="POST">
+                            <button form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="submit" name="button_action" value="delete_variant">Delete</button>
                         </form>
                     </td>
                 </tr>
