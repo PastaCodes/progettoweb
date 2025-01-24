@@ -23,7 +23,7 @@ $categories = Category::fetch_all();
                     <select name="category">
                         <option value=""<?php if (!isset($_GET['category'])): ?> selected="selected"<?php endif ?>>Any</option>
 <?php foreach ($categories as $category): ?>
-                        <option value="<?= $category['display_name'] ?>"<?php if ($category['display_name'] == ($_GET['category'] ?? null)): ?> selected="selected"<?php endif ?>><?= $category['display_name'] ?></option>
+                        <option value="<?= $category['code_name'] ?>"<?php if ($category['code_name'] == ($_GET['category'] ?? null)): ?> selected="selected"<?php endif ?>><?= $category['display_name'] ?></option>
 <?php endforeach ?>
                     </select>
                 </label>
