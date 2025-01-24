@@ -19,6 +19,13 @@ class Bundle {
         $this->selected_suffix = $selected_suffix;
     }
 
+    public function full_code_name(): string {
+        if ($this->selected_suffix === null) {
+            return $this->code_name;
+        }
+        return $this->code_name . '_' . $this->selected_suffix;
+    }
+
     public function to_url_params(): string {
         $url = "id=" . $this->code_name;
         if ($this->selected_suffix !== null) {

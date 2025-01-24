@@ -49,9 +49,10 @@ if (!empty($cart->entries)) {
                                 <use href="assets/remove.svg#remove"></use>
                             </svg>
                         </button>
+                        <label for="<?= format_entry_code($entry) ?>-quantity" hidden="hidden">Select the quantity</label>
                         <fieldset role="group">
                             <button <?= $entry->quantity === 1 ? 'disabled' : ''?>>-</button>
-                            <input type="number" name="quantity" inputmode="numeric" min="1" max="99" value="<?= $entry->quantity ?>">
+                            <input id="<?= format_entry_code($entry) ?>-quantity" type="number" name="quantity" inputmode="numeric" min="1" max="99" value="<?= $entry->quantity ?>">
                             <button <?= $entry->quantity === 99 ? 'disabled' : ''?>>+</button>
                         </fieldset>
                     </li>

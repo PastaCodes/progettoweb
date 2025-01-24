@@ -137,9 +137,9 @@ if (isset($_SESSION['username'])) {
                 <header>
                     <h2>Notifications</h2>
                 </header>
-                <label>
+                <label for="hide-seen">
+                    <input id="hide-seen" name="hide-seen" type="checkbox">
                     Unread only
-                    <input name="hide-seen" type="checkbox">
                 </label>
 <?php if (empty($notifications)): ?>
                 <p>You have no new notifications</p>
@@ -177,23 +177,23 @@ if (isset($_SESSION['username'])) {
                 </header>
                 <fieldset>
                     <legend>Filters</legend>
-                    <label>
-                        <input name="high-contrast" type="checkbox" role="switch"<?php if ($accessibility->high_contrast ?? false): ?> checked="checked" <?php endif ?>>
+                    <label for="high-contrast">
+                        <input id="high-contrast" name="high-contrast" type="checkbox" role="switch"<?php if ($accessibility->high_contrast ?? false): ?> checked="checked" <?php endif ?>>    
                         High contrast
                     </label>
-                    <label>
-                        <input name="grayscale" type="checkbox" role="switch"<?php if ($accessibility->grayscale ?? false): ?> checked="checked" <?php endif ?>>
+                    <label for="grayscale">
+                        <input id="grayscale" name="grayscale" type="checkbox" role="switch"<?php if ($accessibility->grayscale ?? false): ?> checked="checked" <?php endif ?>>
                         Grayscale
                     </label>
-                    <label>
-                        <input name="reduced-strain" type="checkbox" role="switch"<?php if ($accessibility->reduced_strain ?? false): ?> checked="checked" <?php endif ?>>
+                    <label for="reduced-strain">
+                        <input id="reduced-strain" name="reduced-strain" type="checkbox" role="switch"<?php if ($accessibility->reduced_strain ?? false): ?> checked="checked" <?php endif ?>>
                         Reduced eye strain
                     </label>
                 </fieldset>
                 <fieldset>
                     <legend>Other</legend>
-                    <label>
-                        <input name="larger-text" type="checkbox" role="switch"<?php if ($accessibility->larger_text ?? false): ?> checked="checked" <?php endif ?>>
+                    <label for="larger-text">
+                        <input id="larger-text" name="larger-text" type="checkbox" role="switch"<?php if ($accessibility->larger_text ?? false): ?> checked="checked" <?php endif ?>>
                         Larger text
                     </label>
                 </fieldset>

@@ -46,7 +46,8 @@ $product->fetch_all_details();
 <?php if (!empty($product->base->variants)): ?>
                 <fieldset>
 <?php foreach ($product->base->variants as $variant): ?>
-                    <input type="radio" name="variant" <?= $variant->to_radio_attributes(selected_suffix: $product->variant->code_suffix, include_price: true) ?>>
+                    <label for="<?= format_full_code($variant) ?>" hidden="hidden">Select the <?= $variant->variant->display_name ?> variant</label>    
+                    <input id="<?= format_full_code($variant) ?>" type="radio" name="variant" <?= $variant->to_radio_attributes(selected_suffix: $product->variant->code_suffix, include_price: true) ?>>
 <?php endforeach ?>
                 </fieldset>
 <?php endif ?>

@@ -225,13 +225,17 @@ dialog label {
 }
 
 dialog:nth-last-of-type(2) > article > label {
+    display: flex;
     width: fit-content;
     margin-left: auto;
+    gap: 0.2em;
 }
 
 dialog:nth-last-of-type(2) > article > label > input {
+    order: 1;
     margin-inline-start: 0.2em;
     margin-inline-end: 0.2em;
+    margin-top: 0.2em !important;
 }
 
 dialog:nth-last-of-type(2) > article > p {

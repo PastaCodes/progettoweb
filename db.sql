@@ -197,7 +197,6 @@ insert into product_variant (base, code_suffix, ordinal, display_name, color, pr
     ('simple_ring', 'gunmetal', 0, 'Gunmetal', '2C2C2C', null),
     ('simple_ring', 'copper', 1, 'Copper', 'C68346', 7.50),
     ('simple_ring', 'black_steel', 2, 'Black Steel', '181818', null),
-    ('skull_ring', 'gunmetal', 0, 'Gunmetal', '2C2C2C', null),
     ('skull_ring', 'copper', 1, 'Copper', 'C68346', 12.50),
     ('skull_ring', 'black_steel', 2, 'Black Steel', '181818', null),
     ('snake_ring', 'gunmetal', 0, 'Gunmetal', '2C2C2C', null),
