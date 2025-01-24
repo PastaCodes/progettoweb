@@ -1,5 +1,4 @@
 Before Sunday:
-- Style the product info page
 - Checkout
 - Your orders (remember text when no orders are present!)
 - Vendor pages: (complete bundle page, make order page)
