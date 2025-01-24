@@ -54,7 +54,7 @@ foreach ($bundle_data as $bundle_row) {
                 <tr>
                     <th scope="col">bundle_id</th>
                     <th scope="col">display_name</th>
-                    <th scope="col">multiplier</th>
+                    <th scope="col">multiplier / ordinal</th>
                     <th scope="col" colspan="3">actions</th>
                 </tr>
             </thead>
@@ -77,7 +77,7 @@ foreach ($bundle_data as $bundle_row) {
                         <button form="<?= $bundle['id'] ?>" type="submit" name="button_action" value="update_bundle">Upd</button>
                     </td>
                     <td>
-                        <form id="<?= $bundle['id'] ?>" action="vendor_bundles" method="POST">
+                        <form id="<?= $bundle['id'] ?>" method="POST">
                             <button type="submit" name="button_action" value="delete_bundle">Del</button>
                         </form>
                     </td>
@@ -85,17 +85,17 @@ foreach ($bundle_data as $bundle_row) {
 <?php foreach ($bundle['products'] as $bundle_product): ?>
                 <tr data-parent="<?= $bundle['id'] ?>">
                     <td colspan="2">
-                        <select form="<?= $bundle['id'] ?>" name="product_0">
+                        <select form="<?= $bundle['id'] . '-' . $product['code_name'] ?>" name="product_0">
 <?php foreach ($product_data as $product): ?>
                             <option value="<?= $product['code_name'] ?>" <?php if ($bundle_product['id'] == $product['code_name']): ?>selected="selected"<?php endif ?>><?= $product['display_name'] ?></option>
 <?php endforeach ?>
                         </select>
                     </td>
                     <td>
-                        <input form="<?= $bundle['id'] ?>" type="number" name="product_ordinal" value="<?= $bundle_product['ordinal'] ?>" required="required">
+                        <input form="<?= $bundle['id']. '-' . $product['code_name'] ?>" type="number" name="product_ordinal" value="<?= $bundle_product['ordinal'] ?>" required="required">
                     </td>
                     <td colspan="3">
-                        <form id="<?= $bundle['id'] ?>" action="vendor_bundles" method="POST">
+                        <form id="<?= $bundle['id'] . '-' . $product['code_name'] ?>" method="POST">
                             <button type="submit" name="button_action" value="delete_bundle_product">Del</button>
                         </form>
                     </td>
@@ -103,34 +103,34 @@ foreach ($bundle_data as $bundle_row) {
 <?php endforeach ?>
                 <tr data-parent="<?= $bundle['id'] ?>">
                     <td colspan="2">
-                        <select form="<?= $bundle['id'] ?>" name="new_product">
+                        <select form="<?= $bundle['id'] ?>-new-bundle-product" name="new_product">
 <?php foreach ($product_data as $product): ?>
                             <option value="<?= $product['code_name'] ?>"><?= $product['display_name'] ?></option>
 <?php endforeach ?>
                         </select>
                     </td>
                     <td>
-                        <input form="<?= $bundle['id'] ?>" type="number" name="product_ordinal" required="required">
+                        <input form="<?= $bundle['id'] ?>-new-bundle-product" type="number" name="product_ordinal" required="required">
                     </td>
                     <td colspan="3">
-                        <form id="<?= $bundle['id'] ?>" action="vendor_bundles" method="POST">
-                            <button type="submit" name="button_action" value="add_bundle_product">Add</button>
+                        <form id="<?= $bundle['id'] ?>-new-bundle-product" method="POST">
+                            <button form="<?= $bundle['id'] ?>-new-bundle-product" type="submit" name="button_action" value="add_bundle_product">Add</button>
                         </form>
                     </td>
                 </tr>
 <?php endforeach ?>
                 <tr>
                     <td>
-                        <input form="new_bundle" minlength="1" maxlength="255" type="text" name="code_name" placeholder="Bundle id" required="required">
+                        <input form="new-bundle" minlength="1" maxlength="255" type="text" name="code_name" placeholder="Bundle id" required="required">
                     </td>
                     <td>
-                        <input form="new_bundle" minlength="1" maxlength="255" type="text" name="display_name" placeholder="Display name" required="required">
+                        <input form="new-bundle" minlength="1" maxlength="255" type="text" name="display_name" placeholder="Display name" required="required">
                     </td>
                     <td>
-                        <input form="<?= $bundle['id'] ?>" min="0.01" max="0.99" step="0.01" type="number" name="multiplier" required="required">
+                        <input form="new-bundle" min="0.01" max="0.99" step="0.01" type="number" name="multiplier" required="required">
                     </td>
                     <td colspan="3">
-                        <form id="new_bundle" action="vendor_bundles" method="POST">
+                        <form id="new-bundle" method="POST">
                             <button type="submit" name="button_action" value="create_bundle">Add</button>
                         </form>
                     </td>
