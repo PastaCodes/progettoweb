@@ -1,4 +1,5 @@
 <?php
+require_once '../classes/Product.php';
 require_once '../classes/Category.php';
 
 $button_action = null;
@@ -9,6 +10,7 @@ if ($button_action == 'update_product') {
     // Get the data from the form
     $product_id = $_POST['base_code_name'];
     $display_name = $_POST['base_display_name'];
+    $base_price = $_POST['base_price'];
     $category = $_POST['category'];
     $short_description = $_POST['short_description'];
     // Ensure the boolean is an integer
@@ -20,7 +22,8 @@ if ($button_action == 'update_product') {
             'code_name' => $product_id, 
             'display_name' => $display_name, 
             'category' => $category, 
-            'short_description' => $short_description, 
+            'short_description' => $short_description,
+            'price_base' => $base_price,
             'standalone' => $is_standalone
         ],
         filters: ['product_base.code_name' => $product_id]
@@ -40,7 +43,7 @@ if ($button_action == 'update_product') {
     $display_name = $_POST['variant_display_name'];
     $color = substr($_POST['variant_color'], 1);
     $ordinal = $_POST['variant_ordinal'];
-    $price = $_POST['variant_price'];
+    $price_override = $_POST['variant_price'];
     // Update that table's entry
     $database->update(
         table: 'product_variant',
@@ -48,15 +51,10 @@ if ($button_action == 'update_product') {
             'code_suffix' => $variant_id,
             'ordinal' => $ordinal,
             'display_name' => $display_name,
-            'color' => $color
+            'color' => $color,
+            'price_override' => $price_override
         ],
         filters: ['product_variant.code_suffix' => $variant_id]
-    );
-    // Update the price from the info table
-    $database->update(
-        table: 'product_info',
-        data: ['price' => $price],
-        filters: ['variant' => $variant_id]
     );
 } else if ($button_action == 'delete_variant') {
     // Quick and easy query to delete a product from the db
@@ -85,7 +83,8 @@ $categories = Category::fetch_all();
                     <th scope="col">display_name</th>
                     <th scope="col">category / color</th>
                     <th scope="col">short_description / ordinal</th>
-                    <th scope="col">is_standalone / price</th>
+                    <th scope="col">price</th>
+                    <th scope="col">is_standalone</th>
                     <th scope="col" colspan="3">actions</th>
                 </tr>
             </thead>
@@ -107,6 +106,9 @@ $categories = Category::fetch_all();
                     </td>
                     <td>
                         <textarea form="<?= $product->base->code_name ?>" minlength="1" maxlength="255" name="short_description" placeholder="Product description" required="required"></textarea>
+                    </td>
+                    <td>
+                        <input form="<?= $product->base->code_name ?>" step="0.01" type="number" name="base_price" value="0" required="required">
                     </td>
                     <td>
                         <input form="<?= $product->base->code_name ?>" type="checkbox" name="is_standalone">
@@ -140,8 +142,9 @@ $categories = Category::fetch_all();
                         <input form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="number" name="variant_ordinal" value="0" required="required">
                     </td>
                     <td>
-                        <input form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" step="0.01" type="number" name="variant_price" value="0" required="required">
+                        <input form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" step="0.01" type="number" name="variant_price" value="0">
                     </td>
+                    <td></td>
                     <td></td>
                     <td>
                         <button form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="submit" name="button_action" value="update_variant">Update</button>
