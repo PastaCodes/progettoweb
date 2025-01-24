@@ -239,8 +239,8 @@ $categories = Category::fetch_all();
                     <td>
                         <input form="<?= $product->base->code_name . '-new-variant' ?>" step="0.01" type="number" name="variant_price">
                     </td>
-                    <td colspan="3"></td>
-                    <td>
+                    <td></td>
+                    <td colspan="3">
                         <form id="<?= $product->base->code_name . '-new-variant' ?>" method="POST">
                             <button form="<?= $product->base->code_name . '-new-variant' ?>" type="submit" name="button_action" value="create_variant">Add</button>
                         </form>
@@ -270,8 +270,7 @@ $categories = Category::fetch_all();
                     <td>
                         <input form="new-product" type="checkbox" name="is_standalone">
                     </td>
-                    <td colspan="2"></td>
-                    <td>
+                    <td colspan="3">
                         <form id="new-product" method="POST">
                             <button form="new-product" type="submit" name="button_action" value="create_product">Add</button>
                         </form>

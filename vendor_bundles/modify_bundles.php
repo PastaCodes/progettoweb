@@ -64,7 +64,11 @@ $product_data = $database->find(
 <?php endforeach ?>
                         </select>
                     </td>
-                    <td colspan="3"></td>
+                    <td colspan="3">
+                        <form id="<?= $bundle->code_name ?>" action="vendor_bundles" method="POST">
+                            <button type="submit" name="button_action" value="delete_bundle_product">Del</button>
+                        </form>
+                    </td>
                 </tr>
 <?php endif ?>
                 <tr data-parent="<?= $bundle->code_name ?>">
@@ -75,8 +79,7 @@ $product_data = $database->find(
 <?php endforeach ?>
                         </select>
                     </td>
-                    <td colspan="2"></td>
-                    <td>
+                    <td colspan="3">
                         <form id="<?= $bundle->code_name ?>" action="vendor_bundles" method="POST">
                             <button type="submit" name="button_action" value="add_bundle_product">Add</button>
                         </form>
@@ -93,8 +96,7 @@ $product_data = $database->find(
                     <td>
                         <input form="<?= $bundle->code_name ?>" min="0.01" max="0.99" step="0.01" type="number" name="multiplier" required="required">
                     </td>
-                    <td colspan="2"></td>
-                    <td>
+                    <td colspan="3">
                         <form id="new_bundle" action="vendor_bundles" method="POST">
                             <button type="submit" name="button_action" value="create_bundle">Add</button>
                         </form>
