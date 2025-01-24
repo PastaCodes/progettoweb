@@ -229,7 +229,7 @@ insert into product_in_bundle (base, bundle, ordinal) values
     ('raven_pendant', 'goth_bundle_plus', 1),
     ('choker', 'goth_bundle_plus', 2),
     ('barbed_wire_bracelet', 'goth_bundle_plus', 3),
-    ('dagger_earrings', 'goth_bundle_plus', 3);
+    ('dagger_earrings', 'goth_bundle_plus', 4);
 
 insert into notification (title, content, username) values
     ('Dummy title', 'This is a dummy notification.', 'Vendor'),
