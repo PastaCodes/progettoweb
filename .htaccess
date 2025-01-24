@@ -11,7 +11,7 @@ php_value display_startup_errors 1
 php_value error_reporting 32767
 # Session Configuration
 php_value session.gc_maxlifetime 1440
-php_value session.cookie_lifetime 1440
+php_value session.cookie_lifetime 0 
 php_value session.cookie_secure 1
 php_value session.cookie_httponly 1
 php_value session.cookie_samesite Strict
