@@ -1,4 +1,9 @@
 <?php
+// Check if vendor
+if (!isset($_SESSION['vendor'])) {
+    header('Location: ../shop');
+    exit();
+}
 require_once '../classes/Bundle.php';
 
 $bundles = Bundle::fetch_bundles();
