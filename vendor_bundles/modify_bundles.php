@@ -85,17 +85,17 @@ foreach ($bundle_data as $bundle_row) {
 <?php foreach ($bundle['products'] as $bundle_product): ?>
                 <tr data-parent="<?= $bundle['id'] ?>">
                     <td colspan="2">
-                        <select form="<?= $bundle['id'] . '-' . $product['code_name'] ?>" name="product_0">
+                        <select form="<?= $bundle['id'] . '-' . $bundle_product['id'] ?>" name="product_0">
 <?php foreach ($product_data as $product): ?>
                             <option value="<?= $product['code_name'] ?>" <?php if ($bundle_product['id'] == $product['code_name']): ?>selected="selected"<?php endif ?>><?= $product['display_name'] ?></option>
 <?php endforeach ?>
                         </select>
                     </td>
                     <td>
-                        <input form="<?= $bundle['id']. '-' . $product['code_name'] ?>" type="number" name="product_ordinal" value="<?= $bundle_product['ordinal'] ?>" required="required">
+                        <input form="<?= $bundle['id']. '-' . $bundle_product['id'] ?>" type="number" name="product_ordinal" value="<?= $bundle_product['ordinal'] ?>" required="required">
                     </td>
                     <td colspan="3">
-                        <form id="<?= $bundle['id'] . '-' . $product['code_name'] ?>" method="POST">
+                        <form id="<?= $bundle['id'] . '-' . $bundle_product['id'] ?>" method="POST">
                             <button type="submit" name="button_action" value="delete_bundle_product">Del</button>
                         </form>
                     </td>
