@@ -72,6 +72,8 @@ body > header > nav > ul {
 body > header > nav > ul > li {
     display: block;
     padding: 0;
+    --pico-tooltip-background-color: var(--pico-primary-background);
+    --pico-tooltip-color: var(--pico-primary-inverse);
 }
 
 body > header > nav > ul > li:first-child {

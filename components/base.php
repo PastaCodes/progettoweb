@@ -83,7 +83,7 @@ if (isset($_SESSION['username'])) {
 <?php endif ?>
                     <li>
 <?php if (isset($_SESSION['username'])): ?>
-                        <a href="login?logout=true">Logout <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/account.svg#account"></use></svg></a>
+                        <a href="login?logout=true" data-tooltip="Logged in as <?= $_SESSION['username'] ?>" data-placement="bottom">Logout <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/account.svg#account"></use></svg></a>
 <?php else: ?>
                         <a href="login">Login <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/account.svg#account"></use></svg></a>
 <?php endif ?>
