@@ -57,6 +57,8 @@ if (!empty($cart->entries)) {
                     </li>
 <?php endforeach ?>
                 </ul>
+                <p>Subtotal: <?= format_price($cart->get_total()) ?></p>
+                <button>Checkout</button>
 <?php endif ?>
             </section>
         </main>

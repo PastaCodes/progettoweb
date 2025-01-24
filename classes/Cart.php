@@ -122,5 +122,13 @@ class Cart {
             }
         }
     }
+
+    public function get_total(): float {
+        $total = 0;
+        foreach ($this->entries as $entry) {
+            $total += $entry->entry_price();
+        }
+        return $total;
+    }
 }
 ?>

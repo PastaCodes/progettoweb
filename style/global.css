@@ -72,6 +72,8 @@ body > header > nav > ul {
 body > header > nav > ul > li {
     display: block;
     padding: 0;
+    --pico-tooltip-background-color: var(--pico-primary-background);
+    --pico-tooltip-color: var(--pico-primary-inverse);
 }
 
 body > header > nav > ul > li:first-child {
@@ -133,6 +135,10 @@ a:not(header h1 a) > svg {
 
 img, svg {
     pointer-events: none;
+}
+
+body > ul > li:nth-child(1) > button > svg {
+    visibility: hidden;
 }
 
 body > ul > li:nth-child(2) > button {
@@ -244,6 +250,7 @@ dialog:nth-last-of-type(2) > article > ul > li {
     padding: var(--pico-spacing);
     transition: filter 0.1s ease-in;
     margin-bottom: var(--pico-spacing);
+    box-shadow: var(--pico-card-box-shadow);
 }
 
 dialog:nth-last-of-type(2) > article > ul > li * {

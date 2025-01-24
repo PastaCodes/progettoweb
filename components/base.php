@@ -27,13 +27,13 @@ if (isset($_SESSION['username'])) {
         <meta name="robots" content="none">
 <?php endif ?>
         <base href="<?= $base_url ?>" target="_self">
+<?php foreach ($page->scripts as $script): ?>
+        <?= $script->to_script_tag() ?>
+<?php endforeach ?>
 <?php foreach ($page->stylesheets as $stylesheet): ?>
         <link rel="stylesheet" type="text/css" href="<?= $stylesheet ?>">
 <?php endforeach ?>
         <link rel="icon" type="image/x-icon" href="assets/isi.svg">
-<?php foreach ($page->scripts as $script): ?>
-        <?= $script->to_script_tag() ?>
-<?php endforeach ?>
 <?php foreach ($page->prefetch as $resource): ?>
         <link rel="prefetch" href="<?= $resource ?>">
 <?php endforeach ?>
@@ -65,13 +65,13 @@ if (isset($_SESSION['username'])) {
                     </li>
 <?php if (isset($_SESSION['vendor']) && $_SESSION['vendor']): ?>
                     <li>
-                        <a href="">Check Orders</a>
+                        <a href="">Orders</a>
                     </li>
                     <li>
-                        <a href="vendor_products">Edit Products</a>
+                        <a href="vendor_products">Products</a>
                     </li>
                     <li>
-                        <a href="vendor_bundles">Edit Bundles</a>
+                        <a href="vendor_bundles">Bundles</a>
                     </li>
 <?php else: ?>
                     <li>
@@ -83,7 +83,7 @@ if (isset($_SESSION['username'])) {
 <?php endif ?>
                     <li>
 <?php if (isset($_SESSION['username'])): ?>
-                        <a href="login?logout=true">Logout <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/account.svg#account"></use></svg></a>
+                        <a href="login?logout=true" data-tooltip="Logged in as <?= $_SESSION['username'] ?>" data-placement="bottom">Logout <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/account.svg#account"></use></svg></a>
 <?php else: ?>
                         <a href="login">Login <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/account.svg#account"></use></svg></a>
 <?php endif ?>

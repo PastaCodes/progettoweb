@@ -2,7 +2,15 @@
     --thumbnail-size: 10rem;
 }
 
-main > section > p {
+main > section {
+    text-align: right;
+}
+
+main > section * {
+    text-align: left;
+}
+
+main > section > p:nth-child(2) {
     margin: 2rem 4rem;
     color: var(--pico-muted-color);
     animation: fade-in 0.1s;
@@ -80,7 +88,7 @@ main > section > ul > li > a {
     font-weight: bold;
     grid-row: 1;
     grid-column: 2 / 4;
-    color: var(--pico-primary-inverted);
+    color: var(--pico-h2-color);
 }
 
 main > section > ul > li > p:nth-child(3) {
@@ -170,4 +178,16 @@ input[type="number"] {
         margin-bottom: 0;
         padding: 0;
     }
+}
+
+main > section > p:nth-last-child(2) {
+    text-align: right;
+    padding: var(--pico-spacing);
+    font-size: 140%;
+    margin: 0;
+}
+
+main > section > button:last-child {
+    justify-self: right;
+    margin-right: var(--pico-spacing);
 }
