@@ -18,8 +18,8 @@ function addEntryToCart(newEntry, comparator) {
     let cart = readCart();    
     const previousEntryIndex = cart.findIndex(comparator);
     if (previousEntryIndex !== -1) {
-        const previousEntry = cart.splice(previousEntryIndex, 1);
-        newEntry.quantity = (previousEntry['quantity'] || 1) + 1;
+        const previousEntry = cart.splice(previousEntryIndex, 1)[0];
+        newEntry.quantity = (previousEntry.quantity || 1) + 1;
     }
     cart.unshift(newEntry); // Add as first element
     writeCart(cart);
@@ -33,7 +33,7 @@ export function addProductToCart(base, variant) {
         newEntry.variant = variant;
     }
     addEntryToCart(newEntry,
-        entry => entry['type'] === 'product' && entry['base'] === base && entry['variant'] === variant
+        entry => entry['type'] === 'product' && entry['base'] === base && entry['variant'] == variant
     );
 }
 
@@ -45,7 +45,7 @@ export function addBundleToCart(name, variant) {
         newEntry.variant = variant;
     }
     addEntryToCart(newEntry,
-        entry => entry['type'] === 'bundle' && entry['name'] === name && entry['variant'] === variant
+        entry => entry['type'] === 'bundle' && entry['name'] === name && entry['variant'] == variant
     );
 }
 

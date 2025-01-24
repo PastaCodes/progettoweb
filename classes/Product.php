@@ -168,5 +168,14 @@ class Product {
         }
         return $array[$this->base->code_name][$this->variant->code_suffix];
     }
+
+    public function is_in_cart(): bool {
+        foreach (json_decode($_COOKIE['cart'] ?? '[]') as $entry) {
+            if ($entry->type === 'product' && $entry->base === $this->base->code_name) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 ?>

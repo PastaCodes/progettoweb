@@ -13,6 +13,22 @@ $bundle->fetch_details();
                 <figcaption>No image available</figcaption>
             </figure>
         </template>
+        <template>
+            <fieldset role="group">
+                <a href="cart">
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                        <use href="assets/cart.svg#cart"></use>
+                    </svg>
+                    In your cart
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                        <use href="assets/link.svg#link"></use>
+                    </svg>
+                </a>
+                <button data-bundle-name="<?= $bundle->code_name ?>"<?php if ($bundle->selected_suffix !== null): ?> data-variant-suffix="<?= $bundle->selected_suffix ?>"<?php endif ?>>
+                    Add another
+                </button>
+            </fieldset>
+        </template>
         <main>
             <section>
                 <h1><?= $bundle->display_name ?></h1>
@@ -52,6 +68,28 @@ $bundle->fetch_details();
                 </section>
 <?php endif ?>
                 <p><del><?= format_price($bundle->price_before_discount) ?></del> <ins><?= format_price($bundle->price_with_discount) ?></ins></p>
-                <button data-bundle-name="<?= $bundle->code_name ?>"<?php if ($bundle->selected_suffix !== null): ?> data-variant-suffix="<?= $bundle->selected_suffix ?>"<?php endif ?>>Add to cart</button>
+<?php if ($bundle->is_in_cart()): ?>
+                <fieldset role="group">
+                    <a href="cart">
+                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                            <use href="assets/cart.svg#cart"></use>
+                        </svg>
+                        In your cart
+                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                            <use href="assets/link.svg#link"></use>
+                        </svg>
+                    </a>
+                    <button data-bundle-name="<?= $bundle->code_name ?>"<?php if ($bundle->selected_suffix !== null): ?> data-variant-suffix="<?= $bundle->selected_suffix ?>"<?php endif ?>>
+                        Add another
+                    </button>
+                </fieldset>
+<?php else: ?>
+                <button data-bundle-name="<?= $bundle->code_name ?>"<?php if ($bundle->selected_suffix !== null): ?> data-variant-suffix="<?= $bundle->selected_suffix ?>"<?php endif ?>>
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                        <use href="assets/cart.svg#cart"></use>
+                    </svg>
+                    Add to cart
+                </button>
+<?php endif ?>
             </section>
         </main>

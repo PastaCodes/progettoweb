@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     reducedStrainToggle.addEventListener('click', updateFilters);
     updateFilters(false);
     const largerTextToggle = accessibility.querySelector('[name="larger-text"]');
-    const factor = 1.1;
+    const factor = 1.3;
     const updateText = (doUpdateCookie = true) => {
         const adjust = largerTextToggle.checked ? factor : 1;
         docElt.style.setProperty('--font-size-adjust', adjust);

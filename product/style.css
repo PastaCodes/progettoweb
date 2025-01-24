@@ -28,12 +28,16 @@ main > section > figure > figcaption {
     margin-bottom: 0;
 }
 
-main > section > fieldset {
+main > section > fieldset:nth-child(2) {
     display: flex;
     flex-direction: row;
     gap: var(--radio-spacing);
     padding: 0.125em;
     margin-bottom: var(--spacing-small);
+}
+
+main > section > h1 {
+    margin-top: 0 !important;
 }
 
 [type="radio"] {
@@ -52,4 +56,36 @@ main > section > fieldset {
 
 [type="radio"]:where(:hover, :focus, :focus-visible) {
     --pico-box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-form-element-focus-color);
+}
+
+main > section > button {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-small);
+}
+
+main > section > button:active, main > section > fieldset:last-child > button:active {
+    background-color: var(--pico-primary-hover);
+}
+
+main > section > fieldset:last-child {
+    width: fit-content;
+}
+
+main > section > fieldset:last-child > a, main > section > fieldset:last-child > button {
+    padding: var(--pico-form-element-spacing-vertical);
+}
+
+main > section > fieldset:last-child > a {
+    color: var(--pico-form-element-color);
+    border: var(--pico-border-width) solid var(--pico-ins-color);
+    border-radius: var(--pico-border-radius);
+    background-color: var(--pico-form-element-background-color);
+    user-select: none;
+}
+
+main > section > fieldset:last-child > a > svg {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
 }

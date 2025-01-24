@@ -1,5 +1,6 @@
 :root {
     --thumbnail-size: 14rem;
+    --radio-spacing: 0.5rem;
 }
 
 main > section > section:first-of-type > ul > li {
@@ -71,6 +72,13 @@ main > section > section:nth-of-type(2) > p {
     margin-bottom: var(--spacing-small);
 }
 
+main > section > section:nth-of-type(2) > fieldset {
+    display: flex;
+    flex-direction: row;
+    gap: var(--radio-spacing);
+    padding: 0.125em;
+}
+
 [type="radio"] {
     --radio-color: attr(data-color color);
     --pico-primary-border: var(--radio-color);
@@ -87,4 +95,36 @@ main > section > section:nth-of-type(2) > p {
 
 [type="radio"]:where(:hover, :focus, :focus-visible) {
     --pico-box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-form-element-focus-color);
+}
+
+main > section > button {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-small);
+}
+
+main > section > button:active, main > section > fieldset:last-child > button:active {
+    background-color: var(--pico-primary-hover);
+}
+
+main > section > fieldset:last-child {
+    width: fit-content;
+}
+
+main > section > fieldset:last-child > a, main > section > fieldset:last-child > button {
+    padding: var(--pico-form-element-spacing-vertical);
+}
+
+main > section > fieldset:last-child > a {
+    color: var(--pico-form-element-color);
+    border: var(--pico-border-width) solid var(--pico-ins-color);
+    border-radius: var(--pico-border-radius);
+    background-color: var(--pico-form-element-background-color);
+    user-select: none;
+}
+
+main > section > fieldset:last-child > a > svg {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
 }

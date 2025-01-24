@@ -168,6 +168,15 @@ class Bundle {
         }
         return $bundles;
     }
+
+    public function is_in_cart(): bool {
+        foreach (json_decode($_COOKIE['cart'] ?? '[]') as $entry) {
+            if ($entry->type === 'bundle' && $entry->name === $this->code_name) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 class BundleVariant {

@@ -1,8 +1,7 @@
-- Add to cart button feedback
 - Style the product info page
+- Landing page
 - Checkout
 - Your orders (remember text when no orders are present!)
-- Landing page
 - VENDOR PAGE(S)
 - Mobile "first"
 - Mockup

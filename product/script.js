@@ -4,18 +4,29 @@ import { addProductToCart } from '../scripts/cart.js';
 // Wait for the style to be rendered
 window.addEventListener('load', () => {
     // Retrieve the elements to be used when no thumbnail is available
-    const noThumbnailTemplate = document.querySelector('template');
+    const noThumbnailTemplate = document.querySelector('template:first-of-type');
     // Cart stuff
-    const addToCartBtn = document.querySelector('main > section > button');
+    let addToCartBtn = document.querySelector('main button');
     if (addToCartBtn) {
-        addToCartBtn.addEventListener('click', () => addProductToCart(
-            addToCartBtn.getAttribute('data-product-name'),
-            addToCartBtn.getAttribute('data-variant-suffix')
-        ));
+        const addtoCart = () => {
+            addProductToCart(
+                addToCartBtn.getAttribute('data-product-name'),
+                addToCartBtn.getAttribute('data-variant-suffix')
+            );
+            if (!addToCartBtn.innerHTML.includes('another')) {
+                addToCartBtn.removeEventListener('click', addtoCart);
+                const box = document.querySelector('template:nth-of-type(2)').content.cloneNode(true).firstElementChild;
+                addToCartBtn.replaceWith(box);
+                addToCartBtn = box.querySelector('button');
+                addToCartBtn.addEventListener('click', addtoCart);
+                addToCartBtn.setAttribute('active', true);
+            }
+        }
+        addToCartBtn.addEventListener('click', addtoCart);
     }
     const variantDisplay = document.querySelector('main > section > p:nth-last-of-type(2)');
     const priceDisplay = document.querySelector('main > section > p:last-of-type');
-    const radiosSection = document.querySelector('main > section > fieldset');
+    const radiosSection = document.querySelector('main > section > fieldset:nth-child(2)');
     if (radiosSection) {
         let thumbnailElement = document.querySelector('main > section > :first-child');
         const displayThumbnail = (activeRadio) => {

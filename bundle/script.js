@@ -4,14 +4,25 @@ import { addBundleToCart } from '../scripts/cart.js';
 // Wait for the style to be rendered
 window.addEventListener('load', () => {
     // Retrieve the elements to be used when no thumbnail is available
-    const noThumbnailTemplate = document.querySelector('template');
+    const noThumbnailTemplate = document.querySelector('template:first-of-type');
     // Cart stuff
-    const addToCartBtn = document.querySelector('main > section > button');
+    let addToCartBtn = document.querySelector('main button');
     if (addToCartBtn) {
-        addToCartBtn.addEventListener('click', () => addBundleToCart(
-            addToCartBtn.getAttribute('data-bundle-name'),
-            addToCartBtn.getAttribute('data-variant-suffix')
-        ));
+        const addtoCart = () => {
+            addBundleToCart(
+                addToCartBtn.getAttribute('data-bundle-name'),
+                addToCartBtn.getAttribute('data-variant-suffix')
+            );
+            if (!addToCartBtn.innerHTML.includes('another')) {
+                addToCartBtn.removeEventListener('click', addtoCart);
+                const box = document.querySelector('template:nth-of-type(2)').content.cloneNode(true).firstElementChild;
+                addToCartBtn.replaceWith(box);
+                addToCartBtn = box.querySelector('button');
+                addToCartBtn.addEventListener('click', addtoCart);
+                addToCartBtn.setAttribute('active', true);
+            }
+        }
+        addToCartBtn.addEventListener('click', addtoCart);
     }
     const products = document.querySelectorAll('main > section > section:first-of-type > ul > li');
     const variantDisplay = document.querySelector('main > section > section:nth-of-type(2) > p');

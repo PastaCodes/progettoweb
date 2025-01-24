@@ -15,6 +15,22 @@ $product->fetch_all_details();
                 <figcaption>No image available</figcaption>
             </figure>
         </template>
+        <template>
+            <fieldset role="group">
+                <a href="cart">
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                        <use href="assets/cart.svg#cart"></use>
+                    </svg>
+                    In your cart
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                        <use href="assets/link.svg#link"></use>
+                    </svg>
+                </a>
+                <button data-product-name="<?= $product->base->code_name ?>"<?php if ($product->variant !== null): ?> data-variant-suffix="<?= $product->variant->code_suffix ?>"<?php endif ?>>
+                    Add another
+                </button>
+            </fieldset>
+        </template>
         <main>
             <section>
 <?php if ($product->thumbnail() === null): ?>
@@ -41,7 +57,29 @@ $product->fetch_all_details();
 <?php endif ?>
                 <p><?= format_price($product->price) ?></p>
 <?php if ($product->base->is_standalone): ?>
-                <button data-product-name="<?= $product->base->code_name ?>"<?php if ($product->variant !== null): ?> data-variant-suffix="<?= $product->variant->code_suffix ?>"<?php endif ?>>Add to cart</button>
+<?php if ($product->is_in_cart()): ?>
+                <fieldset role="group">
+                    <a href="cart">
+                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                            <use href="assets/cart.svg#cart"></use>
+                        </svg>
+                        In your cart
+                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                            <use href="assets/link.svg#link"></use>
+                        </svg>
+                    </a>
+                    <button data-product-name="<?= $product->base->code_name ?>"<?php if ($product->variant !== null): ?> data-variant-suffix="<?= $product->variant->code_suffix ?>"<?php endif ?>>
+                        Add another
+                    </button>
+                </fieldset>
+<?php else: ?>
+                <button data-product-name="<?= $product->base->code_name ?>"<?php if ($product->variant !== null): ?> data-variant-suffix="<?= $product->variant->code_suffix ?>"<?php endif ?>>
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                        <use href="assets/cart.svg#cart"></use>
+                    </svg>
+                    Add to cart
+                </button>
+<?php endif ?>
 <?php endif ?>
             </section>
         </main>
