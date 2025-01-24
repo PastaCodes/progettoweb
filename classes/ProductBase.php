@@ -6,6 +6,7 @@ class ProductBase {
     public float|false $price_max = false;
     public string|false $short_description = false;
     public ?bool $is_standalone = null;
+    public string|false $category = false;
     public array|false $variants = false; /* array of Product's */
 
     public function __construct(string $code_name) {

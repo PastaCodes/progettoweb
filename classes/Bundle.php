@@ -190,8 +190,8 @@ class BundleVariant {
 
     public function to_radio_attributes(?string $selected_suffix): string {
         return $this->variant->to_radio_attributes($selected_suffix) .
-            ' data-price-before="' . number_format($this->price_before_discount, 2) .
-            '" data-price="' . number_format($this->price_with_discount, 2) . '"';
+            ' data-price-before="' . number_format($this->price_before_discount, 2, thousands_separator: '') .
+            '" data-price="' . number_format($this->price_with_discount, 2, thousands_separator: '') . '"';
     }
 }
 ?>

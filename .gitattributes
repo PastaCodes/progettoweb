@@ -6,3 +6,4 @@
 *.glb binary
 *.gltf binary
 *.fbx binary
+*.webp binary

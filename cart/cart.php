@@ -18,7 +18,7 @@ if (!empty($cart->entries)) {
 <?php else: ?>
                 <ul>
 <?php foreach ($cart->entries as $entry): ?>
-                    <li data-unit-price="<?= number_format($entry->unit_price(), 2) ?>">
+                    <li data-unit-price="<?= number_format($entry->unit_price(), 2, thousands_separator: '') ?>">
 <?php if ($entry instanceof ProductEntry): ?>
 <?php if ($entry->product->thumbnail() === null): ?>
                         <figure>

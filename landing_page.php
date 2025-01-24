@@ -1,4 +1,4 @@
-        <img src="assets/campus.webp" alt="">
+        <img src="assets/background.webp" alt="">
         <main>
             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="IsiFitGems logo">
                 <use href="assets/isi.svg#isi"></use>

@@ -1,0 +1,7 @@
+main {
+    max-width: 100% !important;
+}
+
+table td, table th {
+    text-align: center;
+}

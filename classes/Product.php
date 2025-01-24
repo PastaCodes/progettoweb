@@ -42,7 +42,7 @@ class Product {
             $html .= ' data-thumbnail-file="' . $this->thumbnail()->file .'" data-thumbnail-alt="'. $this->thumbnail()->alt_text . '"';
         }
         if ($include_price) {
-            $html .= ' data-price="' . number_format($this->price, 2) . '"';
+            $html .= ' data-price="' . number_format($this->price, 2, thousands_separator: '') . '"';
         }
         return $html;
     }

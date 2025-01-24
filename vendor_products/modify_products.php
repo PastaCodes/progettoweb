@@ -100,7 +100,40 @@ if ($button_action === 'update_product' || $button_action === 'create_product') 
     );
 }
 
-$products = Product::fetch_products();
+$products_result = $database->find(
+    table: 'product_base',
+    joins: [
+        [
+            'type' => 'LEFT',
+            'table' => 'product_variant',
+            'on' => 'product_variant.base = code_name',
+        ],
+    ],
+    options: ['order_by' => ['code_name' => 'ASC', 'ordinal' => 'ASC']]
+);
+$products = [];
+foreach ($products_result as $products_row) {
+    if (!array_key_exists($products_row['code_name'], $products)) {
+        $product = $products[$products_row['code_name']] = Product::from($products_row['code_name'], $products_row['code_suffix']);
+        $product->base->display_name = $products_row['product_base.display_name'];
+        $product->base->short_description = $products_row['short_description'];
+        $product->base->is_standalone = $products_row['standalone'];
+        $product->base->category = $products_row['category'];
+        $product->price = $products_row['price_base'];
+        $product->base->variants = [];
+    } else {
+        $product = $products[$products_row['code_name']];
+    }
+    if (!$products_row['code_suffix']) {
+        continue;
+    }
+    $variant_product = new Product($product->base, new ProductVariant($products_row['code_suffix']));
+    $variant_product->variant->display_name = $products_row['product_variant.display_name'];
+    $variant_product->variant->color = $products_row['color'];
+    $variant_product->variant->ordinal = $products_row['ordinal'];
+    $variant_product->price = $products_row['price_override'] ?? false;
+    $product->base->variants[] = $variant_product;
+}
 $categories = Category::fetch_all();
 
 /* TODO:
@@ -133,22 +166,22 @@ $categories = Category::fetch_all();
                     <td>
                         <select form="<?= $product->base->code_name ?>" name="category">
 <?php foreach ($categories as $category): ?>
-                            <option value="<?= $category['display_name'] ?>"><?= $category['display_name'] ?></option>
+                            <option value="<?= $category['code_name'] ?>" <?php if ($product->base->category === $category['code_name']): ?> selected="selected"<?php endif ?>><?= $category['display_name'] ?></option>
 <?php endforeach ?>
                         </select>
                     </td>
                     <td>
-                        <textarea form="<?= $product->base->code_name ?>" minlength="1" maxlength="255" name="short_description" placeholder="Product description" required="required"></textarea>
+                        <textarea form="<?= $product->base->code_name ?>" minlength="1" maxlength="255" name="short_description" placeholder="Product description" required="required"><?= $product->base->short_description ?></textarea>
                     </td>
                     <td>
-                        <input form="<?= $product->base->code_name ?>" step="0.01" type="number" name="base_price" value="0" required="required">
+                        <input form="<?= $product->base->code_name ?>" step="0.01" type="number" name="base_price" value="<?= number_format($product->price, 2, thousands_separator: '') ?>" required="required">
                     </td>
                     <td>
-                        <input form="<?= $product->base->code_name ?>" type="checkbox" name="is_standalone">
+                        <input form="<?= $product->base->code_name ?>" type="checkbox" name="is_standalone"<?php if ($product->base->is_standalone): ?> checked="checked"<?php endif ?>>
                     </td>
                     <td>
 <?php if ($product->base->variants): ?>
-                        <button data-show="<?= $product->base->code_name ?>">V</button>
+                        <button data-show="<?= $product->base->code_name ?>">&#9660;</button>
 <?php endif ?>
                     </td>
                     <td>
@@ -172,10 +205,10 @@ $categories = Category::fetch_all();
                         <input form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="color" name="variant_color" value="#<?= $variant->variant->color?>">
                     </td>
                     <td>
-                        <input form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="number" name="variant_ordinal" value="0" required="required">
+                        <input form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="number" name="variant_ordinal" value="<?= $variant->variant->ordinal ?>" required="required">
                     </td>
                     <td>
-                        <input form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" step="0.01" type="number" name="variant_price" value="0">
+                        <input form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" step="0.01" type="number" name="variant_price"<?php if ($variant->price !== false): ?> value="<?= number_format($variant->price, 2, thousands_separator: '') ?>"<?php endif ?>>
                     </td>
                     <td></td>
                     <td></td>
@@ -197,13 +230,13 @@ $categories = Category::fetch_all();
                         <input form="<?= $product->base->code_name . '_new_variant' ?>" minlength="1" maxlength="255" type="text" name="variant_display_name" value="" placeholder="Display name" required="required">
                     </td>
                     <td>
-                        <input form="<?= $product->base->code_name . '_new_variant'?>" type="color" name="variant_color" value="#000000">
+                        <input form="<?= $product->base->code_name . '_new_variant'?>" type="color" name="variant_color">
                     </td>
                     <td>
-                        <input form="<?= $product->base->code_name . '_new_variant'?>" type="number" name="variant_ordinal" value="0" required="required">
+                        <input form="<?= $product->base->code_name . '_new_variant'?>" type="number" name="variant_ordinal" required="required">
                     </td>
                     <td>
-                        <input form="<?= $product->base->code_name . '_new_variant' ?>" step="0.01" type="number" name="variant_price" value="0">
+                        <input form="<?= $product->base->code_name . '_new_variant' ?>" step="0.01" type="number" name="variant_price">
                     </td>
                     <td></td>
                     <td></td>
@@ -225,7 +258,7 @@ $categories = Category::fetch_all();
                     <td>
                         <select form="new_product" name="category">
 <?php foreach ($categories as $category): ?>
-                            <option value="<?= $category['display_name'] ?>"<?php if ($category['display_name'] == ($_POST['category'] ?? null)): ?> selected="selected"<?php endif ?>><?= $category['display_name'] ?></option>
+                            <option value="<?= $category['code_name'] ?>"<?php if ($category['code_name'] == ($_POST['category'] ?? null)): ?> selected="selected"<?php endif ?>><?= $category['display_name'] ?></option>
 <?php endforeach ?>
                         </select>
                     </td>
