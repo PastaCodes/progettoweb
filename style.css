@@ -18,7 +18,7 @@ main {
 }
 
 main * {
-    color: var(--pico-contrast);
+    color: var(--pico-primary-inverse);
 }
 
 main > svg {
