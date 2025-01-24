@@ -212,8 +212,7 @@ $categories = Category::fetch_all();
                     <td>
                         <input form="<?= $product->base->code_name . '-' . $variant->variant->code_suffix ?>" step="0.01" type="number" name="variant_price"<?php if ($variant->price !== false): ?> value="<?= number_format($variant->price, 2, thousands_separator: '') ?>"<?php endif ?>>
                     </td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="2"></td>
                     <td>
                         <button form="<?= $product->base->code_name . '-' . $variant->variant->code_suffix ?>" type="submit" name="button_action" value="update_variant:<?= $product->base->code_name ?>">Update</button>
                     </td>
@@ -240,9 +239,7 @@ $categories = Category::fetch_all();
                     <td>
                         <input form="<?= $product->base->code_name . '-new-variant' ?>" step="0.01" type="number" name="variant_price">
                     </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="3"></td>
                     <td>
                         <form id="<?= $product->base->code_name . '-new-variant' ?>" method="POST">
                             <button form="<?= $product->base->code_name . '-new-variant' ?>" type="submit" name="button_action" value="create_variant">Add</button>
@@ -273,8 +270,7 @@ $categories = Category::fetch_all();
                     <td>
                         <input form="new-product" type="checkbox" name="is_standalone">
                     </td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="2"></td>
                     <td>
                         <form id="new-product" method="POST">
                             <button form="new-product" type="submit" name="button_action" value="create_product">Add</button>
