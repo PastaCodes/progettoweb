@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
         notifications.querySelectorAll('article > ul > li > button:last-of-type').forEach(btn => {
             btn.addEventListener('click', () => {
                 const notificationId = btn.parentElement.getAttribute('data-id');
-                fetch(`/IsiFitGems/api/?delete_notification=${notificationId}`, {
+                fetch(`api?delete_notification=${notificationId}`, {
                     method: 'DELETE',
                     credentials: 'include',
                     headers: {
