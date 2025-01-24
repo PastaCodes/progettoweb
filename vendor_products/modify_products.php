@@ -35,6 +35,8 @@ if ($button_action == 'update_product') {
         table: 'product_base',
         filters: ['code_name' => $product_id]
     );
+} else if ($button_action == 'create_product') {
+    // TODO: Create a new product with form data
 } else if ($button_action == 'update_variant') {
     // Get the data from the form
     
@@ -65,6 +67,8 @@ if ($button_action == 'update_product') {
         table: 'product_variant',
         filters: ['code_suffix' => $variant_id]
     );
+} else if ($button_action == 'create_variant') {
+    // TODO: Create a new variant with form data
 }
 
 $products = Product::fetch_products();
@@ -156,7 +160,63 @@ $categories = Category::fetch_all();
                     </td>
                 </tr>
 <?php endforeach ?>
+                <tr data-parent="<?= $product->base->code_name ?>">
+                    <td>
+                        <input form="<?= $product->base->code_name . '_new_variant' ?>" minlength="1" maxlength="255" type="text" name="variant_code_name" value="" placeholder="Variant id" required="required">
+                    </td>
+                    <td>
+                        <input form="<?= $product->base->code_name . '_new_variant' ?>" minlength="1" maxlength="255" type="text" name="variant_display_name" value="" placeholder="Display name" required="required">
+                    </td>
+                    <td>
+                        <input form="<?= $product->base->code_name . '_new_variant'?>" type="color" name="variant_color" value="#000000">
+                    </td>
+                    <td>
+                        <input form="<?= $product->base->code_name . '_new_variant'?>" type="number" name="variant_ordinal" value="0" required="required">
+                    </td>
+                    <td>
+                        <input form="<?= $product->base->code_name . '_new_variant' ?>" step="0.01" type="number" name="variant_price" value="0">
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <form id="<?= $product->base->code_name . '_new_variant' ?>" action="vendor_products" method="POST">
+                            <button form="<?= $product->base->code_name . '_new_variant' ?>" type="submit" name="button_action" value="create_variant">Add</button>
+                        </form>
+                    </td>
+                </tr>
 <?php endforeach ?>
+                <tr>
+                    <td>
+                        <input form="new_product" minlength="1" maxlength="255" type="text" name="base_code_name" placeholder="Product id" required="required">
+                    </td>
+                    <td>
+                        <input form="new_product" minlength="1" maxlength="255" type="text" name="base_display_name" placeholder="Display name" required="required">
+                    </td>
+                    <td>
+                        <select form="new_product" name="category">
+<?php foreach ($categories as $category): ?>
+                            <option value="<?= $category['display_name'] ?>"<?php if ($category['display_name'] == ($_POST['category'] ?? null)): ?> selected="selected"<?php endif ?>><?= $category['display_name'] ?></option>
+<?php endforeach ?>
+                        </select>
+                    </td>
+                    <td>
+                        <textarea form="new_product" minlength="1" maxlength="255" name="short_description" placeholder="Product description" required="required"></textarea>
+                    </td>
+                    <td>
+                        <input form="new_product" step="0.01" type="number" name="base_price" required="required">
+                    </td>
+                    <td>
+                        <input form="new_product" type="checkbox" name="is_standalone">
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <form id="new_product" action="vendor_products" method="POST">
+                            <button form="new_product" type="submit" name="button_action" value="create_product">Add</button>
+                        </form>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </main>
