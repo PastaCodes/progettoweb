@@ -57,7 +57,7 @@ $product->fetch_all_details();
 <?php endif ?>
                 <p><?= format_price($product->price) ?></p>
 <?php if ($product->base->is_standalone): ?>
-<?php if ($product->is_in_cart()): ?>
+<?php if (($quantity = $product->quantity_in_cart()) > 0): ?>
                 <fieldset role="group">
                     <a href="cart">
                         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
@@ -68,7 +68,7 @@ $product->fetch_all_details();
                             <use href="assets/link.svg#link"></use>
                         </svg>
                     </a>
-                    <button data-product-name="<?= $product->base->code_name ?>"<?php if ($product->variant !== null): ?> data-variant-suffix="<?= $product->variant->code_suffix ?>"<?php endif ?>>
+                    <button data-product-name="<?= $product->base->code_name ?>"<?php if ($product->variant !== null): ?> data-variant-suffix="<?= $product->variant->code_suffix ?>"<?php endif ?><?php if ($quantity === 99): ?> disabled="disabled"<?php endif ?>>
                         Add another
                     </button>
                 </fieldset>

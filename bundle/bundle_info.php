@@ -68,7 +68,7 @@ $bundle->fetch_details();
                 </section>
 <?php endif ?>
                 <p><del><?= format_price($bundle->price_before_discount) ?></del> <ins><?= format_price($bundle->price_with_discount) ?></ins></p>
-<?php if ($bundle->is_in_cart()): ?>
+<?php if (($quantity = $bundle->quantity_in_cart()) > 0): ?>
                 <fieldset role="group">
                     <a href="cart">
                         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
@@ -79,7 +79,7 @@ $bundle->fetch_details();
                             <use href="assets/link.svg#link"></use>
                         </svg>
                     </a>
-                    <button data-bundle-name="<?= $bundle->code_name ?>"<?php if ($bundle->selected_suffix !== null): ?> data-variant-suffix="<?= $bundle->selected_suffix ?>"<?php endif ?>>
+                    <button data-bundle-name="<?= $bundle->code_name ?>"<?php if ($bundle->selected_suffix !== null): ?> data-variant-suffix="<?= $bundle->selected_suffix ?>"<?php endif ?><?php if ($quantity === 99): ?> disabled="disabled"<?php endif ?>>
                         Add another
                     </button>
                 </fieldset>

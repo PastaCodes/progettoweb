@@ -9,7 +9,7 @@ window.addEventListener('load', () => {
     let addToCartBtn = document.querySelector('main button');
     if (addToCartBtn) {
         const addtoCart = () => {
-            addProductToCart(
+            const newQuantity = addProductToCart(
                 addToCartBtn.getAttribute('data-product-name'),
                 addToCartBtn.getAttribute('data-variant-suffix')
             );
@@ -19,7 +19,8 @@ window.addEventListener('load', () => {
                 addToCartBtn.replaceWith(box);
                 addToCartBtn = box.querySelector('button');
                 addToCartBtn.addEventListener('click', addtoCart);
-                addToCartBtn.setAttribute('active', true);
+            } else if (newQuantity === 99) {
+                addToCartBtn.disabled = true;
             }
         }
         addToCartBtn.addEventListener('click', addtoCart);

@@ -23,28 +23,31 @@ function addEntryToCart(newEntry, comparator) {
     }
     cart.unshift(newEntry); // Add as first element
     writeCart(cart);
+    return newEntry.quantity || 1;
 }
 
 // Adds the product as the latest entry to the cart.
 // If the product was already present, the previous entry is removed and its quantity is added to the new one.
+// Returns the resulting quantity.
 export function addProductToCart(base, variant) {
     let newEntry = { type: 'product', base };
     if (variant !== null) {
         newEntry.variant = variant;
     }
-    addEntryToCart(newEntry,
+    return addEntryToCart(newEntry,
         entry => entry['type'] === 'product' && entry['base'] === base && entry['variant'] == variant
     );
 }
 
 // Adds the bundle as the latest entry to the cart.
 // If the bundle was already present, the previous entry is removed and its quantity is added to the new one.
+// Returns the resulting quantity.
 export function addBundleToCart(name, variant) {
     let newEntry = { type: 'bundle', name };
     if (variant !== null) {
         newEntry.variant = variant;
     }
-    addEntryToCart(newEntry,
+    return addEntryToCart(newEntry,
         entry => entry['type'] === 'bundle' && entry['name'] === name && entry['variant'] == variant
     );
 }
