@@ -116,7 +116,12 @@ $products_result = $database->find(
             'on' => 'product_variant.base = code_name',
         ],
     ],
-    options: ['order_by' => ['code_name' => 'ASC', 'ordinal' => 'ASC']]
+    options: [
+        'order_by' => [
+            'code_name' => 'ASC',
+            'ordinal' => 'ASC'
+        ]
+    ]
 );
 $products = [];
 foreach ($products_result as $products_row) {
