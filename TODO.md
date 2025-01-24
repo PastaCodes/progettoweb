@@ -1,5 +1,4 @@
 - Style the product info page
-- Landing page
 - Checkout
 - Your orders (remember text when no orders are present!)
 - Vendor pages: (complete product and bundle pages, make order page)
