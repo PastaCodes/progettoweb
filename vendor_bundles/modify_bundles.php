@@ -6,6 +6,57 @@ if (!isset($_SESSION['vendor'])) {
 }
 require_once '../util/db.php';
 
+$bundle_id = null;
+$button_action = null;
+if (isset($_POST['button_action'])) {
+    $params = explode(':', $_POST['button_action']);
+    $button_action = $params[0];
+    if (isset($params[1])) {
+        $bundle_id = $params[1];
+    }
+}
+if ($button_action === 'update_bundle' || $button_action === 'create_bundle') {
+    // Get the data from the form
+    $bundle_id = $_POST['code_name'];
+    $display_name = $_POST['display_name'];
+    $multiplier = $_POST['multiplier'];
+    // Update that table's entry
+    if ($button_action === 'create_bundle') {
+        $database->insert(
+            table: 'bundle',
+            data: [
+                'code_name' => $bundle_id, 
+                'display_name' => $display_name, 
+                'multiplier' => $multiplier, 
+            ]
+        );
+    } else {
+        $database->update(
+            table: 'bundle',
+            data: [
+                'code_name' => $bundle_id, 
+                'display_name' => $display_name, 
+                'multiplier' => $multiplier, 
+            ],
+            filters: ['bundle.code_name' => $bundle_id]
+        );
+    }
+} else if ($button_action == 'delete_bundle') {
+    // Quick and easy query to delete a bundle from the db
+    $bundle_id = $_POST['code_name'];
+    $database->delete(
+        table: 'bundle',
+        filters: ['code_name' => $bundle_id]
+    );
+} else if ($button_action == 'update_bundle_product' || $button_action == 'create_bundle_product') {
+    // Get the data from the form
+    // Update that table's entry
+    
+} else if ($button_action == 'delete_variant') {
+    // Quick and easy query to delete a product from the db
+    
+}
+
 $product_data = $database->find(
     table: 'product_base'
 );
@@ -13,7 +64,7 @@ $bundle_data = $database->find(
     table: 'bundle',
     joins: [
         [
-            'type' => 'INNER',
+            'type' => 'LEFT',
             'table' => 'product_in_bundle',
             'on' => 'bundle = code_name' 
         ]
@@ -35,10 +86,12 @@ foreach ($bundle_data as $bundle_row) {
             'products' => []
         ];
     }
-    $bundles[$bundle_row['code_name']]['products'][] = [
-        'id' => $bundle_row['base'],
-        'ordinal' => $bundle_row['ordinal']
-    ];
+    if (!isset($bundles[$bundle_row['code_name']]['products'])) {
+        $bundles[$bundle_row['code_name']]['products'][] = [
+            'id' => $bundle_row['base'],
+            'ordinal' => $bundle_row['ordinal']
+        ];
+    }
 }
 
 /* TODO:
@@ -118,7 +171,7 @@ foreach ($bundle_data as $bundle_row) {
                     </td>
                     <td colspan="3">
                         <form id="<?= $bundle['id'] ?>-new-bundle-product" method="POST">
-                            <button form="<?= $bundle['id'] ?>-new-bundle-product" type="submit" name="button_action" value="add_bundle_product">Add</button>
+                            <button form="<?= $bundle['id'] ?>-new-bundle-product" type="submit" name="button_action" value="create_bundle_product">Add</button>
                         </form>
                     </td>
                 </tr>
