@@ -88,7 +88,7 @@ main > section > ul > li > a {
     font-weight: bold;
     grid-row: 1;
     grid-column: 2 / 4;
-    color: var(--pico-primary-inverted);
+    color: var(--pico-h2-color);
 }
 
 main > section > ul > li > p:nth-child(3) {

@@ -36,7 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Set theme preference to new theme
         localStorage.setItem('theme', themeStr);
     };
-    switchTheme(localStorage.getItem('theme') || ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'));
+    switchTheme(docElt.getAttribute('data-theme') || ((window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'));
+    btn.firstElementChild.style.visibility = 'visible';
     // Switch theme on button press
     btn.addEventListener('click', () => {
         switchTheme(docElt.getAttribute('data-theme') === 'light' ? 'dark' : 'light');

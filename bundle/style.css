@@ -56,7 +56,7 @@ main > section > section:first-of-type > ul > li > a {
     grid-row: 1;
     grid-column: 2;
     margin-bottom: var(--pico-spacing);
-    color: var(--pico-primary-inverted);
+    color: var(--pico-h2-color);
 }
 
 main > section > section:first-of-type > ul > li > p:last-of-type {

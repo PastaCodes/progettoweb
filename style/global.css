@@ -137,6 +137,10 @@ img, svg {
     pointer-events: none;
 }
 
+body > ul > li:nth-child(1) > button > svg {
+    visibility: hidden;
+}
+
 body > ul > li:nth-child(2) > button {
     --counter-content: "";
     --counter-visibility: hidden;
@@ -246,6 +250,7 @@ dialog:nth-last-of-type(2) > article > ul > li {
     padding: var(--pico-spacing);
     transition: filter 0.1s ease-in;
     margin-bottom: var(--pico-spacing);
+    box-shadow: var(--pico-card-box-shadow);
 }
 
 dialog:nth-last-of-type(2) > article > ul > li * {

@@ -27,13 +27,13 @@ if (isset($_SESSION['username'])) {
         <meta name="robots" content="none">
 <?php endif ?>
         <base href="<?= $base_url ?>" target="_self">
+<?php foreach ($page->scripts as $script): ?>
+        <?= $script->to_script_tag() ?>
+<?php endforeach ?>
 <?php foreach ($page->stylesheets as $stylesheet): ?>
         <link rel="stylesheet" type="text/css" href="<?= $stylesheet ?>">
 <?php endforeach ?>
         <link rel="icon" type="image/x-icon" href="assets/isi.svg">
-<?php foreach ($page->scripts as $script): ?>
-        <?= $script->to_script_tag() ?>
-<?php endforeach ?>
 <?php foreach ($page->prefetch as $resource): ?>
         <link rel="prefetch" href="<?= $resource ?>">
 <?php endforeach ?>
