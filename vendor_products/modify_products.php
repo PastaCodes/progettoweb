@@ -8,9 +8,12 @@ if (!isset($_SESSION['vendor'])) {
 require_once '../classes/Product.php';
 require_once '../classes/Category.php';
 
+$product_base_id = null;
 $button_action = null;
 if (isset($_POST['button_action'])) {
-    $button_action = $_POST['button_action'];
+    $params = explode(':', $_POST['button_action']);
+    $button_action = $params[0];
+    $product_base_id = $params[1];
 }
 if ($button_action === 'update_product' || $button_action === 'create_product') {
     // Get the data from the form
@@ -57,8 +60,6 @@ if ($button_action === 'update_product' || $button_action === 'create_product') 
     );
 } else if ($button_action == 'update_variant' || $button_action == 'create_variant') {
     // Get the data from the form
-    
-    // FIXME: Currently broken query, as it also needs the product_base_id
     $variant_id = $_POST['variant_code_name'];
     $display_name = $_POST['variant_display_name'];
     $color = substr($_POST['variant_color'], 1);
@@ -86,17 +87,21 @@ if ($button_action === 'update_product' || $button_action === 'create_product') 
                 'color' => $color,
                 'price_override' => $price_override
             ],
-            filters: ['product_variant.code_suffix' => $variant_id]
+            filters: [
+                'code_suffix' => $variant_id, 
+                'base' => $product_base_id
+            ]
         );
     }
 } else if ($button_action == 'delete_variant') {
     // Quick and easy query to delete a product from the db
-    
-    // FIXME: Currently broken query, as it also needs the product_base_id
     $variant_id = $_POST['variant_code_name'];
     $database->delete(
         table: 'product_variant',
-        filters: ['code_suffix' => $variant_id]
+        filters: [
+            'code_suffix' => $variant_id, 
+            'base' => $product_base_id
+        ]
     );
 }
 
@@ -208,11 +213,11 @@ $categories = Category::fetch_all();
                     <td></td>
                     <td></td>
                     <td>
-                        <button form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="submit" name="button_action" value="update_variant">Update</button>
+                        <button form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="submit" name="button_action" value="update_variant:<?= $product->base->code_name ?>">Update</button>
                     </td>
                     <td>
                         <form id="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" method="POST">
-                            <button form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="submit" name="button_action" value="delete_variant">Delete</button>
+                            <button form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="submit" name="button_action" value="delete_variant:<?= $product->base->code_name ?>">Delete</button>
                         </form>
                     </td>
                 </tr>
