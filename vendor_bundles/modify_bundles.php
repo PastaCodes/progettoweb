@@ -5,13 +5,15 @@ if (!isset($_SESSION['vendor'])) {
     exit();
 }
 require_once '../classes/Bundle.php';
+require_once '../util/db.php';
 
 $bundles = Bundle::fetch_bundles();
+$product_data = $database->find(
+    table: 'product_base'
+);
 
 /* TODO:
- * Add the other bundle parameters
- * Add variants as submenu or modal of row to edit variant data?
- * Add current data to category, short_description and is_standalone
+ * Add current data to multiplier and current products 
  * Add functionality
  */
 ?>
@@ -52,11 +54,34 @@ $bundles = Bundle::fetch_bundles();
                         </form>
                     </td>
                 </tr>
+<!-- TODO: PLACEHOLDER FOR CURRENT BUNDLE DATA -->
 <?php if (true): ?>
-    <tr data-parent="<?= $bundle->code_name ?>" colspan="6">
-        <td>Tette</td>
-    </tr>
+                <tr data-parent="<?= $bundle->code_name ?>">
+                    <td colspan="3">
+                        <select form="<?= $bundle->code_name ?>" name="product_0">
+<?php foreach ($product_data as $product): ?>
+                            <option value="<?= $product['code_name'] ?>"><?= $product['display_name'] ?></option>
+<?php endforeach ?>
+                        </select>
+                    </td>
+                    <td colspan="3"></td>
+                </tr>
 <?php endif ?>
+                <tr data-parent="<?= $bundle->code_name ?>">
+                    <td colspan="3">
+                        <select form="<?= $bundle->code_name ?>" name="new_product">
+<?php foreach ($product_data as $product): ?>
+                            <option value="<?= $product['code_name'] ?>"><?= $product['display_name'] ?></option>
+<?php endforeach ?>
+                        </select>
+                    </td>
+                    <td colspan="2"></td>
+                    <td>
+                        <form id="<?= $bundle->code_name ?>" action="vendor_bundles" method="POST">
+                            <button type="submit" name="button_action" value="add_bundle_product">Add</button>
+                        </form>
+                    </td>
+                </tr>
 <?php endforeach ?>
                 <tr>
                     <td>
@@ -68,8 +93,7 @@ $bundles = Bundle::fetch_bundles();
                     <td>
                         <input form="<?= $bundle->code_name ?>" min="0.01" max="0.99" step="0.01" type="number" name="multiplier" required="required">
                     </td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="2"></td>
                     <td>
                         <form id="new_bundle" action="vendor_bundles" method="POST">
                             <button type="submit" name="button_action" value="create_bundle">Add</button>
