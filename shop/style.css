@@ -108,11 +108,11 @@ main > ul > li > :last-child {
     margin: 0;
 }
 
-[type="radio"]:first-child {
+[type="radio"]:first-of-type {
     margin-left: auto;
 }
 
-[type="radio"]:last-child {
+[type="radio"]:last-of-type {
     margin-right: auto;
 }
 
@@ -127,7 +127,7 @@ main > ul > li > :last-child {
 main > fieldset {
     display: grid;
     grid-template-columns: 3fr 1fr;
-    gap: var(--pico-spacing);
+    gap: 0 var(--pico-spacing);
     align-items: end;
     margin-bottom: calc(2 * var(--pico-spacing));
 }
@@ -136,6 +136,18 @@ main > fieldset * {
     margin: 0 !important;
 }
 
+main > fieldset > input {
+    grid-row: 2;
+    grid-column: 1;
+}
+
+main > fieldset > label:nth-child(3) {
+    grid-row: 1;
+    grid-column: 2;
+}
+
 main > fieldset select {
+    grid-row: 2;
+    grid-column: 2;
     margin-top: calc(var(--pico-spacing)* .375) !important;
 }

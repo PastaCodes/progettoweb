@@ -62,7 +62,8 @@ $bundle->fetch_details();
                     <p><?= $bundle->variants[$bundle->selected_suffix]->variant->display_name ?></p>
                     <fieldset>
 <?php foreach ($bundle->variants as $variant): ?>
-                        <input type="radio" name="variant" <?= $variant->to_radio_attributes($bundle->selected_suffix) ?>>
+                        <label for="<?= format_variant_suffix($variant) ?>" hidden="hidden">Select the <?= $variant->variant->display_name ?> variant</label>
+                        <input id="<?= format_variant_suffix($variant) ?>" type="radio" name="variant" <?= $variant->to_radio_attributes($bundle->selected_suffix) ?>>
 <?php endforeach ?>
                     </fieldset>
                 </section>

@@ -17,16 +17,15 @@ $categories = Category::fetch_all();
         </template>
         <main>
             <fieldset>
-                <input type="search" name="search" placeholder="Search"<?php if (isset($_GET['search'])): ?> value="<?= $_GET['search'] ?>"<?php endif ?>>
-                <label>
-                    Category
-                    <select name="category">
-                        <option value=""<?php if (!isset($_GET['category'])): ?> selected="selected"<?php endif ?>>Any</option>
+                <label for="search" hidden="hidden">Search for products</label>
+                <input id="search" type="search" name="search" placeholder="Search"<?php if (isset($_GET['search'])): ?> value="<?= $_GET['search'] ?>"<?php endif ?>>
+                <label for="category">Category</label>
+                <select id="category" name="category">
+                    <option value=""<?php if (!isset($_GET['category'])): ?> selected="selected"<?php endif ?>>Any</option>
 <?php foreach ($categories as $category): ?>
-                        <option value="<?= $category['code_name'] ?>"<?php if ($category['code_name'] == ($_GET['category'] ?? null)): ?> selected="selected"<?php endif ?>><?= $category['display_name'] ?></option>
+                    <option value="<?= $category['code_name'] ?>"<?php if ($category['code_name'] == ($_GET['category'] ?? null)): ?> selected="selected"<?php endif ?>><?= $category['display_name'] ?></option>
 <?php endforeach ?>
-                    </select>
-                </label>
+                </select>
             </fieldset>
 <?php if (empty($products)): ?>
             <p>No results</p>
@@ -47,7 +46,8 @@ $categories = Category::fetch_all();
 <?php if (!empty($product->base->variants)): ?>
                     <fieldset>
 <?php foreach ($product->base->variants as $variant): ?>
-                        <input type="radio" name="<?= format_product_code($product->base) ?>-variant" <?= $variant->to_radio_attributes(selected_suffix: $product->base->variants[0]->variant->code_suffix) ?>>
+                        <label for="<?= format_full_code($variant) ?>" hidden="hidden">Select the <?= $variant->variant->display_name ?> variant</label>
+                        <input id="<?= format_full_code($variant) ?>" type="radio" name="<?= format_product_code($product->base) ?>-variant" <?= $variant->to_radio_attributes(selected_suffix: $product->base->variants[0]->variant->code_suffix) ?>>
 <?php endforeach ?>
                     </fieldset>
 <?php endif ?>

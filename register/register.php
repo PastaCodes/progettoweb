@@ -25,13 +25,13 @@ if (isset($_SESSION['username'])) {
         <form method="POST">
             <h2>Register</h2>
             <fieldset>
-                <label>
+                <label for="username">
                     Username <small><?= $register_error ? 'An account with that username already exists!' : ''?></small>
-                    <input minlength="1" maxlength="255" type="text" name="username" autocomplete="username" placeholder="Username" required="required">
+                    <input id="username" minlength="1" maxlength="255" type="text" name="username" autocomplete="username" placeholder="Username" required="required">
                 </label>
-                <label>
+                <label for="password">
                     Password <small></small>
-                    <input minlength="8" maxlength="255" type="password" name="password" autocomplete="new-password" placeholder="Password" required="required">
+                    <input id="password" minlength="8" maxlength="255" type="password" name="password" autocomplete="new-password" placeholder="Password" required="required">
                 </label>
                 <p><a href="login">I already have an account</a></p>
                 <input type="submit" value="Register">
