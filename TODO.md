@@ -1,7 +1,7 @@
 Before Sunday:
 - Checkout
 - Your orders (remember text when no orders are present!)
-- Vendor pages: (complete bundle page, make order page)
+- Make vendor order page
 - Mobile "first"
 
 Maybe:
