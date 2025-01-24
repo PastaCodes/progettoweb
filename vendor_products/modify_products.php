@@ -55,7 +55,7 @@ if ($button_action === 'update_product' || $button_action === 'create_product') 
         table: 'product_base',
         filters: ['code_name' => $product_id]
     );
-} else if ($button_action == 'update_variant') {
+} else if ($button_action == 'update_variant' || $button_action == 'create_variant') {
     // Get the data from the form
     
     // FIXME: Currently broken query, as it also needs the product_base_id
@@ -65,17 +65,30 @@ if ($button_action === 'update_product' || $button_action === 'create_product') 
     $ordinal = $_POST['variant_ordinal'];
     $price_override = $_POST['variant_price'];
     // Update that table's entry
-    $database->update(
-        table: 'product_variant',
-        data: [
-            'code_suffix' => $variant_id,
-            'ordinal' => $ordinal,
-            'display_name' => $display_name,
-            'color' => $color,
-            'price_override' => $price_override
-        ],
-        filters: ['product_variant.code_suffix' => $variant_id]
-    );
+    if ($button_action === 'create_variant') {
+        $database->insert(
+            table: 'product_variant',
+            data: [
+                'code_suffix' => $variant_id,
+                'ordinal' => $ordinal,
+                'display_name' => $display_name,
+                'color' => $color,
+                'price_override' => $price_override
+            ],
+        );
+    } else {
+        $database->update(
+            table: 'product_variant',
+            data: [
+                'code_suffix' => $variant_id,
+                'ordinal' => $ordinal,
+                'display_name' => $display_name,
+                'color' => $color,
+                'price_override' => $price_override
+            ],
+            filters: ['product_variant.code_suffix' => $variant_id]
+        );
+    }
 } else if ($button_action == 'delete_variant') {
     // Quick and easy query to delete a product from the db
     
@@ -85,8 +98,6 @@ if ($button_action === 'update_product' || $button_action === 'create_product') 
         table: 'product_variant',
         filters: ['code_suffix' => $variant_id]
     );
-} else if ($button_action == 'create_variant') {
-    // TODO: Create a new variant with form data
 }
 
 $products = Product::fetch_products();
