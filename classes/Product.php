@@ -91,8 +91,8 @@ class Product {
             if (!array_key_exists($products_row['code_name'], $products)) {
                 $product = $products[$products_row['code_name']] = Product::from($products_row['code_name'], $products_row['code_suffix']);
                 $product->base->display_name = $products_row['product_base.display_name'];
-                $product->base->price_min = $products_row['price_min'];
-                $product->base->price_max = $products_row['price_max'];
+                $product->base->price_min = $products_row['min_price'];
+                $product->base->price_max = $products_row['max_price'];
                 $product->base->variants = [];
                 $variant_product = $product;
             } else {
@@ -115,14 +115,9 @@ class Product {
             table: 'product_base',
             joins: [
                 [
-                    'type' => 'INNER',
-                    'table' => 'product_info',
-                    'on' => 'product_info.base = code_name',
-                ],
-                [
                     'type' => 'LEFT',
                     'table' => 'product_variant',
-                    'on' => 'product_variant.base = code_name AND (code_suffix is null or variant = code_suffix)',
+                    'on' => 'product_variant.base = code_name',
                 ]
             ],
             filters: ['code_name' => $this->base->code_name],
@@ -146,7 +141,7 @@ class Product {
                     $variant_product->variant->color = $details_row['color'];
                     $this->base->variants[] = $variant_product;
                 }
-                $variant_product->price = $details_row['price'];
+                $variant_product->price = $details_row['price_override'] ?? $details_row['price_base'];
             }
         }
     }
