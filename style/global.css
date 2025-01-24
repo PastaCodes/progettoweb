@@ -250,17 +250,17 @@ dialog:nth-last-of-type(2) > article > ul > li * {
     margin-bottom: 0;
 }
 
-dialog:nth-last-of-type(2) > article > ul > li > button {
+dialog:nth-last-of-type(2) > article > ul > li > button, dialog:nth-last-of-type(2) > article > ul > li > form > button  {
     width: 2rem;
     height: 2rem;
     padding: 0;
 }
 
-dialog:nth-last-of-type(2) > article > ul > li > button > svg {
+dialog:nth-last-of-type(2) > article > ul > li > button > svg, dialog:nth-last-of-type(2) > article > ul > li > form > button > svg {
     margin: auto;
 }
 
-dialog:nth-last-of-type(2) > article > ul > li > button:first-of-type {
+dialog:nth-last-of-type(2) > article > ul > li > form {
     grid-row: 1;
     grid-column: 2;
 }
