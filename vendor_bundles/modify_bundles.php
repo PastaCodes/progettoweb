@@ -48,13 +48,44 @@ if ($button_action === 'update_bundle' || $button_action === 'create_bundle') {
         table: 'bundle',
         filters: ['code_name' => $bundle_id]
     );
-} else if ($button_action == 'update_bundle_product' || $button_action == 'create_bundle_product') {
+} else if ($button_action == 'update_bundle_product' || $button_action === 'create_bundle_product') {
     // Get the data from the form
+    $product_id = $_POST['bundle_product'];
+    $ordinal = $_POST['product_ordinal'];
     // Update that table's entry
-    
-} else if ($button_action == 'delete_variant') {
-    // Quick and easy query to delete a product from the db
-    
+    if ($button_action === 'create_bundle_product') {
+        $database->insert(
+            table: 'product_in_bundle',
+            data: [
+                'base' => $product_id, 
+                'bundle' => $bundle_id, 
+                'ordinal' => $ordinal, 
+            ]
+        );
+    } else {
+        $database->update(
+            table: 'product_in_bundle',
+            data: [
+                'base' => $product_id, 
+                'bundle' => $bundle_id, 
+                'ordinal' => $ordinal, 
+            ],
+            filters: [
+                'product_in_bundle.bundle' => $bundle_id,
+                'product_in_bundle.base' => $product_id
+            ]
+        );
+    }
+} else if ($button_action == 'delete_bundle_product') {
+    // Quick and easy query to delete a bundle from the db
+    $product_id = $_POST['bundle_product'];
+    $database->delete(
+        table: 'product_in_bundle',
+        filters: [
+            'base' => $product_id,
+            'bundle' => $bundle_id
+        ]
+    );    
 }
 
 $product_data = $database->find(
@@ -86,7 +117,7 @@ foreach ($bundle_data as $bundle_row) {
             'products' => []
         ];
     }
-    if (!isset($bundles[$bundle_row['code_name']]['products'])) {
+    if ($bundle_row['base']) {
         $bundles[$bundle_row['code_name']]['products'][] = [
             'id' => $bundle_row['base'],
             'ordinal' => $bundle_row['ordinal']
@@ -94,9 +125,6 @@ foreach ($bundle_data as $bundle_row) {
     }
 }
 
-/* TODO:
- * Add functionality
- */
 ?>
     <main>
         <form>
@@ -138,7 +166,7 @@ foreach ($bundle_data as $bundle_row) {
 <?php foreach ($bundle['products'] as $bundle_product): ?>
                 <tr data-parent="<?= $bundle['id'] ?>">
                     <td colspan="2">
-                        <select form="<?= $bundle['id'] . '-' . $bundle_product['id'] ?>" name="product_0">
+                        <select form="<?= $bundle['id'] . '-' . $bundle_product['id'] ?>" name="bundle_product">
 <?php foreach ($product_data as $product): ?>
                             <option value="<?= $product['code_name'] ?>" <?php if ($bundle_product['id'] == $product['code_name']): ?>selected="selected"<?php endif ?>><?= $product['display_name'] ?></option>
 <?php endforeach ?>
@@ -149,18 +177,18 @@ foreach ($bundle_data as $bundle_row) {
                     </td>
                     <td></td>        
                     <td>
-                        <button form="<?= $bundle['id']. '-' . $bundle_product['id'] ?>" type="submit" name="button_action" value="update_bundle_product">Upd</button>
+                        <button form="<?= $bundle['id']. '-' . $bundle_product['id'] ?>" type="submit" name="button_action" value="update_bundle_product:<?= $bundle['id'] ?>">Upd</button>
                     </td>
                     <td>
                         <form id="<?= $bundle['id'] . '-' . $bundle_product['id'] ?>" method="POST">
-                            <button type="submit" name="button_action" value="delete_bundle_product">Del</button>
+                            <button type="submit" name="button_action" value="delete_bundle_product:<?= $bundle['id'] ?>">Del</button>
                         </form>
                     </td>
                 </tr>
 <?php endforeach ?>
                 <tr data-parent="<?= $bundle['id'] ?>">
                     <td colspan="2">
-                        <select form="<?= $bundle['id'] ?>-new-bundle-product" name="new_product">
+                        <select form="<?= $bundle['id'] ?>-new-bundle-product" name="bundle_product">
 <?php foreach ($product_data as $product): ?>
                             <option value="<?= $product['code_name'] ?>"><?= $product['display_name'] ?></option>
 <?php endforeach ?>
@@ -171,7 +199,7 @@ foreach ($bundle_data as $bundle_row) {
                     </td>
                     <td colspan="3">
                         <form id="<?= $bundle['id'] ?>-new-bundle-product" method="POST">
-                            <button form="<?= $bundle['id'] ?>-new-bundle-product" type="submit" name="button_action" value="create_bundle_product">Add</button>
+                            <button form="<?= $bundle['id'] ?>-new-bundle-product" type="submit" name="button_action" value="create_bundle_product:<?= $bundle['id'] ?>">Add</button>
                         </form>
                     </td>
                 </tr>
