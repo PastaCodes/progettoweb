@@ -13,7 +13,9 @@ $button_action = null;
 if (isset($_POST['button_action'])) {
     $params = explode(':', $_POST['button_action']);
     $button_action = $params[0];
-    $product_base_id = $params[1];
+    if (isset($params[1])) {
+        $product_base_id = $params[1];
+    }
 }
 if ($button_action === 'update_product' || $button_action === 'create_product') {
     // Get the data from the form
@@ -196,86 +198,86 @@ $categories = Category::fetch_all();
 <?php foreach ($product->base->variants as $variant): ?>
                 <tr data-parent="<?= $product->base->code_name ?>">
                     <td>
-                        <input form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" minlength="1" maxlength="255" type="text" name="variant_code_name" value="<?= $variant->variant->code_suffix ?>" placeholder="Variant id" required="required">
+                        <input form="<?= $product->base->code_name . '-' . $variant->variant->code_suffix ?>" minlength="1" maxlength="255" type="text" name="variant_code_name" value="<?= $variant->variant->code_suffix ?>" placeholder="Variant id" required="required">
                     </td>
                     <td>
-                        <input form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" minlength="1" maxlength="255" type="text" name="variant_display_name" value="<?= $variant->variant->display_name ?>" placeholder="Display name" required="required">
+                        <input form="<?= $product->base->code_name . '-' . $variant->variant->code_suffix ?>" minlength="1" maxlength="255" type="text" name="variant_display_name" value="<?= $variant->variant->display_name ?>" placeholder="Display name" required="required">
                     </td>
                     <td>
-                        <input form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="color" name="variant_color" value="#<?= $variant->variant->color?>">
+                        <input form="<?= $product->base->code_name . '-' . $variant->variant->code_suffix ?>" type="color" name="variant_color" value="#<?= $variant->variant->color?>">
                     </td>
                     <td>
-                        <input form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="number" name="variant_ordinal" value="<?= $variant->variant->ordinal ?>" required="required">
+                        <input form="<?= $product->base->code_name . '-' . $variant->variant->code_suffix ?>" type="number" name="variant_ordinal" value="<?= $variant->variant->ordinal ?>" required="required">
                     </td>
                     <td>
-                        <input form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" step="0.01" type="number" name="variant_price"<?php if ($variant->price !== false): ?> value="<?= number_format($variant->price, 2, thousands_separator: '') ?>"<?php endif ?>>
+                        <input form="<?= $product->base->code_name . '-' . $variant->variant->code_suffix ?>" step="0.01" type="number" name="variant_price"<?php if ($variant->price !== false): ?> value="<?= number_format($variant->price, 2, thousands_separator: '') ?>"<?php endif ?>>
                     </td>
                     <td></td>
                     <td></td>
                     <td>
-                        <button form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="submit" name="button_action" value="update_variant:<?= $product->base->code_name ?>">Update</button>
+                        <button form="<?= $product->base->code_name . '-' . $variant->variant->code_suffix ?>" type="submit" name="button_action" value="update_variant:<?= $product->base->code_name ?>">Update</button>
                     </td>
                     <td>
-                        <form id="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" method="POST">
-                            <button form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="submit" name="button_action" value="delete_variant:<?= $product->base->code_name ?>">Delete</button>
+                        <form id="<?= $product->base->code_name . '-' . $variant->variant->code_suffix ?>" method="POST">
+                            <button form="<?= $product->base->code_name . '-' . $variant->variant->code_suffix ?>" type="submit" name="button_action" value="delete_variant:<?= $product->base->code_name ?>">Delete</button>
                         </form>
                     </td>
                 </tr>
 <?php endforeach ?>
                 <tr data-parent="<?= $product->base->code_name ?>">
                     <td>
-                        <input form="<?= $product->base->code_name . '_new_variant' ?>" minlength="1" maxlength="255" type="text" name="variant_code_name" value="" placeholder="Variant id" required="required">
+                        <input form="<?= $product->base->code_name . '-new-variant' ?>" minlength="1" maxlength="255" type="text" name="variant_code_name" value="" placeholder="Variant id" required="required">
                     </td>
                     <td>
-                        <input form="<?= $product->base->code_name . '_new_variant' ?>" minlength="1" maxlength="255" type="text" name="variant_display_name" value="" placeholder="Display name" required="required">
+                        <input form="<?= $product->base->code_name . '-new-variant' ?>" minlength="1" maxlength="255" type="text" name="variant_display_name" value="" placeholder="Display name" required="required">
                     </td>
                     <td>
-                        <input form="<?= $product->base->code_name . '_new_variant'?>" type="color" name="variant_color">
+                        <input form="<?= $product->base->code_name . '-new-variant'?>" type="color" name="variant_color">
                     </td>
                     <td>
-                        <input form="<?= $product->base->code_name . '_new_variant'?>" type="number" name="variant_ordinal" required="required">
+                        <input form="<?= $product->base->code_name . '-new-variant'?>" type="number" name="variant_ordinal" required="required">
                     </td>
                     <td>
-                        <input form="<?= $product->base->code_name . '_new_variant' ?>" step="0.01" type="number" name="variant_price">
+                        <input form="<?= $product->base->code_name . '-new-variant' ?>" step="0.01" type="number" name="variant_price">
                     </td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td>
-                        <form id="<?= $product->base->code_name . '_new_variant' ?>" method="POST">
-                            <button form="<?= $product->base->code_name . '_new_variant' ?>" type="submit" name="button_action" value="create_variant">Add</button>
+                        <form id="<?= $product->base->code_name . '-new-variant' ?>" method="POST">
+                            <button form="<?= $product->base->code_name . '-new-variant' ?>" type="submit" name="button_action" value="create_variant">Add</button>
                         </form>
                     </td>
                 </tr>
 <?php endforeach ?>
                 <tr>
                     <td>
-                        <input form="new_product" minlength="1" maxlength="255" type="text" name="base_code_name" placeholder="Product id" required="required">
+                        <input form="new-product" minlength="1" maxlength="255" type="text" name="base_code_name" placeholder="Product id" required="required">
                     </td>
                     <td>
-                        <input form="new_product" minlength="1" maxlength="255" type="text" name="base_display_name" placeholder="Display name" required="required">
+                        <input form="new-product" minlength="1" maxlength="255" type="text" name="base_display_name" placeholder="Display name" required="required">
                     </td>
                     <td>
-                        <select form="new_product" name="category">
+                        <select form="new-product" name="category">
 <?php foreach ($categories as $category): ?>
                             <option value="<?= $category['code_name'] ?>"<?php if ($category['code_name'] == ($_POST['category'] ?? null)): ?> selected="selected"<?php endif ?>><?= $category['display_name'] ?></option>
 <?php endforeach ?>
                         </select>
                     </td>
                     <td>
-                        <textarea form="new_product" minlength="1" maxlength="255" name="short_description" placeholder="Product description" required="required"></textarea>
+                        <textarea form="new-product" minlength="1" maxlength="255" name="short_description" placeholder="Product description" required="required"></textarea>
                     </td>
                     <td>
-                        <input form="new_product" step="0.01" type="number" name="base_price" required="required">
+                        <input form="new-product" step="0.01" type="number" name="base_price" required="required">
                     </td>
                     <td>
-                        <input form="new_product" type="checkbox" name="is_standalone">
+                        <input form="new-product" type="checkbox" name="is_standalone">
                     </td>
                     <td></td>
                     <td></td>
                     <td>
-                        <form id="new_product" method="POST">
-                            <button form="new_product" type="submit" name="button_action" value="create_product">Add</button>
+                        <form id="new-product" method="POST">
+                            <button form="new-product" type="submit" name="button_action" value="create_product">Add</button>
                         </form>
                     </td>
                 </tr>
