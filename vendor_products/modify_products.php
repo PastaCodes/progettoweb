@@ -20,7 +20,7 @@ if ($button_action === 'update_product' || $button_action === 'create_product') 
     $category = $_POST['category'];
     $short_description = $_POST['short_description'];
     // Ensure the boolean is an integer
-    $is_standalone = ($_POST['is_standalone'] ?? 0) ? 1 : 0;
+    $is_standalone = ($_POST['is_standalone'] ?? false) ? 1 : 0;
     // Update that table's entry
     if ($button_action === 'create_product') {
         $database->insert(
@@ -155,7 +155,7 @@ $categories = Category::fetch_all();
                         <button form="<?= $product->base->code_name ?>" type="submit" name="button_action" value="update_product">Update</button>
                     </td>
                     <td>
-                        <form id="<?= $product->base->code_name ?>" action="vendor_products" method="POST">
+                        <form id="<?= $product->base->code_name ?>" method="POST">
                             <button form="<?= $product->base->code_name ?>" type="submit" name="button_action" value="delete_product">Delete</button>
                         </form>
                     </td>
@@ -183,7 +183,7 @@ $categories = Category::fetch_all();
                         <button form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="submit" name="button_action" value="update_variant">Update</button>
                     </td>
                     <td>
-                        <form id="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" action="vendor_products" method="POST">
+                        <form id="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" method="POST">
                             <button form="<?= $product->base->code_name . '_' . $variant->variant->code_suffix ?>" type="submit" name="button_action" value="delete_variant">Delete</button>
                         </form>
                     </td>
@@ -209,7 +209,7 @@ $categories = Category::fetch_all();
                     <td></td>
                     <td></td>
                     <td>
-                        <form id="<?= $product->base->code_name . '_new_variant' ?>" action="vendor_products" method="POST">
+                        <form id="<?= $product->base->code_name . '_new_variant' ?>" method="POST">
                             <button form="<?= $product->base->code_name . '_new_variant' ?>" type="submit" name="button_action" value="create_variant">Add</button>
                         </form>
                     </td>
@@ -241,7 +241,7 @@ $categories = Category::fetch_all();
                     <td></td>
                     <td></td>
                     <td>
-                        <form id="new_product" action="vendor_products" method="POST">
+                        <form id="new_product" method="POST">
                             <button form="new_product" type="submit" name="button_action" value="create_product">Add</button>
                         </form>
                     </td>

@@ -37,4 +37,3 @@ php_value session.use_strict_mode 1
 php_value realpath_cache_size 4096K
 php_value realpath_cache_ttl 600
 php_value default_socket_timeout 60
-
