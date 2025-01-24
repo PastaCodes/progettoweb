@@ -21,6 +21,8 @@ const SETTINGS = [
     'theme-color' => '#0172AD'
 ];
 define('DOCUMENT_ROOT', $_SERVER['DOCUMENT_ROOT'] . (SETTINGS['hosted-locally'] ? '/IsiFitGems/' : '/'));
+$base_url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . (SETTINGS['hosted-locally'] ? '/IsiFitGems/' : '/');
+$url_rel = substr($_SERVER['REQUEST_URI'], strlen(SETTINGS['hosted-locally'] ? '/IsiFitGems/' : '/'));
 $page = new Page();
 $page->scripts = [Script::external('scripts/global.js', 'module')];
 $page->stylesheets = ['style/pico.classless.min.css', 'style/global.css'];

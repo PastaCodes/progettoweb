@@ -38,11 +38,7 @@ if (isset($_SESSION['username'])) {
 <?php else: ?>
         <meta name="robots" content="none">
 <?php endif ?>
-        <base href="<?=
-            (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') .
-            $_SERVER['HTTP_HOST'] .
-            (SETTINGS['hosted-locally'] ? '/IsiFitGems/' : '/')
-        ?>" target="_self">
+        <base href="<?= $base_url ?>" target="_self">
 <?php foreach ($page->stylesheets as $stylesheet): ?>
         <link rel="stylesheet" type="text/css" href="<?= $stylesheet ?>">
 <?php endforeach ?>
@@ -99,7 +95,7 @@ if (isset($_SESSION['username'])) {
 <?php endif ?>
                     <li>
 <?php if (isset($_SESSION['username'])): ?>
-                        <a href="<?= parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?>?logout=true">Logout <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/account.svg#account"></use></svg></a>
+                        <a href="login?logout=true">Logout <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/account.svg#account"></use></svg></a>
 <?php else: ?>
                         <a href="login">Login <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/account.svg#account"></use></svg></a>
 <?php endif ?>
