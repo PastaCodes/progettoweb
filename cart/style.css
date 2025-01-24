@@ -2,7 +2,15 @@
     --thumbnail-size: 10rem;
 }
 
-main > section > p {
+main > section {
+    text-align: right;
+}
+
+main > section * {
+    text-align: left;
+}
+
+main > section > p:nth-child(2) {
     margin: 2rem 4rem;
     color: var(--pico-muted-color);
     animation: fade-in 0.1s;
@@ -170,4 +178,16 @@ input[type="number"] {
         margin-bottom: 0;
         padding: 0;
     }
+}
+
+main > section > p:nth-last-child(2) {
+    text-align: right;
+    padding: var(--pico-spacing);
+    font-size: 140%;
+    margin: 0;
+}
+
+main > section > button:last-child {
+    justify-self: right;
+    margin-right: var(--pico-spacing);
 }

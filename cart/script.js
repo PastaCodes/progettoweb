@@ -23,21 +23,30 @@ window.addEventListener('load', () => {
         }
         return input.value = input.lastValidValue;
     };
-    // For each product within the cart
     let cartProductSections = Array.from(document.querySelectorAll('main > section > ul > li'));
+    const subtotalDisplay = document.querySelector('main > section > p:nth-last-child(2)');
+    const updateSubtotal = () => {
+        let subtotal = 0;
+        cartProductSections.forEach(cartProductSection => {
+            subtotal += cartProductSection.productUnitPrice * cartProductSection.quantity;
+        });
+        subtotalDisplay.innerHTML = 'Subtotal: ' + formatPrice(subtotal);
+    }
+    // For each product within the cart
     cartProductSections.forEach(cartProductSection => {
         // Get product data
         const inputProductQty = cartProductSection.querySelector('input');
         // Get price related stuff
         const fullCartProductPriceElt = cartProductSection.querySelector('p:nth-last-of-type(2)');
-        const productUnitPrice = parseFloat(cartProductSection.getAttribute('data-unit-price'));
+        cartProductSection.productUnitPrice = parseFloat(cartProductSection.getAttribute('data-unit-price'));
+        cartProductSection.quantity = parseInt(inputProductQty.value);
         // Get buttons
         const btnDelete = cartProductSection.querySelector('button:nth-last-of-type(1)');
         const btnDecrement = cartProductSection.querySelector('button:first-child');
         const btnIncrement = cartProductSection.querySelector('button:last-child');
         // Functions to streamline updating a product's values
-        const updatePrice = (quantity) => {
-            const newPrice = productUnitPrice * quantity;
+        const updatePrice = () => {
+            const newPrice = cartProductSection.productUnitPrice * cartProductSection.quantity;
             fullCartProductPriceElt.innerHTML = formatPrice(newPrice);
         };
         const updateIncDecButtons = (value) => {
@@ -52,7 +61,8 @@ window.addEventListener('load', () => {
         };
         const updateProductData = (newValue) => {
             const actualValue = setInputValue(inputProductQty, newValue);
-            updatePrice(actualValue);
+            cartProductSection.quantity = actualValue;
+            updatePrice();
             setQuantityInCart(cartProductSections.indexOf(cartProductSection), actualValue);
             updateIncDecButtons(actualValue); 
         };
@@ -60,6 +70,7 @@ window.addEventListener('load', () => {
         // Changing input value manually
         inputProductQty.addEventListener('change', () => {
             updateProductData(parseInt(inputProductQty.value));
+            updateSubtotal();
         });
         inputProductQty.lastValidValue = inputProductQty.value;
         inputProductQty.addEventListener('input', () => {
@@ -85,6 +96,10 @@ window.addEventListener('load', () => {
             // Set product quantity to 0
             setQuantityInCart(index, 0);
             cartProductSections.splice(index, 1);
+            if (cartProductSections.length === 0) {
+                document.querySelectorAll('main > section > :not(h1, ul)').forEach(el => el.remove());
+            }
+            updateSubtotal();
             // Disable all buttons
             inputProductQty.disabled = true;
             btnDelete.disabled = true;
@@ -103,10 +118,12 @@ window.addEventListener('load', () => {
         // Decrement product quantity
         btnDecrement.addEventListener('click', () => {
             updateProductData(parseInt(inputProductQty.value) - 1);
+            updateSubtotal();
         });
         // Increment product quantity
         btnIncrement.addEventListener('click', () => {
             updateProductData(parseInt(inputProductQty.value) + 1);
+            updateSubtotal();
         });
     });
 });
