@@ -135,11 +135,6 @@ foreach ($products_result as $products_row) {
     $product->base->variants[] = $variant_product;
 }
 $categories = Category::fetch_all();
-
-/* TODO:
- * Add current data to category, short_description and is_standalone (also price and ordinal for variant)
- * cant be asked to do even simple queries ;-;
- */
 ?>
     <main>
         <table>

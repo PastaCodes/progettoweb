@@ -2,11 +2,12 @@
 declare(strict_types = 1);
 
 // Handle session
-if (!isset($_SESSION['username'])) {
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 // Handle logout
 if (isset($_GET['logout'])) {
+    session_unset();
     session_destroy();
     header('Location: ../login');
     exit();
@@ -15,11 +16,7 @@ if (isset($_GET['logout'])) {
 require_once __DIR__ . '/../classes/Page.php';
 require_once __DIR__ . '/../classes/Script.php';
 require_once __DIR__ . '/files.php';
-
-const SETTINGS = [
-    'hosted-locally' => true,
-    'theme-color' => '#0172AD'
-];
+require_once __DIR__ . '/settings.php';
 define('DOCUMENT_ROOT', $_SERVER['DOCUMENT_ROOT'] . (SETTINGS['hosted-locally'] ? '/IsiFitGems/' : '/'));
 $base_url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP_HOST'] . (SETTINGS['hosted-locally'] ? '/IsiFitGems/' : '/');
 $url_rel = substr($_SERVER['REQUEST_URI'], strlen(SETTINGS['hosted-locally'] ? '/IsiFitGems/' : '/'));
