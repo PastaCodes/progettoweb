@@ -8,7 +8,19 @@ $notifications = null;
 if (isset($_SESSION['username'])) {
     require_once __DIR__ . '/../classes/Notification.php';
     $notifications = Notification::fetch_all_of($_SESSION['username']);
+    // Delete notification
+    if (isset($_POST['delete_notification'])) {
+        require_once __DIR__ . '/../classes/Database.php';
+        $database->delete(
+            table: 'notification', 
+            filters: [
+                'id' => $_POST['delete_notification'], 
+                'username' => $_SESSION['username']
+            ]
+        );
+    }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -154,15 +166,17 @@ if (isset($_SESSION['username'])) {
                         <p><?= $notification->content ?></p>
                         <p>Moments ago</p>
                         <button title="Mark as read">
-                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
-                                <use href="assets/unread.svg#unread"></use>
-                            </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                            <use href="assets/unread.svg#unread"></use>
+                        </svg>
                         </button>
-                        <button title="Delete">
-                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
-                                <use href="assets/remove.svg#remove"></use>
-                            </svg>
-                        </button>
+                        <form method="POST">
+                            <button name="delete_notification" value="<?= $notification->id ?>" type="submit" title="Delete">
+                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                                    <use href="assets/remove.svg#remove"></use>
+                                </svg>
+                            </button>
+                        </form>
                     </li>
 <?php endforeach ?>
                 </ul>
