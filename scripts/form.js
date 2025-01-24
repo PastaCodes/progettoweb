@@ -1,8 +1,6 @@
 export function setupForm(formElement, usernameInput, passwordInput, isLogin = false) {
     const checkErr = (errFun, input) => {
         if (isLogin) {
-            input.setAttribute('aria-invalid', false);
-            input.parentElement.querySelector('small').innerHTML = '';
             return;
         }
         const err = errFun(input);
