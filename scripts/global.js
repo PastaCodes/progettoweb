@@ -199,7 +199,14 @@ document.addEventListener('DOMContentLoaded', () => {
         notifications.querySelectorAll('article > ul > li > button:last-of-type').forEach(btn => {
             btn.addEventListener('click', () => {
                 const notificationId = btn.parentElement.getAttribute('data-id');
-                console.log('ERASE', notificationId);
+                fetch(window.location.href, {
+                    method: 'POST',
+                    body: new URLSearchParams({ 'delete_notification': notificationId }).toString(),
+                    headers: {
+                        'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                    }
+                });
+                btn.parentElement.remove();
             });
         });
         updateUnreadCounter();
