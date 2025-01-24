@@ -2,7 +2,7 @@
 - Landing page
 - Checkout
 - Your orders (remember text when no orders are present!)
-- VENDOR PAGE(S)
+- Vendor pages: (complete product and bundle pages, make order page)
 - Mobile "first"
 - Mockup
 

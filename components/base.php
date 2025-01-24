@@ -66,12 +66,24 @@ if (isset($_SESSION['username'])) {
                     <li>
                         <a>Support</a>
                     </li>
+<?php if (isset($_SESSION['vendor']) && $_SESSION['vendor']): ?>
+                    <li>
+                        <a href="">Check Orders</a>
+                    </li>
+                    <li>
+                        <a href="vendor_products">Edit Products</a>
+                    </li>
+                    <li>
+                        <a href="vendor_bundles">Edit Bundles</a>
+                    </li>
+<?php else: ?>
                     <li>
                         <a href="">Your orders <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/orders.svg#orders"></use></svg></a>
                     </li>
                     <li>
                         <a href="cart">Your cart <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/cart.svg#cart"></use></svg></a>
                     </li>
+<?php endif ?>
                     <li>
 <?php if (isset($_SESSION['username'])): ?>
                         <a href="<?= parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?>?logout=true">Logout <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/account.svg#account"></use></svg></a>
