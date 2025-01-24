@@ -29,14 +29,9 @@ class Cart {
                 table: 'product_base',
                 joins: [
                     [
-                        'type' => 'INNER',
-                        'table' => 'product_info',
-                        'on' => 'product_info.base = code_name',
-                    ],
-                    [
                         'type' => 'LEFT',
                         'table' => 'product_variant',
-                        'on' => 'product_variant.base = code_name and (code_suffix is null or variant = code_suffix)',
+                        'on' => 'product_variant.base = code_name',
                     ]
                 ],
                 filters: ['product_base.code_name' => $product_entries],
@@ -55,7 +50,7 @@ class Cart {
                     [
                         'type' => 'INNER',
                         'table' => 'bundle_price',
-                        'on' => 'bundle_price.code_name = bundle.code_name',
+                        'on' => 'bundle_price.bundle = bundle.code_name',
                     ],
                     [
                         'type' => 'INNER',
@@ -105,7 +100,7 @@ class Cart {
             if ($entry instanceof ProductEntry) {
                 $product_row = $entry->product->array_get($product_details);
                 $entry->product->base->display_name = $product_row['product_base.display_name'];
-                $entry->product->price = $product_row['price'];
+                $entry->product->price = $product_row['price_override'] ?? $product_row['price_base'];
                 if ($entry->product->variant !== null) {
                     $entry->product->variant->display_name = $product_row['product_variant.display_name'];
                 }

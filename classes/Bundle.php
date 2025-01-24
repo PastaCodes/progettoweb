@@ -82,7 +82,7 @@ class Bundle {
                 [
                     'type'=> 'LEFT',
                     'table' => 'bundle_price',
-                    'on' => 'bundle_price.code_name = product_in_bundle.bundle and (bundle_price.variant is null or bundle_price.variant = bundle_variant.code_suffix)',
+                    'on' => 'bundle_price.bundle = product_in_bundle.bundle and (bundle_price.variant is null or bundle_price.variant = bundle_variant.code_suffix)',
                 ],
                 [
                     'type' => 'LEFT',
