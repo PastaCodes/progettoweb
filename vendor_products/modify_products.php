@@ -1,4 +1,10 @@
 <?php
+// Check if vendor
+if (!isset($_SESSION['vendor'])) {
+    header('Location: ../shop');
+    exit();
+}
+
 require_once '../classes/Product.php';
 require_once '../classes/Category.php';
 
@@ -6,7 +12,7 @@ $button_action = null;
 if (isset($_POST['button_action'])) {
     $button_action = $_POST['button_action'];
 }
-if ($button_action == 'update_product') {
+if ($button_action === 'update_product' || $button_action === 'create_product') {
     // Get the data from the form
     $product_id = $_POST['base_code_name'];
     $display_name = $_POST['base_display_name'];
@@ -16,18 +22,32 @@ if ($button_action == 'update_product') {
     // Ensure the boolean is an integer
     $is_standalone = ($_POST['is_standalone'] ?? 0) ? 1 : 0;
     // Update that table's entry
-    $database->update(
-        table: 'product_base',
-        data: [
-            'code_name' => $product_id, 
-            'display_name' => $display_name, 
-            'category' => $category, 
-            'short_description' => $short_description,
-            'price_base' => $base_price,
-            'standalone' => $is_standalone
-        ],
-        filters: ['product_base.code_name' => $product_id]
-    );
+    if ($button_action === 'create_product') {
+        $database->insert(
+            table: 'product_base',
+            data: [
+                'code_name' => $product_id, 
+                'display_name' => $display_name, 
+                'category' => $category, 
+                'short_description' => $short_description,
+                'price_base' => $base_price,
+                'standalone' => $is_standalone
+            ]
+        );
+    } else {
+        $database->update(
+            table: 'product_base',
+            data: [
+                'code_name' => $product_id, 
+                'display_name' => $display_name, 
+                'category' => $category, 
+                'short_description' => $short_description,
+                'price_base' => $base_price,
+                'standalone' => $is_standalone
+            ],
+            filters: ['product_base.code_name' => $product_id]
+        );
+    }
 } else if ($button_action == 'delete_product') {
     // Quick and easy query to delete a product from the db
     $product_id = $_POST['base_code_name'];
@@ -35,8 +55,6 @@ if ($button_action == 'update_product') {
         table: 'product_base',
         filters: ['code_name' => $product_id]
     );
-} else if ($button_action == 'create_product') {
-    // TODO: Create a new product with form data
 } else if ($button_action == 'update_variant') {
     // Get the data from the form
     
@@ -104,7 +122,7 @@ $categories = Category::fetch_all();
                     <td>
                         <select form="<?= $product->base->code_name ?>" name="category">
 <?php foreach ($categories as $category): ?>
-                            <option value="<?= $category['display_name'] ?>"<?php if ($category['display_name'] == ($_POST['category'] ?? null)): ?> selected="selected"<?php endif ?>><?= $category['display_name'] ?></option>
+                            <option value="<?= $category['display_name'] ?>"><?= $category['display_name'] ?></option>
 <?php endforeach ?>
                         </select>
                     </td>
