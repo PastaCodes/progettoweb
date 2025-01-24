@@ -94,7 +94,11 @@ foreach ($bundle_data as $bundle_row) {
                     <td>
                         <input form="<?= $bundle['id']. '-' . $bundle_product['id'] ?>" type="number" name="product_ordinal" value="<?= $bundle_product['ordinal'] ?>" required="required">
                     </td>
-                    <td colspan="3">
+                    <td></td>        
+                    <td>
+                        <button form="<?= $bundle['id']. '-' . $bundle_product['id'] ?>" type="submit" name="button_action" value="update_bundle_product">Upd</button>
+                    </td>
+                    <td>
                         <form id="<?= $bundle['id'] . '-' . $bundle_product['id'] ?>" method="POST">
                             <button type="submit" name="button_action" value="delete_bundle_product">Del</button>
                         </form>
