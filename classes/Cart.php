@@ -43,7 +43,7 @@ class Cart {
             }
         }
         if (!empty($bundle_entries)) {
-            // Fetch bundle details TODO
+            // Fetch bundle details
             $bundles_result = $database->find(
                 table: 'bundle',
                 joins: [
@@ -82,16 +82,24 @@ class Cart {
             foreach ($bundles_result as $bundle_row) {
                 if (!array_key_exists($bundle_row['bundle.code_name'], $bundle_display_names)) {
                     $bundle_display_names[$bundle_row['bundle.code_name']] = $bundle_row['bundle.display_name'];
-                    $bundle_prices[$bundle_row['bundle.code_name']] = $bundle_row['price_with_discount'];
                     $bundle_products[$bundle_row['bundle.code_name']] = [];
-                }
-                if ($bundle_row['variant'] === $bundle_entries[$bundle_row['bundle.code_name']]) {
-                    if (!array_key_exists($bundle_row['bundle.code_name'], $bundle_variant_display_names)) {
-                        $bundle_variant_display_names[$bundle_row['bundle.code_name']] = $bundle_row['product_variant.display_name'];
+                    if ($bundle_row['variant'] === null) {
+                        $bundle_prices[$bundle_row['bundle.code_name']] = $bundle_row['price_with_discount'];
+                    } else {
+                        $bundle_prices[$bundle_row['bundle.code_name']] = [];
                     }
+                    $bundle_variant_display_names[$bundle_row['bundle.code_name']] = [];
+                }
+                if ($bundle_row['variant'] !== null && !array_key_exists($bundle_row['variant'], $bundle_prices[$bundle_row['bundle.code_name']])) {
+                    $bundle_prices[$bundle_row['bundle.code_name']][$bundle_row['variant']] = $bundle_row['price_with_discount'];
+                }
+                if ($bundle_row['variant'] !== null && !array_key_exists($bundle_row['variant'], $bundle_variant_display_names[$bundle_row['bundle.code_name']])) {
+                    $bundle_variant_display_names[$bundle_row['bundle.code_name']][$bundle_row['variant']] = $bundle_row['product_variant.display_name'];
+                }
+                if (!array_key_exists($bundle_row['product_base.code_name'], $bundle_products[$bundle_row['bundle.code_name']])) {
                     $product = new ProductBase($bundle_row['product_base.code_name']);
                     $product->display_name = $bundle_row['product_base.display_name'];
-                    $bundle_products[$bundle_row['bundle.code_name']][] = $product;
+                    $bundle_products[$bundle_row['bundle.code_name']][$bundle_row['product_base.code_name']] = $product;
                 }
             }
         }
@@ -106,11 +114,15 @@ class Cart {
                 }
             } else { /* BundleEntry */
                 $entry->bundle->display_name = $bundle_display_names[$entry->bundle->code_name];
-                $entry->bundle->price_with_discount = $bundle_prices[$entry->bundle->code_name];
+                if ($entry->bundle->selected_suffix === null) {
+                    $entry->bundle->price_with_discount = $bundle_prices[$entry->bundle->code_name];
+                } else {
+                    $entry->bundle->price_with_discount = $bundle_prices[$entry->bundle->code_name][$entry->bundle->selected_suffix];
+                }
                 $variant = null;
                 if ($entry->bundle->selected_suffix !== null) {
                     $variant = new ProductVariant($entry->bundle->selected_suffix);
-                    $variant->display_name = $bundle_variant_display_names[$entry->bundle->code_name];
+                    $variant->display_name = $bundle_variant_display_names[$entry->bundle->code_name][$entry->bundle->selected_suffix];
                     $entry->bundle->variants = [$variant->code_suffix => new BundleVariant($variant)];
                 } else {
                     $entry->bundle->variants = [];

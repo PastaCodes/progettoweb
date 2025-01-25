@@ -15,8 +15,9 @@ body {
     font-size: calc(1em * var(--font-size-adjust));
 }
 
-input, select, textarea {
+input:not([type="radio"]), select, textarea, button, a[role="button"] {
     font-size: calc(1rem * var(--font-size-adjust)) !important;
+    height: fit-content !important;
 }
 
 body > main, body > header, body > footer {
@@ -196,7 +197,7 @@ body > ul {
 
 body > ul > li > button {
     padding: 0.5rem;
-    font-size: 2rem;
+    font-size: 2rem !important;
 }
 
 body > footer > ul {
