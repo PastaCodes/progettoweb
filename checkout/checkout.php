@@ -55,7 +55,7 @@ $cart->fetch_details();
                 <p>Tax included</p>
                 <p>Free shipping</p>
             </section>
-            <form action="api" method="POST">
+            <form action="api/" method="POST">
                 <fieldset>
                     <legend>Shipment details</legend>
                     <label for="shipping-address">Shipping address</label>

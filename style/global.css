@@ -15,6 +15,10 @@ body {
     font-size: calc(1em * var(--font-size-adjust));
 }
 
+input, select, textarea {
+    font-size: calc(1rem * var(--font-size-adjust)) !important;
+}
+
 body > main, body > header, body > footer {
     contain: layout;
 }

@@ -1,17 +1,15 @@
 IndexIgnore *
-
 RewriteEngine On
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-RewriteCond %{REQUEST_URI} \.([pP][hH][pP])$
-RewriteRule . - [L,R=404]
+RewriteRule \.([pP][hH][pP])$ - [R=404,L]
 # Error Reporting Configuration
 php_value display_errors 1
 php_value display_startup_errors 1
 php_value error_reporting 32767
 # Session Configuration
 php_value session.gc_maxlifetime 1440
-php_value session.cookie_lifetime 0 
+php_value session.cookie_lifetime 0
 php_value session.cookie_secure 1
 php_value session.cookie_httponly 1
 php_value session.cookie_samesite Strict
