@@ -6,13 +6,32 @@ if (!isset($_SESSION['vendor']) || $_SESSION['vendor'] !== true) {
 }
 require_once '../util/db.php';
 
+
+$order_id = null;
+$username = null;
 if (isset($_POST['order_id'])) {
-    $order_id = $_POST['order_id'];
+    $params = explode(':', $_POST['order_id']);
+    $order_id = $params[0];
+    if (isset($params[1])) {
+        $username = $params[1];
+    }
+}
+if ($order_id) {
     $status = $_POST['status'];
     $database->update(
         table: 'order_request',
         data: ['order_status' => $status],
         filters: ['id' => $order_id]
+    );
+    $database->insert(
+        table: 'notification',
+        data: [
+            [
+                'title' => 'Update on your order!',
+                'content' => "One of your order\'s status has updated to $status, check the orders page for more information.",
+                'username' => $username
+            ]
+        ]
     );
 }
 
@@ -96,7 +115,7 @@ foreach ($orders_data as $order_data) {
                     </td>
                     <td>
                         <form id="order-<?= $order['id'] ?>" method="POST">
-                            <button type="submit" name="order_id" value="<?= $order['id'] ?>">Update Status</button>
+                            <button type="submit" name="order_id" value="<?= $order['id'] . ':' . $order['user'] ?>">Update Status</button>
                         </form>
                     </td>
                 </tr>
