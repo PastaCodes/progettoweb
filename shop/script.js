@@ -79,7 +79,7 @@ window.addEventListener('load', () => {
                 thumbnailElement = noThumbnail;
             }
         }
-        article.radios = Array.from(radiosSection.children);
+        article.radios = Array.from(radiosSection.querySelectorAll('input'));
         // When hovering over a radio button, the associated thumbnail is displayed
         // Otherwise the one associated with the checked button is displayed
         const setArticleLink = (radio) => {
