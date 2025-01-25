@@ -1,0 +1,21 @@
+tr > td > ul > li {
+    display: flex;
+    justify-content: space-between;
+}
+
+tr > td > ul > li > p:first-of-type {
+    text-align: left;
+    margin: 0;
+}
+
+tr > td > ul > li > p:nth-of-type(2) {
+    text-align: center;
+    margin: 0;
+}
+
+tr > td > ul > li > p:last-of-type {
+    text-align: right;
+    margin: 0;
+}
+
+

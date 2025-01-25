@@ -121,6 +121,7 @@ create table order_request (
 create table order_entry (
     id int(11) auto_increment,
     order_request int(11) not null,
+    quantity int(11) not null,
     product_base varchar(255) null default null,
     bundle varchar(255) null default null,
     variant varchar(255) null default null,
