@@ -69,6 +69,7 @@ $bundle->fetch_details();
                 </section>
 <?php endif ?>
                 <p><del><?= format_price($bundle->price_before_discount) ?></del> <ins><?= format_price($bundle->price_with_discount) ?></ins></p>
+<?php if (!($_SESSION['vendor'] ?? false)): ?>
 <?php if (($quantity = $bundle->quantity_in_cart()) > 0): ?>
                 <fieldset role="group">
                     <a href="cart">
@@ -91,6 +92,7 @@ $bundle->fetch_details();
                     </svg>
                     Add to cart
                 </button>
+<?php endif ?>
 <?php endif ?>
             </section>
         </main>

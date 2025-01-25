@@ -113,6 +113,7 @@ create table notification (
 create table order_request (
     id int(11) auto_increment,
     username varchar(255) not null,
+    created_at datetime not null default current_timestamp(),
     order_status enum('pending', 'shipped', 'delivered') not null default 'pending',
     constraint primary key (id),
     constraint foreign key (username) references account(username) on update cascade on delete cascade

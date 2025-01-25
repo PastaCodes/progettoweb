@@ -58,7 +58,7 @@ $product->fetch_all_details();
 <?php endif ?>
                 <p><?= format_price($product->price) ?></p>
 <?php if ($product->base->is_standalone): ?>
-<?php if (!isset($_SESSION['vendor'])): ?>
+<?php if (!($_SESSION['vendor'] ?? false)): ?>
 <?php if (($quantity = $product->quantity_in_cart()) > 0): ?>
                 <fieldset role="group">
                     <a href="cart">

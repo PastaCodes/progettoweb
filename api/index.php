@@ -3,6 +3,16 @@
 session_start();
 if (isset($_SESSION['username'])) {
     require_once '../util/db.php';
+    // Order request
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order'])) {
+        $order_id = $database->insert(
+            table: 'order_request',
+            data: ['username' => $_SESSION['username']]
+        );
+        // TODO add order entries
+        header('Location: ../orders');
+        exit();
+    }
     // Delete notification request
     if ($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET['delete_notification'])) {
         $database->delete(

@@ -1,6 +1,6 @@
 <?php
 // Check if vendor
-if (!isset($_SESSION['vendor'])) {
+if (!isset($_SESSION['vendor']) || $_SESSION['vendor'] !== true) {
     header('Location: ../shop');
     exit();
 }
