@@ -40,7 +40,8 @@ if (isset($_SESSION['username'])) {
             table: 'order_entry',
             data: $order_entries
         );
-        setcookie('cart', '', -1);
+        unset($_COOKIE['cart']);
+        setcookie('cart', '', -1, '/');
         header('Location: ../orders');
         exit();
     }
