@@ -1,0 +1,41 @@
+main > section > p:nth-child(2) {
+    margin: 2rem 4rem;
+    color: var(--pico-muted-color);
+}
+
+main > section > ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pico-spacing);
+}
+
+main > section > ul > li {
+    padding: var(--pico-spacing);
+    border-radius: var(--pico-border-radius);
+    background-color: var(--pico-card-background-color);
+    box-shadow: var(--pico-card-box-shadow);
+}
+
+main > section > ul > li > h2 {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 140%;
+}
+
+main > section > ul > li > ul {
+    margin-inline-start: 1.4em;
+    margin-bottom: var(--spacing-small);
+}
+
+main > section > ul > li > ul > li::marker {
+    content: unset;
+}
+
+main > section > ul > li > p:nth-child(5) {
+    margin-bottom: 0;
+}
+
+main > section > ul > li > progress {
+    margin-bottom: 0;
+    height: 0.8em;
+}

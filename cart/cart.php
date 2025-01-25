@@ -14,13 +14,13 @@ if (!empty($cart->entries)) {
 }
 ?>
         <template>
-            <p>There are no items in your cart. <a href="shop">Continue shopping.</a></p>
+            <p>There are no items in your cart. <a href="shop">Continue shopping</a>.</p>
         </template>
         <main>
             <section>
                 <h1>Your cart</h1>
 <?php if (empty($cart->entries)): ?>
-                <p>There are no items in your cart. <a href="shop">Continue shopping.</a></p>
+                <p>There are no items in your cart. <a href="shop">Continue shopping</a>.</p>
 <?php else: ?>
                 <ul>
 <?php foreach ($cart->entries as $entry): ?>

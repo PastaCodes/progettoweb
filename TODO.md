@@ -1,8 +1,9 @@
 Before Sunday:
-- Your orders (remember text when no orders are present!)
+- Trigger notifications!
 - Mobile "first"
 
-Maybe:
+Maybe (we won't):
+- Re-enable "add to cart" button for different variants
 - Show number of items in cart in navbar
 - "Also available in the ??? bundle"
 

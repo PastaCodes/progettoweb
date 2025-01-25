@@ -26,9 +26,9 @@ main > ul > li {
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-    padding: var(--pico-spacing) var(--pico-spacing);
+    padding: var(--pico-spacing);
     border-radius: var(--pico-border-radius);
-    background: var(--pico-card-background-color);
+    background-color: var(--pico-card-background-color);
     box-shadow: var(--pico-card-box-shadow);
     transition: box-shadow var(--pico-transition);
     user-select: none;

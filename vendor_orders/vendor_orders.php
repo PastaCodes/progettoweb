@@ -33,7 +33,7 @@ $orders_data = $database->find(
     ],
     options: [
         'order_by' => [
-            'created_at' => 'ASC'
+            'created_at' => 'DESC'
         ]
     ]
 );
@@ -59,7 +59,6 @@ foreach ($orders_data as $order_data) {
         ];
     }
 }
-
 ?>
     <main>
         <table>
