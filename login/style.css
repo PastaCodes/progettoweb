@@ -19,3 +19,9 @@ small {
     color: var(--pico-form-element-invalid-border-color);
     float: right;
 }
+
+small span {
+    border: var(--pico-border-width) solid var(--pico-form-element-border-color);
+    border-radius: var(--pico-border-radius);
+    padding: 0.2em;
+}
