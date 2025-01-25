@@ -46,9 +46,10 @@ foreach ($orders_data as $order_data) {
     }
     if ($order_data['product_base'] || $order_data['bundle']) {
         $orders[$order_id]['contents'][] = [
-            'id' => ($order_data['product_base'] ?? $order_data['bundle'] ?? '') . ($order_data['variant'] ?? ''),
+            'id' => ($order_data['product_base'] ?? $order_data['bundle'] ?? '') . ($order_data['variant'] ? ('_' . $order_data['variant']) : ''),
             'quantity' => $order_data['quantity'],
-            'price' => $order_data['price']
+            'price' => $order_data['price'],
+            'type' => $order_data['product_base'] ? 'Product' : 'Bundle'
         ];
     }
 }
@@ -99,7 +100,7 @@ foreach ($orders_data as $order_data) {
                                     <span><?= $order_element['quantity'] ?>x</span>
                                     <span><?= $order_element['id'] ?></span>
                                 </p>
-                                <p>Bundle</p>
+                                <p><?= $order_element['type'] ?></p>
                                 <p><?= $order_element['price'] ?> &euro;</p>
                             </li>
 <?php endforeach ?>
