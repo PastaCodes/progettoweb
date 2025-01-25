@@ -2,6 +2,10 @@ main {
     max-width: 100% !important;
 }
 
+table td, table th, td input, td select, td textarea, td button {
+    font-size: 92% !important;
+}
+
 table td, table th {
     text-align: center;
 }

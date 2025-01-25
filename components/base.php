@@ -65,7 +65,7 @@ if (isset($_SESSION['username'])) {
                     </li>
 <?php if (isset($_SESSION['vendor']) && $_SESSION['vendor']): ?>
                     <li>
-                        <a href="">Orders</a>
+                        <a href="vendor_orders">Orders</a>
                     </li>
                     <li>
                         <a href="vendor_products">Products</a>
