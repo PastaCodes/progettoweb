@@ -18,13 +18,13 @@ create table category (
 
 create table product_base (
     code_name varchar(255),
-    category varchar(255) null,
+    category varchar(255) not null,
     display_name varchar(255) not null,
     short_description varchar(255) not null,
     price_base decimal(10, 2),
     standalone boolean not null,
     constraint primary key (code_name),
-    constraint foreign key (category) references category(code_name) on update cascade on delete set null
+    constraint foreign key (category) references category(code_name) on update cascade on delete restrict
 );
 
 create table product_variant (
@@ -33,7 +33,7 @@ create table product_variant (
     ordinal smallint not null,
     display_name varchar(255) not null,
     color char(6) not null,
-    price_override decimal(10, 2) null,
+    price_override decimal(10, 2) null default null,
     constraint primary key (base, code_suffix),
     constraint foreign key (base) references product_base(code_name) on update cascade on delete cascade
 );
@@ -101,7 +101,7 @@ select bundle, code_suffix as variant,price_before_discount, round(multiplier * 
 from bundle_price_before_discount;
 
 create table notification (
-    id int(11) not null auto_increment,
+    id int(11) auto_increment,
     title varchar(255) not null,
     content varchar(255) not null,
     created_at datetime not null default current_timestamp(),
@@ -109,6 +109,31 @@ create table notification (
     constraint primary key (id),
     constraint foreign key (username) references account(username) on update cascade on delete cascade
 );
+
+create table order_request (
+    id int(11) auto_increment,
+    username varchar(255) not null,
+    order_status enum('pending', 'shipped', 'delivered') not null,
+    constraint primary key (id),
+    constraint foreign key (username) references account(username) on update cascade on delete cascade
+);
+
+create table order_entry (
+    id int(11) auto_increment,
+    order_request int(11) not null,
+    product_base varchar(255) null default null,
+    bundle varchar(255) null default null,
+    variant varchar(255) null default null,
+    price decimal(10, 2) not null,
+    constraint check (product_base is null xor bundle is null),
+    constraint primary key (id),
+    constraint foreign key (order_request) references order_request(id)
+);
+
+create view order_total as
+select order_request, sum(price) as total
+    from order_entry
+    group by order_request;
 
 insert into account(username, password_hash, is_vendor) values 
     ('Vendor', '$2y$10$d.wSTHXbqliWN3rHnXY6LeodHpP0ClE55diZpFPqW6mpHubcLgHG2', 1); -- Vendor account, Password: Vend0r!!!
