@@ -25,12 +25,15 @@ if (isset($_SESSION['username'])) {
             <h2>Login</h2>
             <fieldset>
                 <label for="username">
-                    Username <small><?= $login_error ? 'Invalid login details!' : ''?></small>
+                    Username
                     <input id="username" minlength="1" maxlength="255" type="text" name="username" autocomplete="username" placeholder="Username" required="required">
                 </label>
                 <label for="password">
-                    Password <small></small>
+                    Password
                     <input id="password" minlength="1" maxlength="255" type="password" name="password" autocomplete="current-password" placeholder="Password" required="required">
+<?php if ($login_error): ?>
+                    <small>Invalid login details!</small>
+<?php endif ?>
                 </label>
                 <p><a href="register">I don't have an account</a> &ndash; <a>I forgot my password</a></p>
                 <input type="submit" value="Login">

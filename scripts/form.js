@@ -4,13 +4,20 @@ export function setupForm(formElement, usernameInput, passwordInput, isLogin = f
             return;
         }
         const err = errFun(input);
+        let noteElement = input.parentElement.querySelector('small');
         if (!err) {
             input.setAttribute('aria-invalid', false);
-            input.parentElement.querySelector('small').innerHTML = '';
+            if (noteElement !== null) {
+                noteElement.innerHTML = '';
+            }
             return;
         }
         input.setAttribute('aria-invalid', true);
-        input.parentElement.querySelector('small').innerHTML = err;
+        if (noteElement === null) {
+            noteElement = document.createElement('small');
+            input.parentElement.appendChild(noteElement);
+        }
+        noteElement.innerHTML = err;
     };
     // Check errors on change
     usernameInput.addEventListener('input', ev => {
