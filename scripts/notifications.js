@@ -1,5 +1,5 @@
-export function addNotification(title, content) {
-    fetch(`api?title=${title}&content=${content}`, {
+export function addNotification(title, content, recipient = null) {
+    fetch(`api/?title=${title}&content=${content}${recipient ? `&recipient=${recipient}` : ''}`, {
         method: 'PUT',
         credentials: 'include',
         headers: {
@@ -9,7 +9,7 @@ export function addNotification(title, content) {
 }
 
 export function deleteNotification(id) {
-    fetch(`api?delete_notification=${notificationId}`, {
+    fetch(`api/?delete_notification=${id}`, {
         method: 'DELETE',
         credentials: 'include',
         headers: {

@@ -3,7 +3,6 @@ Before Sunday:
 - Mobile "first"
 
 Maybe:
-- After loggin in redirect to last visited page
 - Show number of items in cart in navbar
 - "Also available in the ??? bundle"
 
