@@ -26,13 +26,16 @@ if (isset($_SESSION['username'])) {
     }
     // Create notification request
     if ($_SERVER['REQUEST_METHOD'] === 'PUT' && isset($_GET['title'])) {
+        if (isset($_GET['recipient']) && $_GET['recipient'] !== $_SESSION['username'] && (!isset($_SESSION['vendor']) || !$_SESSION['vendor'])){
+            exit;
+        }
         $database->insert(
             table: 'notification',
             data: [
                 [
                     'title' => $_GET['title'],
                     'content' => $_GET['content'],
-                    'username' => $_SESSION['username']
+                    'username' => $_GET['recipient'] ?? $_SESSION['username']
                 ]
             ]
         );
