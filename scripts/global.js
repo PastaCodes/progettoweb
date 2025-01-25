@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const highContrastToggle = accessibility.querySelector('[name="high-contrast"]');
     const grayscaleToggle = accessibility.querySelector('[name="grayscale"]');
     const reducedStrainToggle = accessibility.querySelector('[name="reduced-strain"]');
-    const updateFilters = (doUpdateCookie = true) => {
+    const updateFilters = () => {
         let filters = [];
         if (highContrastToggle.checked) {
             filters.push('contrast(120%)');
@@ -82,25 +82,17 @@ document.addEventListener('DOMContentLoaded', () => {
             filters.push('contrast(90%) brightness(70%) sepia(30%) saturate(120%)');
         }
         accessibility.style.filter = docElt.style.filter = filters == [] ? 'none' : filters.join(' ');
-        if (doUpdateCookie) {
-            updateCookie();
-        }
+        updateCookie();
     };
+    accessibility.style.filter = docElt.style.filter;
     highContrastToggle.addEventListener('click', updateFilters);
     grayscaleToggle.addEventListener('click', updateFilters);
     reducedStrainToggle.addEventListener('click', updateFilters);
-    updateFilters(false);
     const largerTextToggle = accessibility.querySelector('[name="larger-text"]');
-    const factor = 1.3;
-    const updateText = (doUpdateCookie = true) => {
-        const adjust = largerTextToggle.checked ? factor : 1;
-        docElt.style.setProperty('--font-size-adjust', adjust);
-        if (doUpdateCookie) {
-            updateCookie();
-        }
-    }
-    largerTextToggle.addEventListener('click', updateText);
-    updateText(false);
+    largerTextToggle.addEventListener('click', () => {
+        docElt.style.setProperty('--font-size-adjust', largerTextToggle.checked ? 1.3 : 1);
+        updateCookie();
+    });
     // ===== Notification stuff =====
     const notifications = document.querySelector('dialog:nth-last-of-type(2)');
     if (notifications) {
