@@ -15,7 +15,7 @@ if (isset($_SESSION['username'])) {
         exit();
     }
     // Create notification request
-    if ($_SERVER['REQUEST_METHOD'] === 'PUT' && isset($_POST['title'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'PUT' && isset($_GET['title'])) {
         $database->insert(
             table: 'notification',
             data: [
