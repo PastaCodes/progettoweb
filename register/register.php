@@ -16,7 +16,8 @@ if ($username && $password && !Account::check_exists($username)) {
 }
 // Redirect if username in session
 if (isset($_SESSION['username'])) {
-    header('Location: ../shop');
+    $redirect_page = $_COOKIE['last_page'] ?? '../shop';
+    header("Location: $redirect_page");
     exit();
 }
 ?>
