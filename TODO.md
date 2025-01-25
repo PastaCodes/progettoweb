@@ -1,5 +1,4 @@
 Before Sunday:
-- Trigger notifications!
 - Mobile "first"
 
 Maybe (we won't):

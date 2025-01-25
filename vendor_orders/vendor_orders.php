@@ -28,7 +28,7 @@ if ($order_id) {
         data: [
             [
                 'title' => 'Update on your order!',
-                'content' => "One of your order\'s status has updated to $status, check the orders page for more information.",
+                'content' => 'Your order\'s status has been updated to ' . $status . ', check the orders page for more information.',
                 'username' => $username
             ]
         ]

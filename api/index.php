@@ -40,6 +40,16 @@ if (isset($_SESSION['username'])) {
             table: 'order_entry',
             data: $order_entries
         );
+        $database->insert(
+            table: 'notification',
+            data: [
+                [
+                    'title' => 'New order request',
+                    'content' => 'A new order request has been received. Check the orders page for more information.',
+                    'username' => 'Vendor'
+                ]
+            ]
+        );
         unset($_COOKIE['cart']);
         setcookie('cart', '', -1, '/');
         header('Location: ../orders');
