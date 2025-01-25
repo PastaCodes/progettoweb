@@ -1,4 +1,5 @@
 import { createCookie, deleteCookie } from "./cookie.js";
+import { deleteNotification } from "./notifications.js";
 
 function timeAgo(ms) {
     const seconds = Math.floor(ms / 1000);
@@ -192,13 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
         notifications.querySelectorAll('article > ul > li > button:last-of-type').forEach(btn => {
             btn.addEventListener('click', () => {
                 const notificationId = btn.parentElement.getAttribute('data-id');
-                fetch(`api?delete_notification=${notificationId}`, {
-                    method: 'DELETE',
-                    credentials: 'include',
-                    headers: {
-                        'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-                    }
-                });
+                deleteNotification(notificationId); 
                 btn.parentElement.remove();
                 setReadNotifications(getReadNotifications().filter(v => v != notificationId));
                 updateUnreadCounter();
