@@ -30,6 +30,11 @@ $orders_data = $database->find(
             'table' => 'order_entry',
             'on' => 'order_entry.order_request = order_request.id'
         ]
+    ],
+    options: [
+        'order_by' => [
+            'created_at' => 'ASC'
+        ]
     ]
 );
 $orders = [];
@@ -41,6 +46,7 @@ foreach ($orders_data as $order_data) {
             'user' => $order_data['username'],
             'status' => $order_data['order_status'],
             'total' => $order_data['total'],
+            'timestamp' => $order_data['created_at'],
             'contents' => []
         ];
     }
@@ -62,6 +68,7 @@ foreach ($orders_data as $order_data) {
                     <th scope="col">order_id</th>
                     <th scope="col">user</th>
                     <th scope="col">status</th>
+                    <th scope="col">timestamp</th>
                     <th scope="col">details</th>
                     <th scope="col">actions</th>
                 </tr>
@@ -83,6 +90,9 @@ foreach ($orders_data as $order_data) {
                         </select>
                     </td>
                     <td>
+                        <p><?= $order['timestamp'] ?></p>
+                    </td>
+                    <td>
                         <button data-show="id-<?= $order['id'] ?>">&#9660;</button>
                     </td>
                     <td>
@@ -92,7 +102,7 @@ foreach ($orders_data as $order_data) {
                     </td>
                 </tr>
                 <tr data-parent="id-<?= $order['id'] ?>">
-                    <td colspan="3">
+                    <td colspan="4">
                         <ul>
 <?php foreach ($order['contents'] as $order_element): ?>
                             <li>
