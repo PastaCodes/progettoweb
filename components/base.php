@@ -2,7 +2,25 @@
 ob_start();
 require_once __DIR__ . '/../' . $page->body;
 $body = ob_get_clean();
+$internal_script = 'const chosenTheme = localStorage.getItem(\'theme\'); if (chosenTheme !== null) { document.documentElement.setAttribute(\'data-theme\', chosenTheme); }';
 $accessibility = json_decode($_COOKIE['accessibility'] ?? '{}');
+$filters = [];
+if ($accessibility->high_contrast ?? false) {
+    $filters[] = 'contrast(120%)';
+}
+if ($accessibility->grayscale ?? false) {
+    $filters[] = 'grayscale(100%)';
+}
+if ($accessibility->reduced_strain ?? false) {
+    $filters[] = 'contrast(90%) brightness(70%) sepia(30%) saturate(120%)';
+}
+if (!empty($filters)) {
+    $internal_script .= ' document.documentElement.style.filter = \'' . implode(' ', $filters) .'\';';
+}
+if ($accessibility->larger_text ?? false) {
+    $internal_script .= ' document.documentElement.style.setProperty(\'--font-size-adjust\', 1.3);';
+}
+$page->scripts[] = Script::internal($internal_script);
 // Notification stuff
 $notifications = null;
 if (isset($_SESSION['username'])) {

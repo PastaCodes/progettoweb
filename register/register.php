@@ -19,18 +19,20 @@ if (isset($_SESSION['username'])) {
     header('Location: ../shop');
     exit();
 }
-
 ?>
     <main>
         <form method="POST">
             <h2>Register</h2>
             <fieldset>
                 <label for="username">
-                    Username <small><?= $register_error ? 'An account with that username already exists!' : ''?></small>
+                    Username
                     <input id="username" minlength="1" maxlength="255" type="text" name="username" autocomplete="username" placeholder="Username" required="required">
+<?php if ($register_error): ?>
+                    <small>An account with that username already exists!</small>
+<?php endif ?>
                 </label>
                 <label for="password">
-                    Password <small></small>
+                    Password
                     <input id="password" minlength="8" maxlength="255" type="password" name="password" autocomplete="new-password" placeholder="Password" required="required">
                 </label>
                 <p><a href="login">I already have an account</a></p>

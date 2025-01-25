@@ -22,10 +22,7 @@ $base_url = (empty($_SERVER['HTTPS']) ? 'http://' : 'https://') . $_SERVER['HTTP
 $url_rel = substr($_SERVER['REQUEST_URI'], strlen(SETTINGS['hosted-locally'] ? '/IsiFitGems/' : '/'));
 $page = new Page();
 $page->stylesheets = ['style/pico.classless.min.css', 'style/global.css'];
-$page->scripts = [
-    Script::internal('const chosenTheme = localStorage.getItem(\'theme\'); if (chosenTheme !== null) { document.documentElement.setAttribute(\'data-theme\', chosenTheme); }'),
-    Script::external('scripts/global.js', 'module')
-];
+$page->scripts = [Script::external('scripts/global.js', 'module')];
 $page->prefetch = [];
 add_file_if_exists(get_directory() . 'style.css', $page->stylesheets);
 add_file_if_exists(get_directory() . 'script.js', $page->scripts, fn($file) => Script::external($file, 'module'));

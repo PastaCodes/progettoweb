@@ -7,15 +7,30 @@ form {
     height: max-content;
 }
 
-form fieldset > input {
-    margin-bottom: 0 !important;
+form fieldset label {
+    position: relative;
+}
+
+form fieldset label small {
+    width: fit-content;
+    position: absolute;
+    top: calc(100% - 0.6rem);
+    right: 0;
+    color: var(--pico-del-color) !important;
+    margin: 0 !important;
+}
+
+form fieldset label small span {
+    border: var(--pico-border-width) solid var(--pico-del-color);
+    border-radius: var(--pico-border-radius);
+    padding: 0.2em;
 }
 
 form p {
+    margin-top: 1.2rem;
     text-align: center;
 }
 
-small {
-    color: var(--pico-form-element-invalid-border-color);
-    float: right;
+form fieldset > input {
+    margin-bottom: 0 !important;
 }
