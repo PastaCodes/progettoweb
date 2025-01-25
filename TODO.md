@@ -1,7 +1,6 @@
 Before Sunday:
 - Checkout
 - Your orders (remember text when no orders are present!)
-- Make vendor order page
 - Mobile "first"
 
 Maybe:
