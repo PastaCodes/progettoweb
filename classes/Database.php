@@ -89,24 +89,45 @@ class Database {
     }
 
     /**
-     * Inserts a row into the specified table.
+     * Inserts one or more rows into the specified table.
      *
      * @param string $table The name of the table to insert into.
-     * @param array $data  An associative array of column-value pairs.
-     * @return int The ID of the newly inserted row.
+     * @param array $data An array of associative arrays, where each associative array represents a row of column-value pairs.
+     * @return array An array of IDs of the newly inserted rows.
      */
-    public function insert(string $table, array $data): int {
-        // Use the data keys as the columns to insert
-        $columns = implode(', ', array_keys($data));
-        // Create placeholders per column
-        $placeholders = implode(', ', array_fill(0, count($data), '?'));
-        // Create the query 
-        $sql = "INSERT INTO $table ($columns) VALUES ($placeholders)";
-        // Execute the query 
-        $stmt = $this->prepare_statement($sql, $data);
+    public function insert(string $table, array $data): array {
+        if (empty($data)) {
+            die('Data array cannot be empty.');
+        }
+        // Validate that all rows have the same columns
+        $columns = array_keys(reset($data));
+        foreach ($data as $row) {
+            if (array_keys($row) !== $columns) {
+                die('All data rows must have the same column names.');
+            }
+        }
+        // Create the columns part of the SQL
+        $columns_sql = implode(', ', $columns);
+        // Create placeholders for a single row
+        $placeholders = '(' . implode(', ', array_fill(0, count($columns), '?')) . ')';
+        // Create placeholders for all rows
+        $all_placeholders = implode(', ', array_fill(0, count($data), $placeholders));
+        // Flatten the data values for binding
+        $values = [];
+        foreach ($data as $row) {
+            $values = array_merge($values, array_values($row));
+        }
+        // Create the SQL query
+        $sql = "INSERT INTO $table ($columns_sql) VALUES $all_placeholders";
+        // Prepare and execute the statement
+        $stmt = $this->prepare_statement($sql, $values);
         $stmt->execute();
-        // Return the id of the updated value
-        return $this->db->insert_id;
+        // Return the IDs of the newly inserted rows
+        $inserted_ids = [];
+        for ($i = 0; $i < count($data); $i++) {
+            $inserted_ids[] = $this->db->insert_id;
+        }
+        return $inserted_ids;
     }
 
     /**

@@ -31,12 +31,14 @@ if ($button_action === 'update_product' || $button_action == 'create_product') {
         $database->insert(
             table: 'product_base',
             data: [
-                'code_name' => $product_id, 
-                'display_name' => $display_name, 
-                'category' => $category, 
-                'short_description' => $short_description,
-                'price_base' => $base_price,
-                'standalone' => $is_standalone
+                [
+                    'code_name' => $product_id, 
+                    'display_name' => $display_name, 
+                    'category' => $category, 
+                    'short_description' => $short_description,
+                    'price_base' => $base_price,
+                    'standalone' => $is_standalone
+                ]
             ]
         );
     } else {
@@ -72,13 +74,15 @@ if ($button_action === 'update_product' || $button_action == 'create_product') {
         $database->insert(
             table: 'product_variant',
             data: [
-                'base' => $product_base_id,
-                'code_suffix' => $variant_id,
-                'ordinal' => $ordinal,
-                'display_name' => $display_name,
-                'color' => $color,
-                'price_override' => $price_override
-            ],
+                [
+                    'base' => $product_base_id,
+                    'code_suffix' => $variant_id,
+                    'ordinal' => $ordinal,
+                    'display_name' => $display_name,
+                    'color' => $color,
+                    'price_override' => $price_override
+                ]
+            ]
         );
     } else {
         $database->update(

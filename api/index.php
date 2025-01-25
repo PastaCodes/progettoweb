@@ -19,9 +19,11 @@ if (isset($_SESSION['username'])) {
         $database->insert(
             table: 'notification',
             data: [
-                'title' => $_GET['title'],
-                'content' => $_GET['content'],
-                'username' => $_SESSION['username']
+                [
+                    'title' => $_GET['title'],
+                    'content' => $_GET['content'],
+                    'username' => $_SESSION['username']
+                ]
             ]
         );
         exit();

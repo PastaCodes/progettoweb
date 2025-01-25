@@ -25,9 +25,11 @@ if ($button_action === 'update_bundle' || $button_action === 'create_bundle') {
         $database->insert(
             table: 'bundle',
             data: [
-                'code_name' => $bundle_id, 
-                'display_name' => $display_name, 
-                'multiplier' => $multiplier, 
+                [
+                    'code_name' => $bundle_id, 
+                    'display_name' => $display_name, 
+                    'multiplier' => $multiplier, 
+                ]
             ]
         );
     } else {
@@ -57,9 +59,11 @@ if ($button_action === 'update_bundle' || $button_action === 'create_bundle') {
         $database->insert(
             table: 'product_in_bundle',
             data: [
-                'base' => $product_id, 
-                'bundle' => $bundle_id, 
-                'ordinal' => $ordinal, 
+                [
+                    'base' => $product_id, 
+                    'bundle' => $bundle_id, 
+                    'ordinal' => $ordinal, 
+                ]
             ]
         );
     } else {

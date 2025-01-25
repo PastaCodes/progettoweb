@@ -7,8 +7,10 @@ class Account {
         $database->insert(
             table: 'account',
             data: [
-                'username' => $username,
-                'password_hash' => password_hash($password, PASSWORD_DEFAULT)
+                [
+                    'username' => $username,
+                    'password_hash' => password_hash($password, PASSWORD_DEFAULT)
+                ]
             ]
         );
     }
