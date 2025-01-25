@@ -187,7 +187,7 @@ main > section > p:nth-last-child(2) {
     margin: 0;
 }
 
-main > section > button:last-child {
+main > section > a:last-child {
     justify-self: right;
     margin-right: var(--pico-spacing);
 }

@@ -1,0 +1,155 @@
+:root {
+    --thumbnail-size: 10rem;
+}
+
+main > section > ul > li {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: max-content auto max-content;
+    grid-template-rows: max-content max-content 1fr max-content;
+    padding: var(--pico-spacing);
+    border-radius: var(--pico-border-radius);
+    background: var(--pico-card-background-color);
+    box-shadow: var(--pico-card-box-shadow);
+    margin-bottom: var(--pico-spacing);
+    --initial-height: calc(2 * var(--pico-spacing) + var(--thumbnail-size));
+    max-height: var(--initial-height);
+}
+
+main > section > ul > li > :first-child {
+    width: var(--thumbnail-size);
+    height: var(--thumbnail-size);
+    border-radius: var(--pico-border-radius);
+    overflow: hidden;
+    margin-bottom: 0;
+    margin-right: 2rem;
+    grid-row: 1 / -1;
+    grid-column: 1;
+    user-select: none;
+}
+
+main > section > ul > li > figure {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+main > section > ul > li > figure > svg {
+    width: 5rem;
+    height: 5rem;
+    color: var(--pico-muted-color);
+    margin-bottom: var(--spacing-small);
+}
+
+main > section > ul > li > figure > figcaption {
+    color: var(--pico-muted-color);
+    padding: 0;
+}
+
+main > section > ul > li > svg {
+    width: 6rem !important;
+    height: 6rem !important;
+    margin: 2rem !important;
+    margin-right: 4rem !important;
+    color: var(--pico-muted-color);
+}
+
+main > section > ul > li p, main > section > ul > li a {
+    margin-bottom: 0;
+    width: fit-content;
+    height: fit-content;
+}
+
+main > section > ul > li > a {
+    font-weight: bold;
+    grid-row: 1;
+    grid-column: 2 / 3;
+    color: var(--pico-h2-color);
+}
+
+main > section > ul > li > p:nth-child(3) {
+    grid-row: 2;
+    grid-column: 2 / 3;
+}
+
+main > section > ul > li > p:nth-of-type(2):nth-last-of-type(4) {
+    grid-row: 3;
+    grid-column: 2 / 3;
+    margin-top: var(--spacing-small);
+}
+
+main > section > ul > li > p:nth-last-of-type(3) {
+    grid-row: 1;
+    grid-column: 3 / 4;
+    justify-self: right;
+    font-size: 140%;
+}
+
+main > section > ul > li > p:nth-last-of-type(2) {
+    grid-row: 2;
+    grid-column: 3 / 4;
+    justify-self: right;
+    color: var(--pico-muted-color);
+}
+
+main > section > ul > li > p:last-of-type {
+    grid-row: 4;
+    grid-column: 3;
+    font-size: 140%;
+    justify-self: right;
+}
+
+main > section > :nth-child(n+4) {
+    padding-left: var(--pico-spacing);
+}
+
+main > section > p:nth-child(4) {
+    font-weight: bold;
+    font-size: 180%;
+    margin-bottom: var(--spacing-small);
+}
+
+main > section > p:nth-child(5) {
+    margin-bottom: 0;
+}
+
+main > form {
+    margin-top: 2rem;
+}
+
+main > form > fieldset {
+    padding: var(--pico-spacing);
+    padding-top: var(--spacing-small);
+    border: var(--pico-border-width) solid var(--pico-form-element-border-color);
+    border-radius: var(--pico-border-radius);
+}
+
+main > form > fieldset > legend {
+    font-size: 120%;
+    font-weight: bold;
+    margin: 0;
+}
+
+main > form > fieldset input {
+    margin-bottom: 0 !important;
+}
+
+main > form > fieldset:last-of-type {
+    display: grid;
+    gap: var(--spacing-small) var(--pico-spacing);
+    grid-template-columns: 1fr 2fr;
+    margin-bottom: 2rem;
+}
+
+main > form > fieldset:last-of-type > label:first-of-type {
+    grid-column: 1 / 3;
+}
+
+main > form > :not(fieldset) {
+    margin-left: var(--pico-spacing);
+}
+
+main > form > :last-child {
+    width: fit-content;
+}
