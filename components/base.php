@@ -27,7 +27,11 @@ if (isset($_SESSION['username'])) {
     require_once __DIR__ . '/../classes/Notification.php';
     $notifications = Notification::fetch_all_of($_SESSION['username']);
 }
-
+// Track last page
+if ($page->track_page_cookie) {
+    $clean_url = strtok($_SERVER['REQUEST_URI'], '?') . (parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY) ? '?' . http_build_query(array_diff_key($_GET, ['logout' => ''])) : '');
+    setcookie('last_page', $clean_url, time() + 3600, '/');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
