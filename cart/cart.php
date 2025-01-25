@@ -1,4 +1,10 @@
 <?php
+// Check if vendor
+if (isset($_SESSION['vendor'])) {
+    header('Location: ../shop');
+    exit();
+}
+
 require_once '../util/format.php';
 require_once '../classes/Cart.php';
 

@@ -58,6 +58,7 @@ $product->fetch_all_details();
 <?php endif ?>
                 <p><?= format_price($product->price) ?></p>
 <?php if ($product->base->is_standalone): ?>
+<?php if (!isset($_SESSION['vendor'])): ?>
 <?php if (($quantity = $product->quantity_in_cart()) > 0): ?>
                 <fieldset role="group">
                     <a href="cart">
@@ -80,6 +81,7 @@ $product->fetch_all_details();
                     </svg>
                     Add to cart
                 </button>
+<?php endif ?>
 <?php endif ?>
 <?php endif ?>
             </section>
