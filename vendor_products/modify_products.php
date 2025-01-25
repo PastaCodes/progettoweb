@@ -17,7 +17,7 @@ if (isset($_POST['button_action'])) {
         $product_base_id = $params[1];
     }
 }
-if ($button_action === 'update_product' || $button_action === 'create_product') {
+if ($button_action === 'update_product' || $button_action == 'create_product') {
     // Get the data from the form
     $product_id = $_POST['base_code_name'];
     $display_name = $_POST['base_display_name'];
@@ -27,7 +27,7 @@ if ($button_action === 'update_product' || $button_action === 'create_product') 
     // Ensure the boolean is an integer
     $is_standalone = ($_POST['is_standalone'] ?? false) ? 1 : 0;
     // Update that table's entry
-    if ($button_action === 'create_product') {
+    if ($button_action == 'create_product') {
         $database->insert(
             table: 'product_base',
             data: [
@@ -72,6 +72,7 @@ if ($button_action === 'update_product' || $button_action === 'create_product') 
         $database->insert(
             table: 'product_variant',
             data: [
+                'base' => $product_base_id,
                 'code_suffix' => $variant_id,
                 'ordinal' => $ordinal,
                 'display_name' => $display_name,
@@ -90,7 +91,7 @@ if ($button_action === 'update_product' || $button_action === 'create_product') 
                 'price_override' => $price_override
             ],
             filters: [
-                'code_suffix' => $variant_id, 
+                'product_variant.code_suffix' => $variant_id, 
                 'base' => $product_base_id
             ]
         );
@@ -187,9 +188,7 @@ $categories = Category::fetch_all();
                         <input form="<?= $product->base->code_name ?>" type="checkbox" name="is_standalone"<?php if ($product->base->is_standalone): ?> checked="checked"<?php endif ?>>
                     </td>
                     <td>
-<?php if ($product->base->variants): ?>
                         <button data-show="<?= $product->base->code_name ?>">&#9660;</button>
-<?php endif ?>
                     </td>
                     <td>
                         <button form="<?= $product->base->code_name ?>" type="submit" name="button_action" value="update_product">Update</button>
@@ -247,7 +246,7 @@ $categories = Category::fetch_all();
                     <td></td>
                     <td colspan="3">
                         <form id="<?= $product->base->code_name . '-new-variant' ?>" method="POST">
-                            <button form="<?= $product->base->code_name . '-new-variant' ?>" type="submit" name="button_action" value="create_variant">Add</button>
+                            <button form="<?= $product->base->code_name . '-new-variant' ?>" type="submit" name="button_action" value="create_variant:<?= $product->base->code_name ?>">Add</button>
                         </form>
                     </td>
                 </tr>

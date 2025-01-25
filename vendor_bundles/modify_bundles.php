@@ -48,12 +48,12 @@ if ($button_action === 'update_bundle' || $button_action === 'create_bundle') {
         table: 'bundle',
         filters: ['code_name' => $bundle_id]
     );
-} else if ($button_action == 'update_bundle_product' || $button_action === 'create_bundle_product') {
+} else if ($button_action == 'update_bundle_product' || $button_action == 'create_bundle_product') {
     // Get the data from the form
     $product_id = $_POST['bundle_product'];
     $ordinal = $_POST['product_ordinal'];
     // Update that table's entry
-    if ($button_action === 'create_bundle_product') {
+    if ($button_action == 'create_bundle_product') {
         $database->insert(
             table: 'product_in_bundle',
             data: [
