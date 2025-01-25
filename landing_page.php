@@ -4,6 +4,6 @@
                 <use href="assets/isi.svg#isi"></use>
             </svg>
             <h1>IsiFitGems</h1>
-            <p>High quality accessories and gadgets<br>for the students of <em>Ingegneria e Scienze Informatiche</em></p>
+            <p>High quality accessories and gadgets<br>for the students of <em lang="it">Ingegneria e Scienze Informatiche</em></p>
             <p><a href="shop">Start shopping</a></p>
         </main>
