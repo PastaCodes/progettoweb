@@ -21,7 +21,7 @@ main > section > :first-child {
     justify-content: center;
     align-items: center;
     max-width: var(--thumbnail-size);
-    max-height: var(--thumbnail-size);
+    aspect-ratio: 1;
     border-radius: var(--pico-border-radius);
     overflow: hidden;
     margin-bottom: var(--pico-spacing);

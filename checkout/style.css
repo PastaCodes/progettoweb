@@ -4,9 +4,7 @@
 
 main > section > ul > li {
     display: grid;
-    grid-auto-flow: column;
     grid-template-columns: auto auto;
-    grid-template-rows: max-content max-content max-content max-content max-content;
     padding: var(--pico-spacing);
     border-radius: var(--pico-border-radius);
     background: var(--pico-card-background-color);
@@ -24,6 +22,25 @@ main > section > ul > li > :first-child {
     grid-row: 1;
     grid-column: 1 / -1;
     user-select: none;
+}
+
+main > section > ul > li > figure {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+main > section > ul > li > figure > svg {
+    width: 7rem;
+    height: 7rem;
+    color: var(--pico-muted-color);
+    margin-bottom: var(--spacing-small);
+}
+
+main > section > ul > li > figure > figcaption {
+    color: var(--pico-muted-color);
+    padding: 0;
 }
 
 main > section > ul > li > svg {
@@ -132,11 +149,16 @@ main > form > :last-child {
     width: fit-content;
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 800px) {
     :root {
         --thumbnail-size: 10rem;
     }
     
+    main > section > ul > li > figure > svg {
+        width: 5rem;
+        height: 5rem;
+    }
+
     main > section > ul > li > svg {
         margin: 2rem !important;
         margin-right: 4rem !important;

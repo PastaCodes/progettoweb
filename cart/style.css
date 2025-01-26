@@ -1,5 +1,5 @@
 :root {
-    --thumbnail-size: 10rem;
+    --thumbnail-size: 15rem;
 }
 
 main > section {
@@ -27,27 +27,25 @@ main > section > p:nth-child(2) {
 
 main > section > ul > li {
     display: grid;
-    grid-auto-flow: column;
-    grid-template-columns: max-content auto max-content 6.4rem;
-    grid-template-rows: max-content max-content 1fr max-content;
+    grid-template-columns: max-content 1fr 6.4rem;
     padding: var(--pico-spacing);
     border-radius: var(--pico-border-radius);
     background: var(--pico-card-background-color);
     box-shadow: var(--pico-card-box-shadow);
     margin-bottom: var(--pico-spacing);
-    --initial-height: calc(2 * var(--pico-spacing) + var(--thumbnail-size));
-    max-height: var(--initial-height);
+    /* --initial-height: calc(2 * var(--pico-spacing) + var(--thumbnail-size));
+    max-height: var(--initial-height); */
 }
 
 main > section > ul > li > :first-child {
+    grid-row: 1;
+    grid-column: 1 / -1;
     width: var(--thumbnail-size);
     height: var(--thumbnail-size);
     border-radius: var(--pico-border-radius);
     overflow: hidden;
-    margin-bottom: 0;
-    margin-right: 2rem;
-    grid-row: 1 / -1;
-    grid-column: 1;
+    margin: auto;
+    margin-bottom: var(--pico-spacing);
     user-select: none;
 }
 
@@ -59,8 +57,8 @@ main > section > ul > li > figure {
 }
 
 main > section > ul > li > figure > svg {
-    width: 5rem;
-    height: 5rem;
+    width: 7rem;
+    height: 7rem;
     color: var(--pico-muted-color);
     margin-bottom: var(--spacing-small);
 }
@@ -71,10 +69,9 @@ main > section > ul > li > figure > figcaption {
 }
 
 main > section > ul > li > svg {
-    width: 6rem !important;
-    height: 6rem !important;
-    margin: 2rem !important;
-    margin-right: 4rem !important;
+    width: calc(var(--thumbnail-size) * 0.6) !important;
+    height: calc(var(--thumbnail-size) * 0.6) !important;
+    margin: 3.33rem auto !important;
     color: var(--pico-muted-color);
 }
 
@@ -85,36 +82,38 @@ main > section > ul > li p, main > section > ul > li a {
 }
 
 main > section > ul > li > a {
+    grid-row: 2;
+    grid-column: 1 / 3;
     font-weight: bold;
-    grid-row: 1;
-    grid-column: 2 / 4;
     color: var(--pico-h2-color);
 }
 
 main > section > ul > li > p:nth-child(3) {
-    grid-row: 2;
-    grid-column: 2 / 4;
+    grid-row: 3;
+    grid-column: 1 / 3;
 }
 
 main > section > ul > li > p:nth-of-type(2):nth-last-of-type(3) {
-    grid-row: 3;
-    grid-column: 2 / 4;
+    grid-row: 4;
+    grid-column: 1 / 4;
     margin-top: var(--spacing-small);
 }
 
 main > section > ul > li > button {
-    grid-row: 4;
-    grid-column: 3;
+    grid-row: 5;
+    grid-column: 2;
     margin-left: auto;
     margin-right: var(--pico-spacing);
+    margin-top: var(--pico-spacing) !important;
 }
 
 main > section > ul > li > fieldset {
-    grid-row: 4;
-    grid-column: 4;
+    grid-row: 5;
+    grid-column: 3;
     float: left;
     width: fit-content !important;
     margin-bottom: 0 !important;
+    margin-top: var(--pico-spacing) !important;
 }
 
 main > section > ul > li > button, main > section > ul > li > fieldset > button {
@@ -134,15 +133,15 @@ main > section > ul > li > fieldset input {
 }
 
 main > section > ul > li > p:nth-last-of-type(2) {
-    grid-row: 1;
-    grid-column: 3 / 5;
+    grid-row: 2;
+    grid-column: 2 / 4;
     justify-self: right;
     font-size: 140%;
 }
 
 main > section > ul > li > p:nth-last-of-type(1) {
-    grid-row: 2;
-    grid-column: 3 / 5;
+    grid-row: 3;
+    grid-column: 3;
     justify-self: right;
     color: var(--pico-muted-color);
 }
@@ -191,4 +190,70 @@ main > section > p:nth-last-child(2) {
 main > section > a:last-child {
     justify-self: right;
     margin-right: var(--pico-spacing);
+}
+
+@media screen and (min-width: 800px) {
+    :root {
+        --thumbnail-size: 10rem;
+    }
+
+    main > section > ul > li {
+        grid-template-columns: max-content 1fr max-content 6.4rem;
+        grid-template-rows: max-content max-content 1fr max-content;
+        --initial-height: calc(2 * var(--pico-spacing) + var(--thumbnail-size));
+    }
+
+    main > section > ul > li > :first-child {
+        grid-row: 1 / -1;
+        grid-column: 1;
+        margin-right: 2rem;
+        margin-bottom: 0;
+    }
+
+    main > section > ul > li > figure > svg {
+        width: 5rem;
+        height: 5rem;
+    }
+
+    main > section > ul > li > svg {
+        margin: 2rem !important;
+        margin-right: 4rem !important;
+    }
+    
+    main > section > ul > li > a {
+        grid-row: 1;
+        grid-column: 2 / 4;
+    }
+
+    main > section > ul > li > p:nth-child(3) {
+        grid-row: 2;
+        grid-column: 2 / 4;
+    }
+
+    main > section > ul > li > p:nth-of-type(2):nth-last-of-type(3) {
+        grid-row: 3;
+        grid-column: 2 / 5;
+    }
+
+    main > section > ul > li > button {
+        grid-row: 4;
+        grid-column: 3;
+        margin-top: 0 !important;
+    }
+
+    main > section > ul > li > fieldset {
+        grid-row: 4;
+        grid-column: 4;
+        margin-top: 0 !important;
+    }
+
+    main > section > ul > li > p:nth-last-of-type(2) {
+        grid-row: 1;
+        grid-column: 3 / 5;
+    }
+
+    main > section > ul > li > p:nth-last-of-type(1) {
+        grid-row: 2;
+        grid-column: 3 / 5;
+    }
 }
