@@ -1,5 +1,4 @@
 - cart
-- checkout
 
 Small problems:
 - Landing Page

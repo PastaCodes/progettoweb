@@ -6,7 +6,7 @@ main > section > ul > li {
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: auto auto;
-    grid-template-rows: max-content max-content max-content auto max-content;
+    grid-template-rows: max-content max-content max-content max-content max-content;
     padding: var(--pico-spacing);
     border-radius: var(--pico-border-radius);
     background: var(--pico-card-background-color);
@@ -19,8 +19,8 @@ main > section > ul > li > :first-child {
     height: var(--thumbnail-size);
     border-radius: var(--pico-border-radius);
     overflow: hidden;
-    margin-bottom: 0;
-    margin-right: 2rem;
+    margin: auto;
+    margin-bottom: var(--pico-spacing);
     grid-row: 1;
     grid-column: 1 / -1;
     user-select: none;
@@ -29,7 +29,7 @@ main > section > ul > li > :first-child {
 main > section > ul > li > svg {
     width: calc(var(--thumbnail-size) * 0.6) !important;
     height: calc(var(--thumbnail-size) * 0.6) !important;
-    margin: 3.33rem !important;
+    margin: 3.33rem auto !important;
     color: var(--pico-muted-color);
 }
 
@@ -143,13 +143,15 @@ main > form > :last-child {
     }
 
     main > section > ul > li {
-        grid-template-columns: max-content auto max-content;
-        grid-template-rows: max-content max-content max-content max-content;
+        grid-template-columns: max-content 1fr max-content;
+        grid-template-rows: max-content max-content auto max-content;
     }
 
     main > section > ul > li > :first-child {
         grid-row: 1 / -1;
         grid-column: 1;
+        margin-bottom: 0;
+        margin-right: 2rem;
     }
 
     main > section > ul > li > a {
