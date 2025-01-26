@@ -398,10 +398,8 @@ dialog:nth-last-of-type(2) > article > ul > li > p:last-of-type {
     }
 }
 
-/*
 @media screen and (not (pointer: fine)) {
     body > header > nav > ul > li:last-child > a::before, body > header > nav > ul > li:last-child > a::after {
         opacity: 1 !important;
     }
 }
-*/
