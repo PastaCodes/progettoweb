@@ -1,5 +1,5 @@
 :root {
-    --thumbnail-size: 10rem;
+    --thumbnail-size: 15rem;
 }
 
 main > section > ul > li {
@@ -22,34 +22,14 @@ main > section > ul > li > :first-child {
     margin-bottom: 0;
     margin-right: 2rem;
     grid-row: 1;
-    grid-column: 1;
+    grid-column: 1 / -1;
     user-select: none;
 }
 
-main > section > ul > li > figure {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-main > section > ul > li > figure > svg {
-    width: 5rem;
-    height: 5rem;
-    color: var(--pico-muted-color);
-    margin-bottom: var(--spacing-small);
-}
-
-main > section > ul > li > figure > figcaption {
-    color: var(--pico-muted-color);
-    padding: 0;
-}
-
 main > section > ul > li > svg {
-    width: 6rem !important;
-    height: 6rem !important;
-    margin: 2rem !important;
-    margin-right: 4rem !important;
+    width: calc(var(--thumbnail-size) * 0.6) !important;
+    height: calc(var(--thumbnail-size) * 0.6) !important;
+    margin: 3.33rem !important;
     color: var(--pico-muted-color);
 }
 
@@ -153,6 +133,17 @@ main > form > :last-child {
 }
 
 @media screen and (min-width: 1000px) {
+    :root {
+        --thumbnail-size: 10rem;
+    }
+    
+    main > section > ul > li > svg {
+        width: 6rem !important;
+        height: 6rem !important;
+        margin: 2rem !important;
+        margin-right: 4rem !important;
+    }
+
     main > section > ul > li {
         grid-template-columns: max-content auto max-content;
         grid-template-rows: max-content max-content max-content;
@@ -160,6 +151,7 @@ main > form > :last-child {
 
     main > section > ul > li > :first-child {
         grid-row: 1 / -1;
+        grid-column: 1;
     }
 
     main > section > ul > li > a {
