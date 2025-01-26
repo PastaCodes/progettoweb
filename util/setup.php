@@ -5,13 +5,6 @@ declare(strict_types = 1);
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-// Handle logout
-if (isset($_GET['logout'])) {
-    session_unset();
-    session_destroy();
-    header('Location: ../login');
-    exit();
-}
 
 require_once __DIR__ . '/../classes/Page.php';
 require_once __DIR__ . '/../classes/Script.php';

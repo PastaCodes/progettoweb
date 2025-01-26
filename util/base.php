@@ -32,7 +32,10 @@ if ($page->track_page_cookie) {
     $clean_url = strtok($_SERVER['REQUEST_URI'], '?') . (parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY) ? '?' . http_build_query(array_diff_key($_GET, ['logout' => ''])) : '');
     setcookie('last_page', $clean_url, [
         'expires' => time() + 3600,
-        'samesite' => 'Strict'
+        'path' => '/',
+        'samesite' => 'Strict',
+        'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on',
+        'httponly' => true
     ]);
 }
 ?>
