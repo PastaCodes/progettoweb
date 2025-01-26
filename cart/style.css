@@ -33,8 +33,8 @@ main > section > ul > li {
     background: var(--pico-card-background-color);
     box-shadow: var(--pico-card-box-shadow);
     margin-bottom: var(--pico-spacing);
-    /* --initial-height: calc(2 * var(--pico-spacing) + var(--thumbnail-size));
-    max-height: var(--initial-height); */
+    --initial-height: fit-content;
+    max-height: var(--initial-height);
 }
 
 main > section > ul > li > :first-child {
@@ -200,7 +200,7 @@ main > section > a:last-child {
     main > section > ul > li {
         grid-template-columns: max-content 1fr max-content 6.4rem;
         grid-template-rows: max-content max-content 1fr max-content;
-        --initial-height: calc(2 * var(--pico-spacing) + var(--thumbnail-size));
+        --initial-height: fit-content;
     }
 
     main > section > ul > li > :first-child {

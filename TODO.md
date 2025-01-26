@@ -1,10 +1,6 @@
-- cart
-
 Small problems:
 - Landing Page
   - horizontal scrollbar
-- login / register
-  - compenetrating text
 
 
 

@@ -20,7 +20,7 @@ main > section > :first-child {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    max-width: var(--thumbnail-size);
+    width: calc(min(100%, var(--thumbnail-size)));
     aspect-ratio: 1;
     border-radius: var(--pico-border-radius);
     overflow: hidden;
@@ -28,8 +28,8 @@ main > section > :first-child {
 }
 
 main > section > figure > svg {
-    width: 6rem;
-    height: 6rem;
+    width: 8rem;
+    height: 8rem;
     color: var(--pico-muted-color);
     margin-bottom: var(--spacing-small);
 }
@@ -108,5 +108,9 @@ main > section > fieldset:last-child > a > svg {
         grid-template-columns: max-content auto;
         grid-template-rows: repeat(7, max-content);
         gap: 0 calc(4 * var(--pico-spacing));
+    }
+
+    main > section > :first-child {
+        width: var(--thumbnail-size) !important;
     }
 }

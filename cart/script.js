@@ -105,6 +105,8 @@ window.addEventListener('load', () => {
             btnDelete.disabled = true;
             btnDecrement.disabled = true;
             btnIncrement.disabled = true;
+            const height = cartProductSection.getBoundingClientRect().height;
+            cartProductSection.style.setProperty('--initial-height', height + 'px');
             // Little animation for fun
             cartProductSection.style.animation = 'product-remove 0.4s ease-in-out';
             // Remove the element from the html after the animation
