@@ -3,10 +3,6 @@
     --radio-spacing: 0.5rem;
 }
 
-main {
-    margin-top: 0 !important;
-}
-
 main > p {
     margin-top: 4rem;
     text-align: center;
@@ -150,4 +146,10 @@ main > fieldset select {
     grid-row: 2;
     grid-column: 2;
     margin-top: calc(var(--pico-spacing)* .375) !important;
+}
+
+@media screen and (min-width: 600px) {
+    main {
+        margin-top: 0 !important;
+    }
 }

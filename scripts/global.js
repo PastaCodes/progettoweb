@@ -201,4 +201,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         updateUnreadCounter();
     }
+    const hamburger = document.querySelector('header > button');
+    const navbar = document.querySelector('header > nav');
+    hamburger.addEventListener('click', () => {
+        if (navbar.style.transform) {
+            navbar.style.transform = '';
+            hamburger.querySelector('use').setAttribute('href', 'assets/hamburger.svg#hamburger');
+            hamburger.ariaLabel = 'Open menu';
+        } else {
+            navbar.style.transform = 'translateX(0)';
+            hamburger.querySelector('use').setAttribute('href', 'assets/close.svg#close');
+            hamburger.ariaLabel = 'Close menu';
+        }
+    });
 });

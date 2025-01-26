@@ -44,7 +44,7 @@ if ($page->track_page_cookie) {
         <meta name="description" content="Fashion accessories for Unibo students in Cesena.">
         <meta name="keywords" content="fashion, accessories, Unibo, Cesena, shop, e-commerce">
         <meta name="author" content="Luca Palazzini, Marco Buda">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
         <meta name="theme-color" content="<?= SETTINGS['theme-color'] ?>">
 <?php if ($page->allow_indexing): ?>
         <meta name="robots" content="index, follow">
@@ -67,52 +67,37 @@ if ($page->track_page_cookie) {
     <body>
 <?php if ($page->has_navbar): ?>
         <header>
+            <a href="">
+                <h1>
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="IsiFitGems logo">
+                        <use href="assets/isi.svg#isi"></use>
+                    </svg>
+                    IsiFitGems
+                </h1>
+            </a>
+            <button aria-label="Open menu">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="">
+                    <use href="assets/hamburger.svg#hamburger"></use>
+                </svg>
+            </button>
             <nav>
                 <ul>
-                    <li>
-                        <a href="">
-                            <h1>
-                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label="IsiFitGems logo">
-                                    <use href="assets/isi.svg#isi"></use>
-                                </svg>
-                                IsiFitGems
-                            </h1>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="shop">Our products</a>
-                    </li>
-                    <li>
-                        <a href="bundles">Bundles</a>
-                    </li>
-                    <li>
-                        <a>Support</a>
-                    </li>
+                    <li><a href="shop">Our products</a></li>
+                    <li><a href="bundles">Bundles</a></li>
+                    <li><a>Support</a></li>
 <?php if (isset($_SESSION['vendor']) && $_SESSION['vendor']): ?>
-                    <li>
-                        <a href="vendor_orders">Orders</a>
-                    </li>
-                    <li>
-                        <a href="vendor_products">Products</a>
-                    </li>
-                    <li>
-                        <a href="vendor_bundles">Bundles</a>
-                    </li>
+                    <li><a href="vendor_orders">Orders</a></li>
+                    <li><a href="vendor_products">Products</a></li>
+                    <li><a href="vendor_bundles">Bundles</a></li>
 <?php else: ?>
-                    <li>
-                        <a href="orders">Your orders <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/orders.svg#orders"></use></svg></a>
-                    </li>
-                    <li>
-                        <a href="cart">Your cart <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/cart.svg#cart"></use></svg></a>
-                    </li>
+                    <li><a href="orders">Your orders <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/orders.svg#orders"></use></svg></a></li>
+                    <li><a href="cart">Your cart <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/cart.svg#cart"></use></svg></a></li>
 <?php endif ?>
-                    <li>
 <?php if (isset($_SESSION['username'])): ?>
-                        <a href="login?logout=true" data-tooltip="Logged in as <?= $_SESSION['username'] ?>" data-placement="bottom">Logout <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/account.svg#account"></use></svg></a>
+                    <li><a href="login?logout=true" data-tooltip="Logged in as <?= $_SESSION['username'] ?>" data-placement="bottom">Logout <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/account.svg#account"></use></svg></a></li>
 <?php else: ?>
-                        <a href="login">Login <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/account.svg#account"></use></svg></a>
+                    <li><a href="login">Login <svg xmlns="http://www.w3.org/2000/svg" version="1.1" aria-label=""><use href="assets/account.svg#account"></use></svg></a></li>
 <?php endif ?>
-                    </li>
                 </ul>
             </nav>
         </header>

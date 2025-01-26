@@ -1,5 +1,17 @@
-Before Sunday:
-- Mobile "first"
+- bundle
+- bundles
+- cart
+- checkout
+- product
+- shop
+
+Small problems:
+- Landing Page
+  - horizontal scrollbar
+- login / register
+  - compenetrating text
+
+
 
 Maybe (we won't):
 - Re-enable "add to cart" button for different variants

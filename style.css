@@ -1,5 +1,5 @@
 html {
-    contain: layout;
+    overflow-x: hidden;
 }
 
 body > img {
@@ -14,7 +14,8 @@ body > img {
 
 main {
     text-align: center;
-    padding: 4rem !important;
+    padding: 2rem !important;
+    padding-top: 4rem !important;
 }
 
 main * {

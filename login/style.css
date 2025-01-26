@@ -3,7 +3,7 @@ form {
     background: var(--pico-card-background-color);
     border-radius: var(--pico-border-radius);
     padding: 1rem;
-    width: 30rem;
+    max-width: 30rem;
     height: max-content;
 }
 
