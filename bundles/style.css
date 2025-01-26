@@ -42,8 +42,8 @@ main > section > ul > li > p:last-child {
 
 main > section > ul > li > :not(p) {
     grid-row: 2;
-    width: var(--thumbnail-size);
-    height: var(--thumbnail-size);
+    width: calc(min(var(--thumbnail-size), 50% - 1.5rem));
+    height: calc(min(var(--thumbnail-size), 50% - 1.5rem));
     border-radius: var(--pico-border-radius);
     overflow: hidden;
 }
