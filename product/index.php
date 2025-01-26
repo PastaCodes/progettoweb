@@ -5,5 +5,5 @@ $page->body = 'product/product_info.php';
 $page->allow_indexing = false;
 $page->has_navbar = true;
 $page->has_feet = true;
-require_once '../components/base.php';
+require_once '../util/base.php';
 ?>
