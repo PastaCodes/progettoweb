@@ -1,9 +1,5 @@
-- bundle
-- bundles
 - cart
 - checkout
-- product
-- shop
 
 Small problems:
 - Landing Page

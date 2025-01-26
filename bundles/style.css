@@ -9,6 +9,8 @@ main > section > ul {
 }
 
 main > section > ul > li {
+    text-align: center;
+    justify-content: center;
     display: flex;
     flex-wrap: wrap;
     gap: var(--pico-spacing);
@@ -40,8 +42,8 @@ main > section > ul > li > p:last-child {
 
 main > section > ul > li > :not(p) {
     grid-row: 2;
-    width: var(--thumbnail-size);
-    height: var(--thumbnail-size);
+    width: calc(min(var(--thumbnail-size), 50% - 1.5rem));
+    height: calc(min(var(--thumbnail-size), 50% - 1.5rem));
     border-radius: var(--pico-border-radius);
     overflow: hidden;
 }
@@ -64,4 +66,11 @@ main > section > ul > li > figure > figcaption {
     font-size: 87.5%;
     color: var(--pico-muted-color);
     padding: 0;
+}
+
+@media screen and (min-width: 1350px) {
+    main > section > ul > li {
+        text-align: left;
+        justify-content: flex-start;
+    }
 }

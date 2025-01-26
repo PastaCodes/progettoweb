@@ -121,11 +121,12 @@ main > ul > li > :last-child {
 }
 
 main > fieldset {
+    width: calc(100% + 2rem);
     display: grid;
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 3fr 2fr;
     gap: 0 var(--pico-spacing);
     align-items: end;
-    margin-bottom: calc(2 * var(--pico-spacing));
+    margin: 0 -1rem calc(2 * var(--pico-spacing)) -1rem;
 }
 
 main > fieldset * {
@@ -148,8 +149,19 @@ main > fieldset select {
     margin-top: calc(var(--pico-spacing)* .375) !important;
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 800px) {
     main {
         margin-top: 0 !important;
+    }
+
+    main > fieldset {
+        width: 100%;
+        margin: 0 0 calc(2 * var(--pico-spacing)) 0;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    main > fieldset {
+        grid-template-columns: 3fr 1fr;
     }
 }

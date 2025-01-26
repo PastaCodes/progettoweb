@@ -28,7 +28,7 @@ main > section > p:nth-child(2) {
 main > section > ul > li {
     display: grid;
     grid-auto-flow: column;
-    grid-template-columns: max-content auto min-content min-content;
+    grid-template-columns: max-content auto max-content 6.4rem;
     grid-template-rows: max-content max-content 1fr max-content;
     padding: var(--pico-spacing);
     border-radius: var(--pico-border-radius);
@@ -105,6 +105,7 @@ main > section > ul > li > p:nth-of-type(2):nth-last-of-type(3) {
 main > section > ul > li > button {
     grid-row: 4;
     grid-column: 3;
+    margin-left: auto;
     margin-right: var(--pico-spacing);
 }
 
@@ -112,7 +113,7 @@ main > section > ul > li > fieldset {
     grid-row: 4;
     grid-column: 4;
     float: left;
-    width: fit-content;
+    width: fit-content !important;
     margin-bottom: 0 !important;
 }
 

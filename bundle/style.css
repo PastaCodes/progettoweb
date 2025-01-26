@@ -4,10 +4,9 @@
 }
 
 main > section > section:first-of-type > ul > li {
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-columns: max-content auto;
-    grid-template-rows: max-content max-content 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: var(--pico-spacing);
     border-radius: var(--pico-border-radius);
     background: var(--pico-card-background-color);
@@ -20,11 +19,8 @@ main > section > section:first-of-type > ul > li > :first-child {
     height: var(--thumbnail-size);
     border-radius: var(--pico-border-radius);
     overflow: hidden;
-    margin-bottom: 0;
-    margin-right: 2rem;
-    grid-row: 1 / -1;
-    grid-column: 1;
     user-select: none;
+    margin-bottom: var(--pico-spacing);
 }
 
 main > section > section:first-of-type > ul > li > figure {
@@ -127,4 +123,21 @@ main > section > fieldset:last-child > a > svg {
     display: inline-block;
     width: 1em;
     height: 1em;
+}
+
+@media screen and (min-width: 768px) {
+    main > section > section:first-of-type > ul > li {
+        display: grid;
+        grid-auto-flow: column;
+        grid-template-columns: max-content auto;
+        grid-template-rows: max-content max-content 1fr;
+        align-items: start;
+    }
+
+    main > section > section:first-of-type > ul > li > :first-child {
+        grid-row: 1 / -1;
+        grid-column: 1;
+        margin-right: 2rem;
+        margin-bottom: 0;
+    }
 }

@@ -5,10 +5,8 @@
 }
 
 main > section {
-    display: grid;
-    grid-template-columns: max-content auto;
-    grid-template-rows: repeat(7, max-content);
-    gap: 0 calc(4 * var(--pico-spacing));
+    display: flex;
+    flex-direction: column;
 }
 
 main > section > :not(:first-child) {
@@ -22,8 +20,8 @@ main > section > :first-child {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: var(--thumbnail-size);
-    height: var(--thumbnail-size);
+    max-width: var(--thumbnail-size);
+    max-height: var(--thumbnail-size);
     border-radius: var(--pico-border-radius);
     overflow: hidden;
     margin-bottom: var(--pico-spacing);
@@ -102,4 +100,13 @@ main > section > fieldset:last-child > a > svg {
     display: inline-block;
     width: 1em;
     height: 1em;
+}
+
+@media screen and (min-width: 1350px) {
+    main > section {
+        display: grid;
+        grid-template-columns: max-content auto;
+        grid-template-rows: repeat(7, max-content);
+        gap: 0 calc(4 * var(--pico-spacing));
+    }
 }
