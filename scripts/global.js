@@ -208,7 +208,13 @@ document.addEventListener('DOMContentLoaded', () => {
             navbar.style.transform = '';
             hamburger.querySelector('use').setAttribute('href', 'assets/hamburger.svg#hamburger');
             hamburger.ariaLabel = 'Open menu';
+            const animHandle = () => {
+                navbar.style.visibility = '';
+                navbar.removeEventListener('transitionend', animHandle);
+            }
+            navbar.addEventListener('transitionend', animHandle);
         } else {
+            navbar.style.visibility = 'visible';
             navbar.style.transform = 'translateX(0)';
             hamburger.querySelector('use').setAttribute('href', 'assets/close.svg#close');
             hamburger.ariaLabel = 'Close menu';
