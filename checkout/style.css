@@ -144,7 +144,7 @@ main > form > :last-child {
 
     main > section > ul > li {
         grid-template-columns: max-content 1fr max-content;
-        grid-template-rows: max-content max-content auto max-content;
+        grid-template-rows: max-content max-content 1fr max-content;
     }
 
     main > section > ul > li > :first-child {
